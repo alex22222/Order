@@ -1,0 +1,63 @@
+﻿<p class="text-info">
+    <img ng-src="img/products/{{product.code}}.jpg" alt="{{product.name}}"/>
+    {{product.name}}: {{product.description}}<br />
+</p>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span8">
+
+            <!-- product info -->
+            <table class="table table-bordered">
+
+                <tr class="well">
+                    <td class="tdRight" colspan="3" >
+                        <a href="index.html#/cart" title="go to shopping cart" ng-disabled="cart.getTotalCount() < 1">
+                            <i class="icon-shopping-cart" />
+                            <b>{{cart.getTotalCount()}}</b> 项, <b>{{cart.getTotalPrice() | currency}}</b>
+                            <span ng-show="cart.getTotalCount(product.code) > 0"><br />这项商品已经在购物车中</span>
+                        </a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="tdRight"><b>编码</b></td>
+                    <td class="tdCenter"><h2>{{product.code}}</h2><input type="hidden" value="{{product.id}}"/></td>
+                    <td />
+                </tr>
+                
+                <tr class="well">
+                    <td class="tdRight" colspan="3" >
+                        <a href="index.html#/cart" title="go to shopping cart" ng-disabled="cart.getTotalCount() < 1">
+                            <i class="icon-shopping-cart" />
+                            <b>{{cart.getTotalCount()}}</b> 项, <b>{{cart.getTotalPrice() | currency}}</b>
+                            <span ng-show="cart.getTotalCount(product.code) > 0"><br />这项商品已经在购物车中</span>
+                        </a>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+
+        <!-- buttons -->
+        <div class="span4">
+            <button 
+                class="btn btn-block btn-success" 
+                ng-click="cart.addItem(product.id, product.code, product.name, product.price, 1)">
+                <i class="icon-shopping-cart icon-white" /> 添加到购物车
+            </button>
+            <button 
+                class="btn btn-block btn-danger" 
+                ng-click="cart.addItem(product.id, product.code, product.name, product.price, -10000)"
+                ng-disabled="cart.getTotalCount(product.code) < 1">
+                <i class="icon-trash icon-white" /> 从购物车中删除
+            </button>
+            <button 
+                class="btn btn-block" 
+                onclick="window.location.href='index.html#/store'">
+                <i class="icon-chevron-left" /> 返回商场
+            </button>
+        </div>
+    </div>
+</div>
+

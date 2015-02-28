@@ -1,0 +1,65 @@
+<div class="container">
+
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">导航</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="#/admin/landing">零件管理</a></li>
+              <li><a href="#/admin/landing">车型管理</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">零件管理 <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#/admin/upload">上传图片</a></li>
+                  <li><a href="#/admin/componentgrid">图片管理</a></li>
+                  <li><a href="#">种类维护</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">基本信息 <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">用户维护</a></li>
+                  <li><a href="#">地址管理</a></li>
+                  <li class="divider"></li>
+                  <li class="dropdown-header">报表统计</li>
+                </ul>
+              </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="../navbar-static-top/">分店管理</a></li>
+              <li><a href="../navbar-fixed-top/">站内通信</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <table class="table">
+            <tr>
+                <div class="input-group input-group-lg">
+                  <input type="text" class="form-control" placeholder="名称" aria-describedby="sizing-addon1" ng-model="comName" >
+                </div>
+            </tr>
+            <tr>
+                <div class="input-group input-group-lg">
+                  <input type="text" class="form-control" placeholder="描述" aria-describedby="sizing-addon1" ng-model="comDescription" >
+                </div>
+            </tr>
+            <tr>
+                <input type="file" ng-file-select="onFileSelect($files)" multiple>
+            </tr>
+        </table>
+        <button type="button" class="btn btn-success" ng-click="add()">保存</button>
+        <button type="button" class="btn btn-default" ng-click="back()">返回</button>
+      </div>
+    </div>

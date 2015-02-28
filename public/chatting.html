@@ -1,0 +1,61 @@
+<html>
+  <head>
+	<title>NXG Chatting Room</title>
+    <script src='https://cdn.firebase.com/v0/firebase.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'></script>
+  </head>
+  <body>
+	<div id='messagesDiv'></div>
+	<input type='text' id='nameInput' placeholder='Name'>
+    <input type='text' id='messageInput' placeholder='Message'>
+	<script>
+	var message_title = { 
+            time: 0, 
+            title: document.title, 
+            timer: null, 
+            show: function () { 
+                var title = message_title.title.replace("[   ]", "").replace("[New Message]", ""); 
+				
+                message_title.timer = setTimeout(function () { 
+                    document.title = "[New Message]"; 
+                }, 600); 
+                return [message_title.timer, message_title.title]; 
+            }, 
+            clear: function () { 
+                clearTimeout(message_title.timer); 
+                document.title = message_title.title; 
+            } 
+        };
+
+		document.onclick = function () { 
+			message_title.clear(); 
+		}; 
+
+     var myDataRef = new Firebase('https://intense-fire-2130.firebaseio.com/');
+	  $('#messageInput').keypress(function (e) {
+        if (e.keyCode == 13) {
+          var name = $('#nameInput').val();
+          var text = $('#messageInput').val();
+          myDataRef.push({name: name, text: text});
+          $('#messageInput').val('');
+          document.title = "NXG Chatting Room"; 
+        }
+      });
+	  myDataRef.on('child_added', function(snapshot) {
+		var message = snapshot.val();
+		displayChatMessage(message.name, message.text);
+		var name = $('#nameInput').val();
+		if(name != message.name) {
+			message_title.show(); 
+		}
+	});
+	function displayChatMessage(name, text) {
+		var now=new Date()
+		var time = now.getFullYear() +"/"+(now.getMonth()+1)+"/"+now.getDate()+"/"+now.getHours()+"-"+now.getMinutes()+":"+now.getSeconds()+"s";
+        $('<div/>').text(text).prepend($('<em/>').text(name+': ')).appendTo($('#messagesDiv'));
+        $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
+      };
+	  
+    </script>
+  </body>
+</html>

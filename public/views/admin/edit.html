@@ -1,0 +1,124 @@
+<div class="container">
+
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">导航</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="#/admin/landing">零件管理</a></li>
+              <li><a href="#/admin/landing">车型管理</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">零件管理 <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#/admin/upload">上传图片</a></li>
+                  <li><a href="#/admin/componentgrid">图片管理</a></li>
+                  <li><a href="#">种类维护</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">基本信息 <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">用户维护</a></li>
+                  <li><a href="#">地址管理</a></li>
+                  <li class="divider"></li>
+                  <li class="dropdown-header">报表统计</li>
+                </ul>
+              </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="../navbar-static-top/">分店管理</a></li>
+              <li><a href="../navbar-fixed-top/">站内通信</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <div class="row">
+          <div class="col-lg-6">
+            <table class="table">
+                <tr>
+                    <div class="input-group input-group-lg">
+                      名称:<input type="text" class="form-control" placeholder="名称" aria-describedby="sizing-addon1" ng-model="component.comName" >
+                    </div>
+                </tr>
+                <tr>
+                    <div class="input-group input-group-lg">
+                      描述:<input type="text" class="form-control" placeholder="描述" aria-describedby="sizing-addon1" ng-model="component.comDescription" >
+                    </div>
+                </tr>
+            </table>
+          </div>
+          <div class="col-lg-6">
+            <img ng-src="images/{{component.name}}" />
+            <input type="file" ng-file-select="onFileSelect($files)" multiple>
+          </div>
+        </div>
+
+        <script type="text/ng-template" id="nodes_renderer1.html">
+          <div ui-tree-handle class="tree-node">
+            <div class="tree-node-content">
+              <a class="btn btn-success btn-xs" data-nodrag ng-click="toggle(this)"><span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}"></span></a>
+              {{node.title}}
+            </div>
+          </div>
+          <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
+            <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer1.html'">
+            </li>
+          </ol>
+        </script>
+        <script type="text/ng-template" id="nodes_renderer2.html">
+          <div ui-tree-handle class="tree-node">
+             <div class="tree-node-content">
+              {{node.title}}
+            </div>
+          </div>
+          <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
+            <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer2.html'">
+            </li>
+          </ol>
+        </script>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <h3>待绑定车型</h3>
+            <div ui-tree id="tree1-root">
+              <ol ui-tree-nodes="" ng-model="tree1">
+                <li ng-repeat="node in tree1" ui-tree-node ng-include="'nodes_renderer1.html'"></li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <h3>已绑定车型</h3>
+            <div ui-tree id="tree2-root">
+              <ol ui-tree-nodes="" ng-model="component.vehicles">
+                <li ng-repeat="node in component.vehicles" ui-tree-node ng-include="'nodes_renderer2.html'"></li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <pre class="code">{{ tree1 | json }}</pre>
+          </div>
+
+          <div class="col-sm-6">
+            <pre class="code">{{ component.vehicles | json }}</pre>
+          </div>
+        </div>
+        <button type="button" class="btn btn-success" ng-click="update()">保存</button>
+        <button type="button" class="btn btn-default" ng-click="back()">返回</button>
+      </div>
+    </div>

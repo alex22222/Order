@@ -1,0 +1,90 @@
+<div class="container">
+      
+      <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#/admin/task">导航</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="#/admin/landing">零件管理</a></li>
+              <li><a href="#/admin/vehicle">车型管理</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">零件管理 <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#/admin/upload">上传图片</a></li>
+                  <li><a href="#/admin/componentgrid">图片管理</a></li>
+                  <li><a href="#">种类维护</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">基本信息 <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">用户维护</a></li>
+                  <li><a href="#">地址管理</a></li>
+                  <li class="divider"></li>
+                  <li class="dropdown-header">报表统计</li>
+                </ul>
+              </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="../navbar-static-top/">分店管理</a></li>
+              <li><a href="../navbar-fixed-top/">站内通信</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+      
+      <div class="jumbotron">
+        <div class="panel panel-default">
+        <div class="panel-heading">
+           <table>
+            <tr>
+              <td class="tdLeft">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="名称..." ng-model="search_name">
+                  <span class="input-group-btn">
+                    <button class="btn btn-info" type="button" ng-click="query()">查询</button>
+                  </span>
+                </div>
+              </td>
+              <td class="tdRight"><button type="button" class="btn btn-success" ng-click="add()">新增</button></td>
+            </tr>
+            </table>
+        </div>
+        <table class="table">
+          <tr>
+              <!--th>图片</th-->
+              <th>ID</th>
+              <th>名称</th>
+              <th>描述</th>
+              <th>相关车型</th>
+              <th>操作</th>
+          </tr>
+          <tr ng-repeat="picture in pics" >
+              <!--td class="tdCenter"><a href="#"><img ng-src="images/{{picture.name}}" /></a></td-->
+              <td class="tdLeft">{{picture._id}}</td>
+              <td class="tdLeft">{{picture.comName}}</td>
+              <td class="tdLeft">{{picture.comDescription}}</td>
+              <td class="tdLeft">大众，本田</td>
+              <td class="tdLeft">
+                <div class="btn-group" role="group" aria-label="...">
+                  <button type="button" class="btn btn-warning" ng-click="edit(picture._id)">修改</button>
+                  <button type="button" class="btn btn-danger" ng-click="delete(picture._id)">删除</button>
+                </div>
+              </td>
+          </tr>
+        </table>
+      </div>
+    <pagination total-items="totalItems" ng-model="currentPage" items-per-page="itemsPerPage" ng-change="pageChanged()" previous-text="前一页" next-text="后一页"></pagination> 
+    <!--pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" ng-change="pageChanged()" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination-->
+    </div>
+
+</div>
