@@ -2,8 +2,8 @@
 
 /* App Module */
 var ycdiyStoreApp = angular.module('ycdiyStoreApp', [ 'ngRoute', 'ui.bootstrap',
- 'vehicleServices', 'shoppingControllers','componentServices','orderServices','userServices','adminControllers','pictureServices',
- 'adminVehicleServices']);
+ 'vehicleServices', 'shoppingControllers','componentServices','orderServices','userServices','componentControllers', 'vehicleControllers',
+ 'adminVehicleServices', 'ycdiyDirectives']);
 
 ycdiyStoreApp.config([ '$routeProvider', function($routeProvider) {
 	$routeProvider.when('/vehicle', {
@@ -30,26 +30,23 @@ ycdiyStoreApp.config([ '$routeProvider', function($routeProvider) {
     }).when('/registry', {
         templateUrl: 'views/registry.html',
         controller: 'registryController'
-    }).when('/admin/landing', {
-        templateUrl: 'views/admin/admin.html',
-        controller: 'componentViewController'
-    }).when('/admin/componentgrid', {
-        templateUrl: 'views/admin/componentgrid.html',
-        controller: 'componentController'
+    }).when('/admin/component/list', {
+        templateUrl: 'views/admin/componentList.html',
+        controller: 'componentListController'
     }).when('/admin/vehicle', {
         templateUrl: 'views/admin/vehicle.html',
         controller: 'adminVehicleController'
-    }).when('/admin/upload', {
-        templateUrl: 'views/admin/upload.html',
-        controller: 'componentController'
-    }).when('/admin/edit/:id', {
-        templateUrl: 'views/admin/edit.html',
+    }).when('/admin/component/add', {
+        templateUrl: 'views/admin/componentAdd.html',
+        controller: 'componentAddController'
+    }).when('/admin/component/edit/:id', {
+        templateUrl: 'views/admin/componentEdit.html',
         controller: 'componentEditController'
     }).when('/admin/task', {
         templateUrl: 'views/admin/tasks.html',
         controller: 'componentEditController'
     }).otherwise({
-		redirectTo : '/admin/landing'
+		redirectTo : '/admin/component/list'
 	});
 } ]);
 

@@ -7,7 +7,7 @@ var vehicle2 = new Schema({title: String, nodes: [vehicle1]});
 var vehicle3 = new Schema({title: String, nodes: [vehicle2]});
 var vehicle = new Schema({title: String, nodes: [vehicle3]});
 
-var schema = new Schema({
+var component = new Schema({
     name:String,
     path:String,
     size:Number,
@@ -21,6 +21,6 @@ var schema = new Schema({
     vehicles:[vehicle]
 });
 
-mongoose.model('Pictures', schema);
-mongoose.model('Vehicles', vehicle);
+mongoose.model('Component', component);
+mongoose.model('Vehicle', vehicle);
 

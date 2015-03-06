@@ -1,11 +1,11 @@
-var PictureModel = require("./../models").Pictures;
-var VehiclesModel = require("./../models").Vehicles;
+var ComponentModel = require("./../models").Component;
+var VehicleModel = require("./../models").Vehicle;
 var fs = require('fs');
 
-exports.deletePic = function (req, res) {
+exports.deleteComponent = function (req, res) {
     var id = req.query['comId'];
     var condition = {_id: id};
-    PictureModel.remove(condition,function(err){
+    ComponentModel.remove(condition,function(err){
         if(err) {
             res.json("删除失败");
         } else {
@@ -14,7 +14,7 @@ exports.deletePic = function (req, res) {
     });
 };
 
-exports.list = function (req, res) {
+exports.listComponent = function (req, res) {
 
     var where = {};
     var search = req.query['search'];
@@ -26,13 +26,13 @@ exports.list = function (req, res) {
     var itemsPerPage=req.query['itemsPerPage'];
 
     var skipFrom = (pageNumber * itemsPerPage) - itemsPerPage;
-    var query = PictureModel.find(where).skip(skipFrom).limit(itemsPerPage);
+    var query = ComponentModel.find(where).skip(skipFrom).limit(itemsPerPage);
 
     query.exec(function(error, results) {
         if (error) {
           // callback(error, null, null);
         } else {
-            PictureModel.count(where, function(error, count) {
+            ComponentModel.count(where, function(error, count) {
                 if (error) {
                   // callback(error, null, null);
                 } else {
@@ -43,7 +43,7 @@ exports.list = function (req, res) {
                     page['size']=count;
                     page['itemsPerPage']=itemsPerPage;
                     var resultSet = {
-                            pictureList:results,
+                            componentList:results,
                             page:page
                     };
                     return res.json(resultSet);
@@ -53,45 +53,45 @@ exports.list = function (req, res) {
     });
 };
 
-exports.queryPic = function (req, res) {
+exports.queryComponent = function (req, res) {
     var id = req.query['comId'];
     var condition = {_id: id};
-    PictureModel.find(condition,function(err, picture){
+    ComponentModel.find(condition,function(err, component){
         if(err) {
             res.json("查询失败");
         } else {
-            if(picture.length != 1) {
+            if(component.length != 1) {
                 res.json("查询失败");
             } else {
-                res.json(picture[0]);
+                res.json(component[0]);
             }
         }
     });
 };
 
-exports.updatePic = function (req, res) {
+exports.updateComponent = function (req, res) {
     
     var v = req.body;
-    var pic = new PictureModel(v);
-    PictureModel.findById(req.body._id, function (err, pic) {
+    var component = new ComponentModel(v);
+    ComponentModel.findById(req.body._id, function (err, component) {
       if (err) return res.json("更新失败");
-      pic.comName = v.comName;
-      pic.comDescription = v.comDescription;
-      pic.vehicles = [];
+      component.comName = v.comName;
+      component.comDescription = v.comDescription;
+      component.vehicles = [];
       for(var i =0; i < v.vehicles.length; i++) {
-        var ve = new VehiclesModel({
+        var ve = new VehicleModel({
             _id: v.vehicles[i]._id,
             title:v.vehicles[i].title
         });
-        pic.vehicles.push(ve);
+        component.vehicles.push(ve);
       }    
 
-      // pic.vehicles.push(ve);
+      // component.vehicles.push(ve);
       if(req.files) {
-          pic.path = './public/images/' + req.files.file.name;
-          pic.name= req.files.file.name;
+          component.path = './public/images/' + req.files.file.name;
+          component.name= req.files.file.name;
       }
-      pic.save(function(err, pic) {
+      component.save(function(err, component) {
         if(err) {
             res.json("更新失败");
         } else {
@@ -109,7 +109,7 @@ exports.updatePic = function (req, res) {
                 // delete tmp folder
                 fs.unlink(tmp_path, function() {
                     if (err) res.json("更新失败");
-                    res.send('File uploaded to: ' + target_path + ' - ' + pic.size + ' bytes');
+                    res.send('File uploaded to: ' + target_path + ' - ' + component.size + ' bytes');
                 });
             });
         }
@@ -117,17 +117,17 @@ exports.updatePic = function (req, res) {
     });
 };
 
-exports.upload = function (req, res) {
+exports.addComponent = function (req, res) {
 	var file = req.files.file;
     var target_path = './public/images/' + req.files.file.name;
-    var pic = new PictureModel();
-    pic.comName = req.body.comName;
-    pic.comDescription = req.body.comDescription;
-    pic.name = file.name;
-    pic.size = file.size;
-    pic.type = file.type;
-    pic.path = target_path;
-    pic.save(function(err, pic) {
+    var component = new ComponentModel();
+    component.comName = req.body.comName;
+    component.comDescription = req.body.comDescription;
+    component.name = file.name;
+    component.size = file.size;
+    component.type = file.type;
+    component.path = target_path;
+    component.save(function(err, component) {
         if(err) {
             res.json("更新失败");
         } else {
@@ -142,18 +142,39 @@ exports.upload = function (req, res) {
                 // delete tmp folder
                 fs.unlink(tmp_path, function() {
                     if (err) res.json("更新失败");
-                    res.send('File uploaded to: ' + target_path + ' - ' + pic.size + ' bytes');
+                    res.send('File uploaded to: ' + target_path + ' - ' + component.size + ' bytes');
                 });
             });
         }
     });
 };
 
+exports.createComponent = function (req, res) {
+    var component = new ComponentModel();
+    component.comName = req.body.comName;
+    component.comDescription = req.body.comDescription;
+    component.vehicles = [];
+    for(var i =0; i < req.body.vehicles.length; i++) {
+        var ve = new VehicleModel({
+            _id: req.body.vehicles[i]._id,
+            title:req.body.vehicles[i].title
+        });
+        component.vehicles.push(ve);
+    }    
+    component.save(function(err, component) {
+        if(err) {
+            res.json("更新失败");
+        } else {
+            res.json("更新成功");
+        }
+    });
+};
+
 exports.updateVehicle = function (req, res) {
     var v = req.body;
-    VehiclesModel.remove().exec();
+    VehicleModel.remove().exec();
     for(var i=0, l = req.body.length; i<l ;i++) {
-        var vehicle = new VehiclesModel(req.body[i]);
+        var vehicle = new VehicleModel(req.body[i]);
         vehicle.save(function (err, vehicles) {
             if (err) {
                 return res.json({err:err});
@@ -170,7 +191,7 @@ exports.updateVehicle = function (req, res) {
 };
 
 exports.queryVehicle = function (req, res) {
-    VehiclesModel.find(function(err,vehicles){
+    VehicleModel.find(function(err,vehicles){
         res.json(vehicles);
     });
 };

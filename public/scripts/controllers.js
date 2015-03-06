@@ -2,27 +2,7 @@
 
 /* Controllers */
 var shoppingControllers = angular.module('shoppingControllers', []);
-
-shoppingControllers.directive('darthFader', function() {
-  return {
-    restrict: 'AEC',
-
-    link: function($scope, element, attrs) {
-      
-      $(element).fadeOut("slow");
-      // $scope.$watch($scope.fadedIn, function(value) {
-      	
-      //   if (value) {
-      //   	$(element).fadeIn(duration);
-      //   }
-      //   else {
-      //   	$(element).fadeOut(duration);
-      //   }
-      // });
-     }
-   };
-});
-
+ 
 shoppingControllers.controller('loginController', [ '$scope', 'UserService', '$location', '$rootScope',
 		function($scope, UserService, $location, $rootScope) {
 			$rootScope.fadedIn = false;

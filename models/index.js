@@ -15,10 +15,10 @@ db.once('open', function () {
 });
 
 var models_path = __dirname + '/../models/mapping';
-require(models_path + '/' + 'PicturesModel.js');
+require(models_path + '/' + 'EntityModel.js');
 require(models_path + '/' + 'UsersModel.js');
-exports['Pictures'] = mongoose.model('Pictures');
-exports['Vehicles'] = mongoose.model('Vehicles');
+exports['Component'] = mongoose.model('Component');
+exports['Vehicle'] = mongoose.model('Vehicle');
 exports['Users'] = mongoose.model('Users');
 // fs.readdirSync(models_path).forEach(function (file) {
 //     require(models_path + '/' + file);

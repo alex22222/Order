@@ -6,11 +6,12 @@ module.exports = function (app) {
     app.get('/user/list', user.list);
     app.post('/user/registry', user.create);
     app.post('/user/login', user.login);
-    app.post('/admin/upload', admin.upload);
     app.post('/admin/vehicle/update', admin.updateVehicle);
     app.get('/admin/vehicle/list', admin.queryVehicle);
-    app.get('/admin/pic/list', admin.list);
-    app.get('/admin/pic/delete', admin.deletePic);
-    app.get('/admin/pic/edit', admin.queryPic);
-    app.post('/admin/pic/update', admin.updatePic);
+    app.post('/admin/component/add', admin.addComponent);
+    app.post('/admin/component/create', admin.createComponent);
+    app.get('/admin/component/list', admin.listComponent);
+    app.get('/admin/component/delete', admin.deleteComponent);
+    app.get('/admin/component/edit', admin.queryComponent);
+    app.post('/admin/component/update', admin.updateComponent);
 };
