@@ -1,7 +1,7 @@
 <div class="container">     
       <div ng-include="'views/admin/navigation.html'"></div>
       <div class="page-header">
-        <h1>零件列表</h1>
+        <h1>车型列表</h1>
       </div>
       <div class="jumbotron">
         <message />
@@ -24,26 +24,18 @@
         </div>
         <table class="table">
           <tr>
-              <!--th>图片</th-->
               <th>ID</th>
               <th>名称</th>
               <th>描述</th>
-              <th>相关车型</th>
               <th>操作</th>
           </tr>
-          <tr ng-repeat="component in components" >
-              <td class="tdLeft">{{component._id}}</td>
-              <td class="tdLeft">{{component.comName}}</td>
-              <td class="tdLeft">{{component.comDescription}}</td>
-              <td class="tdLeft">
-                <div ng-repeat="vehicle in component.vehicles" >
-                  {{vehicle.title}}
-                </div>  
-              </td>
+          <tr ng-repeat="vehicle in vehicles" >
+              <td class="tdLeft">{{vehicle._id}}</td>
+              <td class="tdLeft">{{vehicle.title}}</td>
+              <td class="tdLeft">{{vehicle.description}}</td>
               <td class="tdLeft">
                 <div class="btn-group" role="group" aria-label="...">
-                  <button type="button" class="btn btn-warning" ng-click="edit(component._id)">修改</button>
-                  <button type="button" class="btn btn-danger" ng-click="delete(component._id)">删除</button>
+                  <button type="button" class="btn btn-warning" ng-click="edit(vehicle._id)">修改</button>
                 </div>
               </td>
           </tr>

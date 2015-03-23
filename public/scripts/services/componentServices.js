@@ -43,6 +43,13 @@ componentServices.factory('Component', ['$resource',
           return res.save(component, function(response) {
             callback(response);
           });
+       },
+       removePicture: function(comId, callback) {
+          var res = $resource('/admin/component/deletePicture?comId=:comId', {}, {
+              query: {method:'GET', params:comId}
+          });
+          return res.query(function(response) {
+            callback(response);
+          });
        }
-    }
-  }]);
+  }}]);

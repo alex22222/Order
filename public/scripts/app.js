@@ -3,7 +3,7 @@
 /* App Module */
 var ycdiyStoreApp = angular.module('ycdiyStoreApp', [ 'ngRoute', 'ui.bootstrap',
  'vehicleServices', 'shoppingControllers','componentServices','orderServices','userServices','componentControllers', 'vehicleControllers',
- 'adminVehicleServices', 'ycdiyDirectives']);
+ 'adminVehicleServices', 'ycdiyDirectives', 'angularFileUpload']);
 
 ycdiyStoreApp.config([ '$routeProvider', function($routeProvider) {
 	$routeProvider.when('/vehicle', {
@@ -45,6 +45,9 @@ ycdiyStoreApp.config([ '$routeProvider', function($routeProvider) {
     }).when('/admin/task', {
         templateUrl: 'views/admin/tasks.html',
         controller: 'componentEditController'
+    }).when('/admin/vehicle/list', {
+        templateUrl: 'views/admin/vehicleList.html',
+        controller: 'vehicleListController'
     }).otherwise({
 		redirectTo : '/admin/component/list'
 	});

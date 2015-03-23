@@ -1,8 +1,7 @@
 <div class="container">
-      
       <div ng-include="'views/admin/navigation.html'"></div>
-
       <div class="jumbotron">
+        <message />
         <div class="row">
           <div class="col-lg-6">
             <h3>车型
@@ -30,25 +29,24 @@
             </div>
           </div>
 
-          <div class="col-lg-6">
+          <!--div class="col-lg-6">
             <h3>Data binding</h3>
             <div class="info">
                 {{info}}
             </div>
             <pre class="code">{{ data | json }}</pre>
-          </div>
+          </div-->
 
-          <div class="col-lg-6">
-            <table >
-                <tr>
-                    <td><button 
-                            class="btn btn-block btn-success" 
-                            ng-click="updateVehicle()">
-                            保存
-                        </button></td>
-                </tr>
-            </table>
+          <div class="row">
+          <div class="col-sm-6">
+          <div class="btn-toolbar">
+              <div class="btn-group">
+                <button type="submit" class="btn btn-success " ng-click="updateVehicle()">保存</button>
+                <button type="button" class="btn btn-default" ng-click="back()">返回</button>
+              </div>
           </div>
+          </div>
+        </div>
           
         </div>
       </div>

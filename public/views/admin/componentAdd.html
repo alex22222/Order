@@ -25,11 +25,6 @@
             </table>
             
           </div>
-          <div class="col-lg-6">
-            <img ng-src="images/{{component.name}}" />
-             <label for="inputfile">上传图片</label>
-             <input type="file" ng-file-select="onFileSelect(this,$files)" multiple onchange="setFile(this)">
-          </div>
         </div>
 
         <script type="text/ng-template" id="nodes_renderer1.html">
@@ -59,8 +54,7 @@
         <div class="row">
           <div class="col-sm-6">
             <label for="name">待绑定车型</label>
-            <a href="" class="btn btn-default pull-right" ng-click="collapseAll()">全部收缩</a>
-              <a href="" class="btn btn-default pull-right" ng-click="expandAll()">全部展开</a>
+            <a href="" class="btn btn-default pull-right" ng-click="addAll()">全部添加</a>
             <div ui-tree id="tree1-root">
               <ol ui-tree-nodes="" ng-model="tree1">
                 <li ng-repeat="node in tree1" ui-tree-node ng-include="'nodes_renderer1.html'"></li>
@@ -70,6 +64,7 @@
 
           <div class="col-sm-6">
             <label for="name">已绑定车型</label>
+            <a href="" class="btn btn-default pull-right" ng-click="removeAll()">全部删除</a>
             <div ui-tree id="tree2-root">
               <ol ui-tree-nodes="" ng-model="component.vehicles">
                 <li ng-repeat="node in component.vehicles" ui-tree-node ng-include="'nodes_renderer2.html'"></li>
@@ -95,8 +90,7 @@
             </div>
 
             <div class="col-md-9" style="margin-bottom: 40px">
-                 <label for="inputfile">上传列表: {{ uploader.queue.length }}</label>
-
+                 <!--label for="inputfile">上传列表: {{ uploader.queue.length }}</label-->
                 <table class="table">
                     <thead>
                         <tr>
@@ -111,13 +105,7 @@
                         <tr ng-repeat="item in uploader.queue">
                             <td>
                                 <strong>{{ item.file.name }}</strong>
-                                <!-- Image preview -->
-                                <!--auto height-->
-                                <!--<div ng-thumb="{ file: item.file, width: 100 }"></div>-->
-                                <!--auto width-->
                                 <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"></div>
-                                <!--fixed width and height -->
-                                <!--<div ng-thumb="{ file: item.file, width: 100, height: 100 }"></div>-->
                             </td>
                             <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
                             <td ng-show="uploader.isHTML5">
@@ -131,12 +119,6 @@
                                 <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
                             </td>
                             <td nowrap>
-                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
-                                    <span class="glyphicon glyphicon-upload"></span> 上传
-                                </button>
-                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
-                                    <span class="glyphicon glyphicon-ban-circle"></span> 取消
-                                </button>
                                 <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
                                     <span class="glyphicon glyphicon-trash"></span> 删除
                                 </button>
@@ -144,27 +126,7 @@
                         </tr>
                     </tbody>
                 </table>
-
-                <div>
-                    <div>
-                        列表进度:
-                        <div class="progress" style="">
-                            <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-success btn-s" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
-                        <span class="glyphicon glyphicon-upload"></span> 全部上传
-                    </button>
-                    <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
-                        <span class="glyphicon glyphicon-ban-circle"></span> 全部取消
-                    </button>
-                    <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
-                        <span class="glyphicon glyphicon-trash"></span> 全部删除
-                    </button>
-                </div>
-
             </div>
-
         </div>
 
 
