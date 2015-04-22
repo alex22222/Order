@@ -38,7 +38,7 @@ exports.listVehicle = function (req, res) {
     var itemsPerPage=req.query['itemsPerPage'];
 
     var skipFrom = (pageNumber * itemsPerPage) - itemsPerPage;
-    var query = VehicleModel.find(where).skip(skipFrom).sort({'_id':-1}).limit(itemsPerPage);
+    var query = VehicleModel.find(where).populate('children').skip(skipFrom).sort({'_id':-1}).limit(itemsPerPage);
 
     query.exec(function(error, results) {
         if (error) {

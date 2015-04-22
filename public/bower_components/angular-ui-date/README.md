@@ -1,4 +1,4 @@
-# ui-date directive [![Build Status](https://travis-ci.org/angular-ui/ui-date.png)](https://travis-ci.org/angular-ui/ui-date)
+# ui-date directive [![Build Status](https://travis-ci.org/angular-ui/ui-date.svg)](https://travis-ci.org/angular-ui/ui-date)
 
 This directive allows you to add a date-picker to your form elements.
 
@@ -22,17 +22,17 @@ The karma task will try to open Chrome as a browser in which to run the tests.  
 
 # Usage
 
-We use [bower](http://twitter.github.com/bower/) for dependency management.  Add
+We use [bower](http://bower.io/) for dependency management.  Install and save to bower.json by running:
 
-    dependencies: {
-        "angular-ui-date": "latest"
-    }
+    bower install angular-ui-date --save
 
-To your `bower.json` file. Then run
+This will copy the ui-date files into your `components` folder, along with its dependencies. 
 
-    bower install
+Add the css:
 
-This will copy the ui-date files into your `components` folder, along with its dependencies. Load the script files in your application:
+    <link rel="stylesheet" href="components/jquery-ui/themes/smoothness/jquery-ui.css"/>
+
+Load the script files in your application:
 
     <script type="text/javascript" src="components/jquery/jquery.js"></script>
     <script type="text/javascript" src="components/jquery-ui/ui/jquery-ui.js"></script>

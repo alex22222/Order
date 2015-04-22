@@ -3,63 +3,6 @@
 /* Controllers */
 var shoppingControllers = angular.module('shoppingControllers', []);
  
-shoppingControllers.controller('loginController', [ '$scope', 'UserService', '$location', '$rootScope',
-		function($scope, UserService, $location, $rootScope) {
-			$rootScope.fadedIn = false;
-			$scope.login = function() {
-				var username = $scope.username;
-				var password = $scope.password;
-				UserService.login(username, password, '/admin/landing', function(user) {
-					if(user.err != null) {
-						$rootScope.err = user.err;
-						// $rootScope.showerr=true;
-						$rootScope.fadedIn = true;
-						// $location.path('/vehicle');
-					} else {
-						setLoginStatus($scope);
-						$rootScope.loginName = username;
-					}
-				});
-			};
-			$scope.logout = function() {
-				localStorage.clear();
-				$scope.in=false;
-				$scope.username = '';
-				$scope.password = '';
-				$location.path('/vehicle');
-			};
-			setLoginStatus($scope, $rootScope);
-			$scope.enter = function (ev) {
-				 if (ev.keyCode == 13) {
-				 	$scope.login();
-				}
-			}
-		} ]);
-
-function setLoginStatus($scope, $rootScope) {
-
-	if(localStorage["username"] == undefined) {
-		$scope.in=false;
-		$rootScope.loginName = '您';
-	} else {
-		$scope.in=true;
-	}
-}
-
-shoppingControllers.controller('registryController', [ '$scope', 'UserService',
-		function($scope, UserService) {
-			$scope.registry = function() {
-				var username = $scope.username;
-				var password = $scope.password;
-				var password_confirm = $scope.password_confirm;
-				if(password != password_confirm) {
-					alert('密码不一致!');
-				} else {
-					UserService.registry(username, password);
-				}
-			};
-		} ]);
-
 shoppingControllers.controller('vehicleController', [ '$scope', 'Vehicle',
 		function($scope, Vehicle) {
 			var username = "";

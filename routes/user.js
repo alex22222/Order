@@ -4,42 +4,98 @@
 
 var UsersModel = require("./../models").Users;
 var path = require('path');
+var helper = require('./helper');
 
-exports.list = function (req, res) {
-    UsersModel.find(function(err,users){
+exports.list = function(req, res) {
+    
+    var where = {};
+    var search = req.query['search'];
+    if (req.query['search']) {
+        where = {
+            comName: search
+        };
+    }
 
+    var pageNumber = req.query['pageNumber'];
+    var itemsPerPage = req.query['itemsPerPage'];
 
-        res.json(users);
+    var skipFrom = (pageNumber * itemsPerPage) - itemsPerPage;
+    var query = UsersModel.find(where).skip(skipFrom).sort({
+        '_id': -1
+    }).limit(itemsPerPage);
+
+    query.exec(function(error, results) {
+        if (error) {
+            helper.wrapQuery(error);
+        } else {
+            UsersModel.count(where, function(error, count) {
+                if (error) {
+                    helper.wrapQuery(error);
+                } else {
+                    var page = {
+                        limit: 5,
+                        num: 1
+                    };
+                    var pageCount = Math.ceil(count / itemsPerPage);
+                    page['pageCount'] = pageCount;
+                    page['currentPage'] = pageNumber;
+                    page['size'] = count;
+                    page['itemsPerPage'] = itemsPerPage;
+                    var resultSet = {
+                        userList: results,
+                        page: page,
+						success: true
+                    };
+                    return res.json(resultSet);
+                }
+            });
+        }
     });
 };
 
-exports.create = function (req, res) {
+exports.create = function(req, res) {
     var createUser = new UsersModel(req.body);
-    UsersModel.findOne({username:req.body.username}, function (err, user) {
+    UsersModel.findOne({
+        username: req.body.username
+    }, function(err, user) {
         if (err)
-            return res.json({err:err});
+            return res.json({
+                err: err
+            });
         if (user) {
-            return res.json({err:"用户名已经存在"});
+            return res.json({
+                err: "用户名已经存在"
+            });
         }
-        createUser.save(function (err, user) {
+        createUser.save(function(err, user) {
             if (err) {
-                return res.json({err:err});
+                return res.json({
+                    err: err
+                });
             }
             req.session["user"] = user;
-            res.json();
+            res.json(user);
         });
     });
 };
 
-exports.login = function (req, res) {
-    UsersModel.findOne({username:req.body.username}, function (err, user) {
+exports.login = function(req, res) {
+    UsersModel.findOne({
+        username: req.body.username
+    }, function(err, user) {
         if (err)
-            return res.json({err:err});
+            return res.json({
+                err: err
+            });
         if (!user) {
-            return res.json({err:'用户名不存在'});
+            return res.json({
+                err: '用户名不存在'
+            });
         }
         if (!user.authenticate(req.body.password))
-            return res.json({err:'密码错误'});
+            return res.json({
+                err: '密码错误'
+            });
         if (user.username == 'admin') {
             user.isAdmin = true;
         } else {
@@ -50,8 +106,30 @@ exports.login = function (req, res) {
     });
 };
 
-// exports.logout = function (req, res) {
-//     req.session["user"] = null;
-//     var html = path.normalize(__dirname + '/../views/index.html');
-//     res.sendfile(html);
-// };
+exports.logout = function(req, res) {
+    req.session["user"] = null;
+    req.user = null;
+    req.session.regenerate(function() {
+        res.json('注销成功');
+    });
+};
+
+exports.queryUser = function(req, res) {
+    var id = req.query['userId'];
+    var condition = {
+        _id: id
+    };
+    UsersModel.find(condition).exec(function(err, user) {
+        if (err) {
+            res.json(helper.wrapQuery(err));
+        } else {
+            if (user.length != 1) {
+                res.json(helper.wrapQuery('没有相关数据！'));
+            } else {
+				var u = user[0];
+				u.success = true;
+                res.json(u);
+            }
+        }
+    });
+};

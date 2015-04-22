@@ -3,20 +3,35 @@ var mongoose = require('mongoose'),
     crypto = require('crypto');
 
 var schema = new Schema({
-    username:String,
-    hash_password:String,
-    sex:Number,
-    email:String,
-    phone:String,
-    address:{city:String, street:String},
-    isAdmin:Boolean
+    username: String,
+    hash_password: String,
+    sex: Number,
+    email: String,
+    phone: String,
+    addresses: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Address'
+    }],
+    isAdmin: Boolean,
+    suspend: Boolean
 });
 
-schema.virtual("password").set(function (password) {
+var address = new Schema({
+    country: String,
+    province: String,
+    city: String,
+	district: String,
+    line1: String,
+    line2: String,
+    postal: String,
+	active: Boolean
+});
+
+schema.virtual("password").set(function(password) {
     this.hash_password = encryptPassword(password);
 });
 
-schema.method("authenticate", function (plainText) {
+schema.method("authenticate", function(plainText) {
     return encryptPassword(plainText) === this.hash_password;
 });
 
@@ -25,3 +40,4 @@ function encryptPassword(password) {
 }
 
 mongoose.model('Users', schema);
+mongoose.model('Address', address);

@@ -1,0 +1,142 @@
+<div class="container">
+    <div ng-include="'views/admin/navigation.html'"></div>
+    <div class="page-header">
+        <h1>{{pageTitle}}</h1>
+    </div>
+    <div class="jumbotron">
+        <message />
+        <tabs />
+        <form name="form" novalidate ng-submit="create()">
+            <div class="row" ng-show="showDetail">
+                <div class="col-lg-6">
+                    <table class="table">
+                        <tr>
+                            <div class="form-group">
+                                <label for="name">名称</label>
+                                <input type="text" class="form-control" id="name" placeholder="请输入名称" ng-model="component.comName">
+                            </div>
+                        </tr>
+                        <tr>
+                            <div class="form-group">
+                                <label for="name">描述</label>
+                                <input type="text" class="form-control" id="name" placeholder="请输入描述" ng-model="component.comDescription">
+                            </div>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-xs-6 col-md-3">
+                    <label for="name">图片</label>
+                    <a href="#" class="thumbnail">
+                        <img ng-src="images/{{component.name}}" />
+                    </a>
+                    <button type="button" class="btn btn-danger btn-xs" ng-click="removePicture()">
+                        <span class="glyphicon glyphicon-trash"></span> 删除
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="row" ng-show="showSubVec">
+                <table class="table">
+                    <tr>
+                        <div class="form-group">
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuSearch" data-toggle="dropdown" aria-expanded="true">
+                                    {{search.level}}<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" ng-model="search">
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="setSearch('二级')">二级</a>
+                                    </li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="setSearch('三级')">三级</a>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-info" type="button" ng-click="querySub()">查询</button>
+                            </div>
+
+                    </tr>
+                    <tr>
+                        <div ng-model="kanbanBoard" id="board">
+                            <div id="columns" class="row">
+                                <div class="col-sm-{{12/kanbanBoard.numberOfColumns}} col-xs-{{12/kanbanBoard.numberOfColumns}}" ng-repeat="column in kanbanBoard.columns" data-columnindex="{{$index}}" id="column{{$index}}">
+                                    <div class="column">
+                                        <div class="columnHeader">
+                                            <span>{{column.name}}</span>
+                                        </div>
+                                        <ul class="cards card-list" as-sortable="kanbanSortOptions" ng-model="column.cards">
+                                            <li class="card" ng-repeat="card in column.cards" as-sortable-item ng-include="'views/admin/card.html'">
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tr>
+                </table>
+                </div>
+
+            <div class="row" ng-show="showPic">
+                <div class="col-md-3">
+                    <label for="inputfile">上传图片</label>
+                    <input type="file" nv-file-select="" uploader="uploader" multiple />
+                    <br/>
+                </div>
+
+                <div class="col-md-9" style="margin-bottom: 40px">
+                    <!--label for="inputfile">上传列表: {{ uploader.queue.length }}</label-->
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="50%">文件名称</th>
+                                <th ng-show="uploader.isHTML5">文件大小</th>
+                                <th ng-show="uploader.isHTML5">进度</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in uploader.queue">
+                                <td>
+                                    <strong>{{ item.file.name }}</strong>
+                                    <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"></div>
+                                </td>
+                                <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                <td ng-show="uploader.isHTML5">
+                                    <div class="progress" style="margin-bottom: 0;">
+                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                    <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                    <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                </td>
+                                <td nowrap>
+                                    <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                        <span class="glyphicon glyphicon-upload"></span> 上传
+                                    </button>
+                                    <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                        <span class="glyphicon glyphicon-ban-circle"></span> 取消
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                        <span class="glyphicon glyphicon-trash"></span> 删除
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="btn-toolbar">
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-success " ng-click="update()">保存</button>
+                            <button type="button" class="btn btn-default" ng-click="back()">返回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

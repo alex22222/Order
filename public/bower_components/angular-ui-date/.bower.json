@@ -1,15 +1,15 @@
 {
   "name": "angular-ui-date",
-  "version": "0.0.3",
+  "version": "0.0.7",
   "description": "This directive allows you to add a date-picker to your form elements.",
   "author": "https://github.com/angular-ui/ui-date/graphs/contributors",
   "license": "MIT",
   "homepage": "http://angular-ui.github.com/ui-date",
-  "main": "./ui-date.js",
+  "main": "./src/date.js",
   "ignore": [
     "**/.*",
     "node_modules",
-    "components",
+    "bower_components",
     "test*",
     "demo*",
     "gruntFile.js",
@@ -17,16 +17,16 @@
   ],
   "dependencies": {
     "angular": "~1.x",
-    "jquery-ui": ">= 1.9"
+    "jquery-ui": "^1.9"
   },
   "devDependencies": {
     "angular-mocks": "~1.x"
   },
-  "_release": "0.0.3",
+  "_release": "0.0.7",
   "_resolution": {
     "type": "version",
-    "tag": "0.0.3",
-    "commit": "f9c12f0103ed7b7ab89180d527f2b140de529202"
+    "tag": "0.0.7",
+    "commit": "1480fb1990c512d85edb0830e997e0d16eea59d7"
   },
   "_source": "git://github.com/angular-ui/ui-date.git",
   "_target": "*",

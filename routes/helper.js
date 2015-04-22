@@ -46,3 +46,15 @@ exports.wrapQuery = function (err) {
 	}
 	return res;
 };
+
+exports.wrapAuth = function (err) {
+	var res = {};
+	if(err) {
+		res.message = '操作失败!' + err;
+		res.success = false;
+	} else {
+		res.message = '查询成功!';
+		res.success = true;
+	}
+	return res;
+};

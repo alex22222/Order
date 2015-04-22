@@ -19,6 +19,7 @@ require(models_path + '/' + 'EntityModel.js');
 require(models_path + '/' + 'UsersModel.js');
 exports['Component'] = mongoose.model('Component');
 exports['Vehicle'] = mongoose.model('Vehicle');
+exports['VehicleEntity'] = mongoose.model('VehicleEntity');
 exports['Users'] = mongoose.model('Users');
 // fs.readdirSync(models_path).forEach(function (file) {
 //     require(models_path + '/' + file);
