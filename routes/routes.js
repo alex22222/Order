@@ -10,7 +10,7 @@ function requiredAuthentication(req, res, next) {
         next();
     } else {
         var err = {};
-        res.json(helper.wrapAuth('没有权限访问！请已管理员身份登入！'));
+        res.json(helper.wrapAuth('没有权限访问！请以管理员身份登入！'));
     }
 }
 
@@ -23,11 +23,13 @@ module.exports = function(app) {
     app.post('/user/login', user.login);
     app.get('/user/logout', user.logout);
     app.get('/user/edit', user.queryUser);
+	app.get('/user/suspend', user.suspendUser);
 //
 //    app.post('/admin/vehicle/update', vehicle.updateVehicle);
 //    app.get('/admin/vehicle/structure', vehicle.queryVehicle);
 
 	app.get('/admin/user/list', requiredAuthentication, user.list);
+	app.get('/admin/user/delete', requiredAuthentication, user.deleteUser);
 	
     app.get('/admin/vehicleEntity/list', requiredAuthentication, vehicleEntity.listVehicle);
     app.post('/admin/vehicleEntity/add', requiredAuthentication, vehicleEntity.addVehicle);

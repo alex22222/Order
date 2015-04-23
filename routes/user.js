@@ -7,7 +7,7 @@ var path = require('path');
 var helper = require('./helper');
 
 exports.list = function(req, res) {
-    
+
     var where = {};
     var search = req.query['search'];
     if (req.query['search']) {
@@ -44,7 +44,7 @@ exports.list = function(req, res) {
                     var resultSet = {
                         userList: results,
                         page: page,
-						success: true
+                        success: true
                     };
                     return res.json(resultSet);
                 }
@@ -54,6 +54,8 @@ exports.list = function(req, res) {
 };
 
 exports.create = function(req, res) {
+    req.body.suspend = false;
+    req.body.isAdmin = false;
     var createUser = new UsersModel(req.body);
     UsersModel.findOne({
         username: req.body.username
@@ -126,10 +128,45 @@ exports.queryUser = function(req, res) {
             if (user.length != 1) {
                 res.json(helper.wrapQuery('没有相关数据！'));
             } else {
-				var u = user[0];
-				u.success = true;
+                var u = user[0];
+                u.success = true;
                 res.json(u);
             }
+        }
+    });
+};
+
+exports.suspendUser = function(req, res) {
+    var v = req.body;
+    var user = new UsersModel(v);
+    UsersModel.findById(req.query['userId']).exec(function(err, user) {
+        if (err) {
+            res.json(helper.wrapQuery(err));
+        }
+
+        user.suspend = !user.suspend;
+        user.save(function(err, user) {
+            if (err) {
+                res.json(helper.wrapUpdate(err));
+            } else {
+                res.json(helper.wrapUpdate());
+            }
+        });
+
+
+    });
+};
+
+exports.deleteUser = function(req, res) {
+    var id = req.query['userId'];
+    var condition = {
+        _id: id
+    };
+    UsersModel.remove(condition, function(err) {
+        if (err) {
+            res.json(helper.wrapDelete(err));
+        } else {
+            res.json(helper.wrapDelete());
         }
     });
 };

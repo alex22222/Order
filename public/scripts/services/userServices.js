@@ -49,18 +49,40 @@ userServices.factory('UserService', ['$resource', '$location',
                 var res = $resource('/user/edit?userId=:userId', {}, {
                     query: {
                         method: 'GET',
-						params: userId
+                        params: userId
                     }
                 });
                 return res.query(function(user) {
                     callback(user);
                 });
             },
-			findAll: function(pagination, callback) {
+            findAll: function(pagination, callback) {
                 var res = $resource('/admin/user/list?pageNumber=:pageNumber&itemsPerPage=:itemsPerPage&search=:search', {}, {
                     query: {
                         method: 'GET',
                         params: pagination
+                    }
+                });
+                return res.query(function(response) {
+                    callback(response);
+                });
+            },
+            suspendUser: function(userId, callback) {
+                var res = $resource('/user/suspend?userId=:userId', {}, {
+                    query: {
+                        method: 'GET',
+                        params: userId
+                    }
+                });
+                return res.query(function(user) {
+                    callback(user);
+                });
+            },
+            deleteById: function(userId, callback) {
+                var res = $resource('/admin/user/delete?userId=:userId', {}, {
+                    query: {
+                        method: 'GET',
+                        params: userId
                     }
                 });
                 return res.query(function(response) {

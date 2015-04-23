@@ -2,8 +2,8 @@
 
 var backStageControllers = angular.module('backStageControllers', []);
 
-backStageControllers.controller('userListController', ['$scope', 'UserService', '$location',
-    function($scope, UserService, $location) {
+backStageControllers.controller('userListController', ['$scope', 'UserService', '$location', '$timeout', '$q', '$route',
+    function($scope, UserService, $location, $timeout, $q, $route) {
         var search = '';
         var pagination = {
             pageNumber: 1,
@@ -40,7 +40,27 @@ backStageControllers.controller('userListController', ['$scope', 'UserService', 
                 }
             });
         };
-
+        $scope.suspend = function(id) {
+			var userId = {
+                userId: id
+            };
+            UserService.suspendUser(userId, function(message) {
+                var deferred = $q.defer();
+                var promise = deferred.promise;
+                promise.then(function() {
+                    $scope.message = message.message + '__' + new Date().getTime();
+                    $scope.success = message.success;
+                    var anotherDeferred = $q.defer();
+                    $timeout(function() {
+                        anotherDeferred.resolve();
+                    }, 1000);
+                    return anotherDeferred.promise;
+                }).then(function() {
+                    $route.reload();
+                });
+                deferred.resolve();
+            });
+        };
         $scope.edit = function(id) {
             $location.path('/admin/user/edit/' + id);
         };
@@ -66,10 +86,10 @@ backStageControllers.controller('userListController', ['$scope', 'UserService', 
             }
         }
         $scope.delete = function(id) {
-            var vehicleId = {
-                vehicleId: id
+            var userId = {
+                userId: id
             };
-            UserService.deleteById(vehicleId, function(message) {
+            UserService.deleteById(userId, function(message) {
                 var deferred = $q.defer();
                 var promise = deferred.promise;
                 promise.then(function() {

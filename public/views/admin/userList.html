@@ -18,9 +18,6 @@
                   </span>
                             </div>
                         </td>
-                        <td class="tdRight">
-                            <button type="button" class="btn btn-success" ng-click="add()">新增</button>
-                        </td>
                     </tr>
                 </table>
             </div>
@@ -36,8 +33,9 @@
                     <td class="tdLeft">
                         <div class="btn-group" role="group" aria-label="...">
                             <button type="button" class="btn btn-warning" ng-click="edit(user._id)">修改</button>
-							<button type="button" class="btn btn-warning" ng-click="suspend(user._id)">暂停</button>
-                            <button type="button" class="btn btn-danger" ng-click="delete(user._id)">删除</button>
+							<button type="button" class="btn btn-warning" ng-click="suspend(user._id)" ng-show="user.suspend" ng-disabled="user.username == 'admin'">激活</button>
+							<button type="button" class="btn btn-warning" ng-click="suspend(user._id)" ng-show="!user.suspend" ng-disabled="user.username == 'admin'">暂停</button>
+                            <button type="button" class="btn btn-danger" ng-click="delete(user._id)"  ng-disabled="user.username == 'admin'">删除</button>
                         </div>
                     </td>
                 </tr>

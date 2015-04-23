@@ -55,7 +55,11 @@ var componentSchema = new Schema({
     vehicles: [{
         type: Schema.Types.ObjectId,
         ref: 'VehicleEntity'
-    }]
+    }],
+    created: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 var vehicleSchema = new Schema({
@@ -76,7 +80,11 @@ var vehicleSchema = new Schema({
     components: [{
         type: Schema.Types.ObjectId,
         ref: 'Component'
-    }]
+    }],
+    created: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 mongoose.model('Component', componentSchema);

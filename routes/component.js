@@ -55,7 +55,7 @@ exports.listComponent = function(req, res) {
                     var resultSet = {
                         componentList: results,
                         page: page,
-						success: true
+                        success: true
                     };
                     return res.json(resultSet);
                 }

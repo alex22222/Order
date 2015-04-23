@@ -12,19 +12,29 @@ var schema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Address'
     }],
-    isAdmin: Boolean,
-    suspend: Boolean
+    isAdmin: {
+        type: Boolean,
+        default: false
+    },
+    suspend: {
+        type: Boolean,
+        default: false
+    },
+    created: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 var address = new Schema({
     country: String,
     province: String,
     city: String,
-	district: String,
+    district: String,
     line1: String,
     line2: String,
     postal: String,
-	active: Boolean
+    active: Boolean
 });
 
 schema.virtual("password").set(function(password) {
