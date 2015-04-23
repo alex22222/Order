@@ -25,11 +25,13 @@
                 <tr>
                     <th>ID</th>
                     <th>用户名</th>
+					<th>创建时间</th>
                     <th>操作</th>
                 </tr>
                 <tr ng-repeat="user in users">
                     <td class="tdLeft">{{user._id}}</td>
                     <td class="tdLeft">{{user.username}}</td>
+					<td class="tdLeft">{{user.created}}</td>
                     <td class="tdLeft">
                         <div class="btn-group" role="group" aria-label="...">
                             <button type="button" class="btn btn-warning" ng-click="edit(user._id)">修改</button>
