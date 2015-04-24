@@ -40,6 +40,9 @@ ycdiyStoreApp.config(['$routeProvider',
         }).when('/admin/user/list', {
             templateUrl: 'views/admin/userList.html',
             controller: 'userListController'
+        }).when('/admin/user/edit/:id', {
+            templateUrl: 'views/admin/userForm.html',
+            controller: 'userEditController'
         }).when('/admin/component/add', {
             templateUrl: 'views/admin/componentForm.html',
             controller: 'componentAddController'

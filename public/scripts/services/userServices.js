@@ -88,6 +88,17 @@ userServices.factory('UserService', ['$resource', '$location',
                 return res.query(function(response) {
                     callback(response);
                 });
+            },
+            update: function(user, callback) {
+                var res = $resource('/admin/user/update', {}, {
+                    save: {
+                        method: 'POST',
+                        params: {}
+                    }
+                });
+                return res.save(user, function(response) {
+                    callback(response);
+                });
             }
         }
     }

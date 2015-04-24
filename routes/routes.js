@@ -30,6 +30,7 @@ module.exports = function(app) {
 
 	app.get('/admin/user/list', requiredAuthentication, user.list);
 	app.get('/admin/user/delete', requiredAuthentication, user.deleteUser);
+	app.post('/admin/user/update', requiredAuthentication, user.updateUser);
 	
     app.get('/admin/vehicleEntity/list', requiredAuthentication, vehicleEntity.listVehicle);
     app.post('/admin/vehicleEntity/add', requiredAuthentication, vehicleEntity.addVehicle);

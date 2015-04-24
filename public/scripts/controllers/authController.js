@@ -4,7 +4,10 @@ var authControllers = angular.module('authControllers', []);
 
 authControllers.controller('signupController', ['$scope', 'UserService', '$location',
     function($scope, UserService, $location) {
-
+        $scope.user = {
+            isIn: false,
+            username: ''
+        };
         $scope.signup = function() {
             var username = $scope.user.username;
             var password = $scope.user.password;
@@ -18,7 +21,7 @@ authControllers.controller('signupController', ['$scope', 'UserService', '$locat
                     localStorage["isIn"] = true;
                     localStorage["userId"] = user._id;
                     $scope.username = localStorage["username"];
-                    $scope.isIn = localStorage["isIn"];
+                    $scope.user.isIn = localStorage["isIn"];
                     $location.path('/vehicle');
                     alert("注册成功");
                 });
@@ -29,47 +32,45 @@ authControllers.controller('signupController', ['$scope', 'UserService', '$locat
             var password = $scope.user.password;
             UserService.login(username, password, function(user) {
                 if (user.err) {
-                    sessionStorage["message"] = user.err;
-                    $location.path('/public/error');
+                    $scope.renderError(user.err);
+                    $scope.cleanUserData();
                 }
                 if (user) {
-                    $scope.isIn = true;
+                    $scope.user.isIn = true;
                     localStorage["username"] = user.username;
                     localStorage["isIn"] = true;
                     localStorage["userId"] = user._id;
                     $scope.username = localStorage["username"];
-                    $scope.isIn = localStorage["isIn"];
-					if(user.isAdmin) {
-						$location.path('/admin/component/list');
-					} else {
-						$location.path('/vehicle');
-					}
+                    $scope.user.isIn = localStorage["isIn"];
+                    if (user.isAdmin) {
+                        $location.path('/admin/component/list');
+                    } else {
+                        $location.path('/vehicle');
+                    }
                 } else {
-                    sessionStorage["message"] = '登入失败！';
-                    $location.path('/public/error');
+                    $scope.renderError('登入失败！');
+                    $scope.cleanUserData();
                 }
             });
         };
         $scope.logout = function() {
-            $scope.isIn = false;
-            $scope.user = {};
-            localStorage.clear();
+            $scope.cleanUserData($scope.user);
             UserService.logout(function() {
                 $location.path('/vehicle');
             });
         };
         $scope.username = localStorage["username"];
-        $scope.isIn = localStorage["isIn"];
+        $scope.user.isIn = localStorage["isIn"];
     }
 ]);
 
 authControllers.controller('userDetailController', ['$scope', 'UserService', '$location',
     function($scope, UserService, $location) {
         $scope.pageTitle = '用户信息';
-		$scope.showPass = false;
-		$scope.showAddr = false;
+        $scope.showPass = false;
+        $scope.showAddr = false;
         var id = localStorage["userId"];
-		var userId = {
+        var userId = {
             userId: id
         };
         UserService.findById(userId, function(user) {
@@ -79,21 +80,21 @@ authControllers.controller('userDetailController', ['$scope', 'UserService', '$l
             }
             $scope.user = user;
         });
-		$scope.changePass = function() {
-			$scope.showPass = !$scope.showPass;
-		};
-		$scope.showAddrForm = function() {
-			$scope.address = {};
-			$scope.address.country = '中国';
-			$scope.address.city = '上海';
-			$scope.showAddr = !$scope.showAddr;
-		};
-		$scope.setDistrict = function(district) {
-			$scope.address.district = district;
-		};
-		$scope.addAddr = function(address) {
-			$scope.user.addresses.push(address);
-		};
+        $scope.changePass = function() {
+            $scope.showPass = !$scope.showPass;
+        };
+        $scope.showAddrForm = function() {
+            $scope.address = {};
+            $scope.address.country = '中国';
+            $scope.address.city = '上海';
+            $scope.showAddr = !$scope.showAddr;
+        };
+        $scope.setDistrict = function(district) {
+            $scope.address.district = district;
+        };
+        $scope.addAddr = function(address) {
+            $scope.user.addresses.push(address);
+        };
         $scope.back = function() {
             $location.path('/vehicle');
         };

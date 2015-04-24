@@ -349,33 +349,3 @@ componentControllers.controller('componentAddController', ['$scope', '$location'
         }
     }
 ]);
-
-function getVehiclesToBind(all, has) {
-    for (var i = 0; i < has.length; i++) {
-        var v = has[i];
-        for (var j = 0; j < all.length; j++) {
-            var _v = all[j];
-            if (_v._id == v._id) {
-                all.splice(j, 1);
-            }
-        }
-    }
-    return all;
-}
-
-function getLeafVehicle(parents) {
-    var vs = new Array();
-    for (var j = 0; j < parents.length; j++) {
-        getLeaf(parents[j], vs);
-    }
-    return vs;
-}
-
-function getLeaf(parent, array) {
-    if (parent.nodes.length == 0) {
-        array.push(parent);
-    }
-    for (var i = 0; i < parent.nodes.length; i++) {
-        getLeaf(parent.nodes[i], array);
-    }
-}

@@ -42,7 +42,7 @@ exports.list = function(req, res) {
                     page['size'] = count;
                     page['itemsPerPage'] = itemsPerPage;
                     var resultSet = {
-                        userList: results,
+                        objectList: results,
                         page: page,
                         success: true
                     };
@@ -137,6 +137,27 @@ exports.queryUser = function(req, res) {
 };
 
 exports.suspendUser = function(req, res) {
+    var v = req.body;
+    var user = new UsersModel(v);
+    UsersModel.findById(req.query['userId']).exec(function(err, user) {
+        if (err) {
+            res.json(helper.wrapQuery(err));
+        }
+
+        user.suspend = !user.suspend;
+        user.save(function(err, user) {
+            if (err) {
+                res.json(helper.wrapUpdate(err));
+            } else {
+                res.json(helper.wrapUpdate());
+            }
+        });
+
+
+    });
+};
+
+exports.updateUser = function(req, res) {
     var v = req.body;
     var user = new UsersModel(v);
     UsersModel.findById(req.query['userId']).exec(function(err, user) {

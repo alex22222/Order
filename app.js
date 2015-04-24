@@ -35,7 +35,7 @@ app.configure(function() {
         resave: false,
         saveUninitialized: false,
         cookie: {
-            maxAge: 300 * 1000
+            maxAge: 20 * 60 * 1000
         }
     }));
 	app.use(app.router);

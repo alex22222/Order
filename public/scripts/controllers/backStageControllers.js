@@ -2,63 +2,29 @@
 
 var backStageControllers = angular.module('backStageControllers', []);
 
-backStageControllers.controller('userListController', ['$scope', 'UserService', '$location', '$timeout', '$q', '$route',
-    function($scope, UserService, $location, $timeout, $q, $route) {
-        var search = '';
-        var pagination = {
-            pageNumber: 1,
-            itemsPerPage: defaultItemsPerPage,
-            search: search
-        };
-
-        UserService.findAll(pagination, function(result) {
+backStageControllers.controller('userListController', ['$scope', 'UserService', '$location',
+    function($scope, UserService, $location) {
+        UserService.findAll($scope.currentPagination($scope.currentPage), function(result) {
             if (!result.success) {
-                sessionStorage["message"] = result.message;
-                $location.path('/public/error');
+                $scope.renderError(result.message);
             } else {
-                $scope.users = result.userList;
-                $scope.totalItems = result.page.size;
-                $scope.currentPage = result.page.currentPage;
-                $scope.itemsPerPage = result.page.itemsPerPage;
+                $scope.loadListPage(result);
             }
         });
         $scope.pageChanged = function() {
-            var pagination = {
-                pageNumber: $scope.currentPage,
-                itemsPerPage: defaultItemsPerPage,
-                search: search
-            };
-            UserService.findAll(pagination, function(result) {
+            UserService.findAll($scope.currentPagination($scope.currentPage), function(result) {
                 if (!result.success) {
-                    sessionStorage["message"] = result.message;
-                    $location.path('/public/error');
+                    $scope.renderError(result.message);
                 } else {
-                    $scope.users = result.userList;
-                    $scope.totalItems = result.page.size;
-                    $scope.currentPage = result.page.currentPage;
-                    $scope.itemsPerPage = result.page.itemsPerPage;
+                    $scope.loadListPage(result);
                 }
             });
         };
         $scope.suspend = function(id) {
-			var userId = {
+            UserService.suspendUser({
                 userId: id
-            };
-            UserService.suspendUser(userId, function(message) {
-                var deferred = $q.defer();
-                var promise = deferred.promise;
-                promise.then(function() {
-                    $scope.message = message.message + '__' + new Date().getTime();
-                    $scope.success = message.success;
-                    var anotherDeferred = $q.defer();
-                    $timeout(function() {
-                        anotherDeferred.resolve();
-                    }, 1000);
-                    return anotherDeferred.promise;
-                }).then(function() {
-                    $route.reload();
-                });
-                deferred.resolve();
+            }, function(message) {
+                $scope.displayMessage(message);
             });
         };
         $scope.edit = function(id) {
@@ -66,45 +32,44 @@ backStageControllers.controller('userListController', ['$scope', 'UserService', 
         };
         $scope.query = function() {
             if ($scope.search_name.length == 0) {
-                pagination.search = '';
+                $scope.pagination.search = '';
             } else {
-                pagination.search = $scope.search_name;
+                $scope.pagination.search = $scope.search_name;
             }
-            UserService.findAll(pagination, function(result) {
-                $scope.users = result.userList;
-                $scope.totalItems = result.page.size;
-                $scope.currentPage = result.page.currentPage;
-                $scope.itemsPerPage = result.page.itemsPerPage;
+            UserService.findAll($scope.currentPagination($scope.currentPage), function(result) {
+                $scope.loadListPage(result);
             });
         };
-        $scope.clear = function() {
-            $scope.search_name = '';
-        }
-        $scope.enter = function(ev) {
-            if (ev.keyCode == 13) {
-                $scope.query();
-            }
-        }
+
         $scope.delete = function(id) {
-            var userId = {
+            UserService.deleteById({
                 userId: id
-            };
-            UserService.deleteById(userId, function(message) {
-                var deferred = $q.defer();
-                var promise = deferred.promise;
-                promise.then(function() {
-                    $scope.message = message.message + '__' + new Date().getTime();
-                    $scope.success = message.success;
-                    var anotherDeferred = $q.defer();
-                    $timeout(function() {
-                        anotherDeferred.resolve();
-                    }, 1000);
-                    return anotherDeferred.promise;
-                }).then(function() {
-                    $route.reload();
-                });
-                deferred.resolve();
+            }, function(message) {
+                $scope.displayMessage(message);
             });
         };
+
+        $scope.searchObj = {
+            searchName: ''
+        };
+    }
+]);
+
+backStageControllers.controller('userEditController', ['$scope', 'UserService', '$location', '$route',
+    function($scope, UserService, $location, $route) {
+        var id = $route.current.params['id'];
+        var userId = {
+            userId: id
+        };
+        UserService.findById(userId, function(result) {
+            $scope.user = result;
+        });
+
+        $scope.update = function() {
+            UserService.update($scope.user, function(message) {
+                $scope.displayMessage(message);
+            });
+        };
+
     }
 ]);
