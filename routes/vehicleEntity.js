@@ -27,11 +27,11 @@ exports.listVehicle = function(req, res) {
 
     query.exec(function(error, results) {
         if (error) {
-            // callback(error, null, null);
+           helper.wrapUpdate(err);
         } else {
             VehicleEntityModel.count(where, function(error, count) {
                 if (error) {
-                    // callback(error, null, null);
+                    helper.wrapUpdate(err);
                 } else {
                     var page = {
                         limit: 5,
@@ -43,7 +43,7 @@ exports.listVehicle = function(req, res) {
                     page['size'] = count;
                     page['itemsPerPage'] = itemsPerPage;
                     var resultSet = {
-                        vehicleList: results,
+                        objectList: results,
                         page: page,
 						success: true
                     };

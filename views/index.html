@@ -62,6 +62,7 @@
     <script type="text/javascript" src="scripts/services/BoardManipulator.js"></script>
     <script type="text/javascript" src="scripts/services/BoardDataFactory.js"></script>
     <script type="text/javascript" src="scripts/services/BoardService.js"></script>
+	<script type="text/javascript" src="scripts/services/pictureUpload.js"></script>
     <script type="text/javascript" src="scripts/controllers/KanbanController.js"></script>
     <script type="text/javascript" src="scripts/controllers/NewCardController.js"></script>
     <script type="text/javascript" src="scripts/controllers/authController.js"></script>
@@ -109,7 +110,7 @@
                                         <tr>
                                             <div class="form-group">
                                                 <label for="name">密码&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                                                <input type="password" class="form-control" id="name" ng-model="user.password" required autofocus="autofocus">
+                                                <input type="password" class="form-control" id="name" ng-model="user.password" required ng-keyup="enter($event)" >
                                             </div>
                                         </tr>
                                     </table>

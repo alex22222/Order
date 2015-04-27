@@ -27,9 +27,6 @@ backStageControllers.controller('userListController', ['$scope', 'UserService', 
                 $scope.displayMessage(message);
             });
         };
-        $scope.edit = function(id) {
-            $location.path('/admin/user/edit/' + id);
-        };
         $scope.query = function() {
             if ($scope.search_name.length == 0) {
                 $scope.pagination.search = '';
@@ -42,11 +39,13 @@ backStageControllers.controller('userListController', ['$scope', 'UserService', 
         };
 
         $scope.delete = function(id) {
-            UserService.deleteById({
-                userId: id
-            }, function(message) {
-                $scope.displayMessage(message);
-            });
+            if (confirm('确认删除?')) {
+                UserService.deleteById({
+                    userId: id
+                }, function(message) {
+                    $scope.displayMessage(message);
+                });
+            }
         };
 
         $scope.searchObj = {

@@ -27,7 +27,7 @@ authControllers.controller('signupController', ['$scope', 'UserService', '$locat
                 });
             }
         };
-        $scope.logon = function(obj) {
+        $scope.logon = function() {
             var username = $scope.user.username;
             var password = $scope.user.password;
             UserService.login(username, password, function(user) {
@@ -59,6 +59,11 @@ authControllers.controller('signupController', ['$scope', 'UserService', '$locat
                 $location.path('/vehicle');
             });
         };
+		$scope.enter = function(ev) {
+            if (ev.keyCode == 13) {
+                $scope.logon();
+            }
+        }
         $scope.username = localStorage["username"];
         $scope.user.isIn = localStorage["isIn"];
     }

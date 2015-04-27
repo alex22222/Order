@@ -5,7 +5,7 @@ var ycdiyStoreApp = angular.module('ycdiyStoreApp', ['ngRoute', 'ui.bootstrap', 
     'shoppingControllers', 'componentControllers', 'vehicleControllers', 'NewCardControllers', 'authControllers',
     'publicErrorControllers', 'mainControllerControllers', 'backStageControllers',
     'vehicleServices', 'componentServices', 'orderServices', 'userServices', 'adminVehicleServices',
-    'ycdiyDirectives', 'BoardDataFactories', 'BoardManipulators', 'BoardServices'
+    'ycdiyDirectives', 'BoardDataFactories', 'BoardManipulators', 'BoardServices', 'PictureUploadServices'
 ]);
 
 ycdiyStoreApp.config(['$routeProvider',

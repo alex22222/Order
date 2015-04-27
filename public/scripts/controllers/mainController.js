@@ -11,7 +11,7 @@ mainControllerControllers.controller('mainController', ['$scope', '$location', '
             }
         });
 
-        $scope.displayMessage = function(message) {
+        $scope.displayMessage = function(message, nextUrl) {
             var deferred = $q.defer();
             var promise = deferred.promise;
             promise.then(function() {
@@ -23,7 +23,12 @@ mainControllerControllers.controller('mainController', ['$scope', '$location', '
                 }, 500);
                 return anotherDeferred.promise;
             }).then(function() {
-                $route.reload();
+                if (nextUrl) {
+                    $location.path(nextUrl);
+                } else {
+                    $route.reload();
+                }
+				$scope.message = '';
             });
             deferred.resolve();
         };
@@ -33,28 +38,30 @@ mainControllerControllers.controller('mainController', ['$scope', '$location', '
             $location.path('/public/error');
         };
 
-		$scope.cleanUserData = function(user) {
+        $scope.cleanUserData = function(user) {
             user.isIn = false;
-			user.username = '';
-			user.password = '';
+            user.username = '';
+            user.password = '';
             localStorage.clear();
         };
 
-        var search = '';
         var defaultItemsPerPage = 5;
-        $scope.currentPagination = function(currentPage) {
+        $scope.currentPagination = function(currentPage, searchValue) {
             if (!currentPage) {
                 currentPage = 1;
+            }
+            if (!searchValue) {
+                searchValue = '';
             }
             return {
                 pageNumber: currentPage,
                 itemsPerPage: defaultItemsPerPage,
-                search: search
+                search: searchValue
             };
         };
 
         $scope.loadListPage = function(result) {
-            $scope.users = result.objectList;
+            $scope.items = result.objectList;
             $scope.totalItems = result.page.size;
             $scope.currentPage = result.page.currentPage;
             $scope.itemsPerPage = result.page.itemsPerPage;
@@ -64,7 +71,11 @@ mainControllerControllers.controller('mainController', ['$scope', '$location', '
             search.search_name = '';
         };
 
-		$scope.back = function(url) {
+        $scope.back = function(url) {
+            $location.path(url);
+        };
+
+        $scope.open = function(url) {
             $location.path(url);
         };
     }

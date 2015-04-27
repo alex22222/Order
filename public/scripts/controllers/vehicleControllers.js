@@ -1,172 +1,46 @@
 'use strict';
 var vehicleControllers = angular.module('vehicleControllers', ['angularFileUpload', 'ui.tree', 'ngResource']);
-vehicleControllers.controller('adminVehicleController', ['$scope', 'AdminVehicle', '$location',
-    function($scope, AdminVehicle, $location) {
-        $scope.remove = function(scope) {
-            scope.remove();
-        };
-
-        $scope.toggle = function(scope) {
-            scope.toggle();
-        };
-
-        $scope.moveLastToTheBegginig = function() {
-            var a = $scope.data.pop();
-            $scope.data.splice(0, 0, a);
-        };
-
-        $scope.newSubItem = function(scope) {
-            var nodeData = scope.$modelValue;
-            nodeData.nodes.push({
-                id: nodeData.id * 10 + nodeData.nodes.length,
-                title: nodeData.title + '.' + (nodeData.nodes.length + 1),
-                nodes: []
-            });
-        };
-
-        var getRootNodesScope = function() {
-            return angular.element(document.getElementById("tree-root")).scope();
-        };
-
-        $scope.collapseAll = function() {
-            var scope = getRootNodesScope();
-            scope.collapseAll();
-        };
-
-        $scope.expandAll = function() {
-            var scope = getRootNodesScope();
-            scope.expandAll();
-        };
-
-        var vehicleFromDB = AdminVehicle.queryVehicle(
-            function(result) {
-                if (result.length == 0) {
-                    $scope.data = [{
-                        "id": "1",
-                        "title": "默认车型",
-                        "nodes": []
-                    }];
-                } else {
-                    $scope.data = vehicleFromDB;
-                }
-            }
-        );
-
-        var vehicleEntities = AdminVehicle.findAll(
-            function(result) {
-                if (result.length == 0) {
-                    $scope.data = [{
-                        "id": "1",
-                        "title": "默认车型",
-                        "nodes": []
-                    }];
-                } else {
-                    $scope.data = vehicleEntities;
-                }
-            }
-        );
-
-        $scope.updateVehicle = function() {
-            var veh = $.parseJSON(JSON.stringify($scope.data));
-            AdminVehicle.updateVehicle(veh, function(response) {
-                $scope.message = response[0].message + '__' + new Date().getTime();
-                $scope.success = response[0].success;
-            });
-        };
-        $scope.back = function() {
-            $location.path('/admin/vehicleEntity/list');
-        };
-    }
-]);
-
 
 var defaultItemsPerPage = 5;
-vehicleControllers.controller('vehicleListController', ['$scope', 'AdminVehicle', '$location', '$route', '$q', '$timeout',
-    function($scope, AdminVehicle, $location, $route, $q, $timeout) {
-        var search = '';
-        var pagination = {
-            pageNumber: 1,
-            itemsPerPage: defaultItemsPerPage,
-            search: search
-        };
-
-        AdminVehicle.findAll(pagination, function(result) {
+vehicleControllers.controller('vehicleListController', ['$scope', 'AdminVehicle',
+    function($scope, AdminVehicle) {
+        AdminVehicle.findAll($scope.currentPagination($scope.currentPage), function(result) {
             if (!result.success) {
-                sessionStorage["message"] = result.message;
-                $location.path('/public/error');
+                $scope.renderError(result.message);
             } else {
-                $scope.vehicles = result.vehicleList;
-                $scope.totalItems = result.page.size;
-                $scope.currentPage = result.page.currentPage;
-                $scope.itemsPerPage = result.page.itemsPerPage;
+                $scope.loadListPage(result);
             }
         });
         $scope.pageChanged = function() {
-            var pagination = {
-                pageNumber: $scope.currentPage,
-                itemsPerPage: defaultItemsPerPage,
-                search: search
-            };
-            AdminVehicle.findAll(pagination, function(result) {
+            AdminVehicle.findAll($scope.currentPagination($scope.currentPage), function(result) {
                 if (!result.success) {
-                    sessionStorage["message"] = result.message;
-                    $location.path('/public/error');
+                    $scope.renderError(result.message);
                 } else {
-                    $scope.vehicles = result.vehicleList;
-                    $scope.totalItems = result.page.size;
-                    $scope.currentPage = result.page.currentPage;
-                    $scope.itemsPerPage = result.page.itemsPerPage;
+                    $scope.loadListPage(result);
                 }
             });
         };
-        $scope.add = function() {
-            $location.path('/admin/vehicleEntity/add');
-        };
 
-        $scope.edit = function(id) {
-            $location.path('/admin/vehicleEntity/edit/' + id);
-        };
         $scope.query = function() {
-            if ($scope.search_name.length == 0) {
-                pagination.search = '';
-            } else {
-                pagination.search = $scope.search_name;
-            }
-            AdminVehicle.findAll(pagination, function(result) {
-                $scope.vehicles = result.vehicleList;
-                $scope.totalItems = result.page.size;
-                $scope.currentPage = result.page.currentPage;
-                $scope.itemsPerPage = result.page.itemsPerPage;
+            AdminVehicle.findAll($scope.currentPagination($scope.currentPage, $scope.searchObj.search_name), function(result) {
+                $scope.loadListPage(result);
             });
         };
-        $scope.clear = function() {
-            $scope.search_name = '';
-        }
+
         $scope.enter = function(ev) {
             if (ev.keyCode == 13) {
                 $scope.query();
             }
         }
         $scope.delete = function(id) {
-            var vehicleId = {
-                vehicleId: id
-            };
-            AdminVehicle.deleteById(vehicleId, function(message) {
-                var deferred = $q.defer();
-                var promise = deferred.promise;
-                promise.then(function() {
-                    $scope.message = message.message + '__' + new Date().getTime();
-                    $scope.success = message.success;
-                    var anotherDeferred = $q.defer();
-                    $timeout(function() {
-                        anotherDeferred.resolve();
-                    }, 1000);
-                    return anotherDeferred.promise;
-                }).then(function() {
-                    $route.reload();
+            if (confirm('确认删除?')) {
+                var vehicleId = {
+                    vehicleId: id
+                };
+                AdminVehicle.deleteById(vehicleId, function(message) {
+                    $scope.displayMessage(message);
                 });
-                deferred.resolve();
-            });
+            }
         };
     }
 ]);
@@ -331,11 +205,7 @@ vehicleControllers.controller('vehicleEditController', ['$scope', '$location', '
             $location.path('/admin/vehicleEntity/list');
         };
         $scope.update = function() {
-            if (!$scope.form.$valid) {
-                $scope.message = '名称必填' + '__' + new Date().getTime();
-                $scope.success = false;
-                return;
-            }
+            $scope.vehicle.children = $scope.kanbanBoard.columns[1].cards;
             AdminVehicle.update($scope.vehicle, function(message) {
                 var deferred = $q.defer();
                 var promise = deferred.promise;
@@ -362,7 +232,7 @@ vehicleControllers.controller('vehicleEditController', ['$scope', '$location', '
         $scope.querySub = function() {
             $scope.kanbanBoard.columns[0].cards = {};
             AdminVehicle.queryVehicles($scope.search, function(result) {
-                angular.forEach(result.vehicleList, function(vehicle) {
+                angular.forEach(result.objectList, function(vehicle) {
                     $scope.kanbanBoard.columns[0].cards.push(vehicle);
                 });
             });

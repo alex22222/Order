@@ -53,7 +53,7 @@ exports.listComponent = function(req, res) {
                     page['size'] = count;
                     page['itemsPerPage'] = itemsPerPage;
                     var resultSet = {
-                        componentList: results,
+                        objectList: results,
                         page: page,
                         success: true
                     };

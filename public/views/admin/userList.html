@@ -1,10 +1,7 @@
 <div class="container">
     <div ng-include="'views/admin/navigation.html'"></div>
-    <div class="page-header">
-        <h1>用户列表</h1>
-    </div>
     <div class="jumbotron">
-        <message />
+        <message /><h4>用户列表</h4>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <table>
@@ -28,13 +25,13 @@
 					<th>电话</th>
                     <th>操作</th>
                 </tr>
-                <tr ng-repeat="user in users">
+                <tr ng-repeat="user in items">
                     <td class="tdLeft">{{user.username}}</td>
                     <td class="tdLeft">{{user.created | date : 'yyyy-MM-dd hh:mm:ss'}}</td>
 					<td class="tdLeft">{{user.phone}}</td>
                     <td class="tdLeft">
                         <div class="btn-group" role="group" aria-label="...">
-                            <button type="button" class="btn btn-warning" ng-click="edit(user._id)">修改</button>
+                            <button type="button" class="btn btn-warning" ng-click="open('/admin/user/edit/' + user._id)">修改</button>
                             <button type="button" class="btn btn-warning" ng-click="suspend(user._id)" ng-show="user.suspend" ng-disabled="user.isAdmin">激活</button>
                             <button type="button" class="btn btn-warning" ng-click="suspend(user._id)" ng-show="!user.suspend" ng-disabled="user.isAdmin">暂停</button>
                             <button type="button" class="btn btn-danger" ng-click="delete(user._id)" ng-disabled="user.username == 'admin'">删除</button>
