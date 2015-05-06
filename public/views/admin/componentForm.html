@@ -13,7 +13,7 @@
                         <tr>
                             <div class="form-group">
                                 <label for="name">名称</label>
-                                <input type="text" class="form-control" id="name" placeholder="请输入名称" ng-model="component.comName">
+                                <input type="text" name="name" class="form-control" id="name" placeholder="请输入名称" ng-model="component.comName" validation="required">
                             </div>
                         </tr>
                         <tr>
@@ -74,69 +74,69 @@
                 </table>
                 </div>
 
-            <div class="row" ng-show="showPic">
-                <div class="col-md-3">
-                    <label for="inputfile">上传图片</label>
-                    <input type="file" nv-file-select="" uploader="uploader" multiple />
-                    <br/>
+                <div class="row" ng-show="showPic">
+                    <div class="col-md-3">
+                        <label for="inputfile">上传图片</label>
+                        <input type="file" nv-file-select="" uploader="uploader" multiple />
+                        <br/>
+                    </div>
+
+                    <div class="col-md-9" style="margin-bottom: 40px">
+                        <!--label for="inputfile">上传列表: {{ uploader.queue.length }}</label-->
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th width="50%">文件名称</th>
+                                    <th ng-show="uploader.isHTML5">文件大小</th>
+                                    <th ng-show="uploader.isHTML5">进度</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in uploader.queue">
+                                    <td>
+                                        <strong>{{ item.file.name }}</strong>
+                                        <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"></div>
+                                    </td>
+                                    <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                    <td ng-show="uploader.isHTML5">
+                                        <div class="progress" style="margin-bottom: 0;">
+                                            <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                        <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                        <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                    </td>
+                                    <td nowrap>
+                                        <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                            <span class="glyphicon glyphicon-upload"></span> 上传
+                                        </button>
+                                        <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                            <span class="glyphicon glyphicon-ban-circle"></span> 取消
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                            <span class="glyphicon glyphicon-trash"></span> 删除
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <div class="col-md-9" style="margin-bottom: 40px">
-                    <!--label for="inputfile">上传列表: {{ uploader.queue.length }}</label-->
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th width="50%">文件名称</th>
-                                <th ng-show="uploader.isHTML5">文件大小</th>
-                                <th ng-show="uploader.isHTML5">进度</th>
-                                <th>状态</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="item in uploader.queue">
-                                <td>
-                                    <strong>{{ item.file.name }}</strong>
-                                    <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"></div>
-                                </td>
-                                <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-                                <td ng-show="uploader.isHTML5">
-                                    <div class="progress" style="margin-bottom: 0;">
-                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                                    <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                                    <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                                </td>
-                                <td nowrap>
-                                    <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
-                                        <span class="glyphicon glyphicon-upload"></span> 上传
-                                    </button>
-                                    <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
-                                        <span class="glyphicon glyphicon-ban-circle"></span> 取消
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
-                                        <span class="glyphicon glyphicon-trash"></span> 删除
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="btn-toolbar">
-                        <div class="btn-group">
-                            <button type="submit" class="btn btn-success " ng-click="update()">保存</button>
-                            <button type="button" class="btn btn-default" ng-click="back('/admin/component/list')">返回</button>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="btn-toolbar">
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-success " ng-click="update()" ng-disabled="form.$invalid">保存</button>
+                                <button type="button" class="btn btn-default" ng-click="back('/admin/component/list')">返回</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </form>
+        </div>
     </div>
-</div>

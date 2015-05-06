@@ -59,7 +59,7 @@ authControllers.controller('signupController', ['$scope', 'UserService', '$locat
                 $location.path('/vehicle');
             });
         };
-		$scope.enter = function(ev) {
+        $scope.enter = function(ev) {
             if (ev.keyCode == 13) {
                 $scope.logon();
             }
@@ -89,19 +89,73 @@ authControllers.controller('userDetailController', ['$scope', 'UserService', '$l
             $scope.showPass = !$scope.showPass;
         };
         $scope.showAddrForm = function() {
-            $scope.address = {};
-            $scope.address.country = '中国';
-            $scope.address.city = '上海';
+            $scope.newAddress = {};
+            $scope.newAddress.country = '中国';
+            $scope.newAddress.city = '上海市';
+            $scope.newAddress.active = false;
             $scope.showAddr = !$scope.showAddr;
         };
-        $scope.setDistrict = function(district) {
-            $scope.address.district = district;
-        };
-        $scope.addAddr = function(address) {
-            $scope.user.addresses.push(address);
+        $scope.addAddr = function() {
+            var addr = {};
+            addr.country = $scope.newAddress.country;
+            addr.city = $scope.newAddress.city;
+            addr.line1 = $scope.newAddress.line1;
+            addr.district = $scope.newAddress.district;
+            addr.contact = $scope.newAddress.contact;
+            addr.contactPhone = $scope.newAddress.contactPhone;
+            addr.active = false;
+            $scope.user.addresses.push(addr);
+            $scope.newAddress = {};
+            $scope.newAddress.country = '中国';
+            $scope.newAddress.city = '上海市';
+            $scope.showAddr = !$scope.showAddr;
         };
         $scope.back = function() {
             $location.path('/vehicle');
+        };
+        $scope.deleteAddr = function(ind) {
+            $scope.user.addresses.splice(ind, 1);
+        };
+        $scope.update = function() {
+            UserService.update($scope.user, function(message) {
+                $scope.displayMessage(message);
+                $location.reload();
+            });
+        };
+        $scope.activeAddr = function(index) {
+            angular.forEach($scope.user.addresses, function(address) {
+                address.active = false;
+            });
+            $scope.user.addresses[index].active = true;
+        };
+        $scope.resetPass = function() {
+            if ($scope.user.password_new != $scope.user.password_confirm) {
+                $scope.displayMessage({
+                    message: '新密码必须和确认密码一致！',
+                    success: false
+                });
+            }
+			if (!$scope.user.password_new) {
+                $scope.displayMessage({
+                    message: '新密码必填！',
+                    success: false
+                });
+            }
+			if (!$scope.user.password_confirm) {
+                $scope.displayMessage({
+                    message: '确认密码必填！',
+                    success: false
+                });
+            }
+			if (!$scope.user.password_old) {
+                $scope.displayMessage({
+                    message: '原密码必填！',
+                    success: false
+                });
+            }
+			UserService.resetPass($scope.user, function(message) {
+				$scope.displayMessage(message);
+			});
         };
     }
 ]);

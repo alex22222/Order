@@ -25,6 +25,7 @@ PictureUploadServices.service('PictureUpload', ['FileUploader', '$location',
                         v_string = v_string + component.vehicles[i]._id + '|' + component.vehicles[i].title + ',';
                     }
                     item.formData.push({
+						comId: component._id,
                         comName: component.comName,
                         comDescription: component.comDescription,
                         vehicles: v_string

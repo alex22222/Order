@@ -3,6 +3,7 @@
  */
 
 var UsersModel = require("./../models").Users;
+var AddressModel = require("./../models").Address;
 var path = require('path');
 var helper = require('./helper');
 
@@ -94,6 +95,11 @@ exports.login = function(req, res) {
                 err: '用户名不存在'
             });
         }
+		if (user.suspend) {
+			return res.json({
+                err: '该用户已被暂停，请联系管理员！'
+            });
+		}
         if (!user.authenticate(req.body.password))
             return res.json({
                 err: '密码错误'
@@ -121,7 +127,7 @@ exports.queryUser = function(req, res) {
     var condition = {
         _id: id
     };
-    UsersModel.find(condition).exec(function(err, user) {
+    UsersModel.find(condition).populate('addresses').exec(function(err, user) {
         if (err) {
             res.json(helper.wrapQuery(err));
         } else {
@@ -159,13 +165,32 @@ exports.suspendUser = function(req, res) {
 
 exports.updateUser = function(req, res) {
     var v = req.body;
-    var user = new UsersModel(v);
-    UsersModel.findById(req.query['userId']).exec(function(err, user) {
+
+    UsersModel.findById(v._id).exec(function(err, user) {
         if (err) {
             res.json(helper.wrapQuery(err));
         }
-
-        user.suspend = !user.suspend;
+        user.username = v.username;
+        user.email = v.email;
+        user.phone = v.phone;
+        user.addresses = [];
+        for (var i = 0; i < v.addresses.length; i++) {
+            var active = false;
+            if (v.addresses[i].active) {
+                active = true;
+            }
+            var add = new AddressModel({
+                country: v.addresses[i].country,
+                city: v.addresses[i].city,
+                district: v.addresses[i].district,
+                line1: v.addresses[i].line1,
+                postal: v.addresses[i].postal,
+                active: active,
+                contact: v.addresses[i].contact,
+                contactPhone: v.addresses[i].contactPhone
+            });
+            user.addresses.push(add);
+        }
         user.save(function(err, user) {
             if (err) {
                 res.json(helper.wrapUpdate(err));
@@ -188,6 +213,27 @@ exports.deleteUser = function(req, res) {
             res.json(helper.wrapDelete(err));
         } else {
             res.json(helper.wrapDelete());
+        }
+    });
+};
+
+exports.resetPass = function(req, res) {
+    var v = req.body;
+    UsersModel.findById(v._id).exec(function(err, user) {
+        if (err) {
+            res.json(helper.wrapQuery(err));
+        }
+        if (!user.authenticate(req.body.password_old)) {
+            res.json(helper.wrapQuery('原密码错误！'));
+        } else {
+            user.password = v.password_new;
+            user.save(function(err, user) {
+                if (err) {
+                    res.json(helper.wrapUpdate(err));
+                } else {
+                    res.json(helper.wrapUpdate());
+                }
+            });
         }
     });
 };

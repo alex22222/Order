@@ -194,3 +194,39 @@ exports.deletePicture = function(req, res) {
         });
     });
 };
+
+exports.addPicture = function(req, res) {
+
+    VehicleEntityModel.findById(req.body.comId, function(err, vehicle) {
+        if (err) return res.json(helper.wrapUpdate(err));
+        if (req.files) {
+            vehicle.path = './public/images/vehicle/' + req.files.file.name;
+            vehicle.name = req.files.file.name;
+        }
+        vehicle.save(function(err, vehicle) {
+            if (err) {
+                res.json(helper.wrapUpdate(err));
+            } else {
+                res.json(helper.wrapUpdate());
+            }
+
+            if (req.files) {
+                var file = req.files.file;
+                var target_path = './public/images/vehicle/' + req.files.file.name;
+                var tmp_path = req.files.file.path;
+                fs.rename(tmp_path, target_path, function(err) {
+                    if (err) {
+                        return res.json({
+                            err: err
+                        });
+                    }
+                    // delete tmp folder
+                    fs.unlink(tmp_path, function() {
+                        if (err) res.json(helper.wrapUpdate(err));
+                        res.send('File uploaded to: ' + target_path + ' - ' + vehicle.size + ' bytes');
+                    });
+                });
+            }
+        });
+    });
+};

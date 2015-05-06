@@ -19,13 +19,13 @@
                         <tr>
                             <div class="form-group">
                                 <label for="name">联系电话</label>
-                                <input type="text" class="form-control" id="name" ng-model="user.phone">
+                                <input type="text" class="form-control" name="phone" ng-model="user.phone" validation="integer">
                             </div>
                         </tr>
                         <tr>
                             <div class="form-group">
                                 <label for="name">电子邮箱</label>
-                                <input type="text" class="form-control" id="name" ng-model="user.email">
+                                <input type="text" class="form-control" name="email" ng-model="user.email" validation="email">
                             </div>
                         </tr>
                     </table>
@@ -47,29 +47,28 @@
                         <tr>
                             <div class="form-group">
                                 <label for="name">确认密码</label>
-                                <input type="password" class="form-control" id="name" ng-model="user.password_confirm">
+                                <input type="password" class="form-control" name="password_confirm" ng-model="user.password_confirm" >
+                            </div>
+                        </tr>
+						<tr>
+                            <div class="btn-toolbar">
+                                <div class="btn-group">
+                                    <button type="submit" class="btn btn-success " ng-click="resetPass()">重置密码</button>
+                                </div>
                             </div>
                         </tr>
                     </table>
                 </div>
             </div>
 
-
-            <div class="row">
-                <div class="col-sm-6">
-                    <table class="table">
-                        <tr ng-repeat="address in user.addresses">
-                            <td class="tdLeft">{{address.district}}</td>
-                            <td class="tdLeft">{{address.line1}}</td>
-                            <td class="tdLeft">
-                                <div class="btn-group" role="group" aria-label="...">
-                                    <button type="button" class="btn btn-danger" ng-click="deleteAddr(address)">删除</button>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
+            <label for="name">可选地址列表</label>
+            <table class="table">
+                <tr ng-repeat="address in user.addresses  track by $index">
+                    <td><input type="radio" name="isActive" ng-model="address.active" ng-checked="address.active" ng-click="activeAddr($index)"/>
+						{{address.province}} {{address.city}} {{address.district}} {{address.line1}} 联系人:{{address.contact}} 电话:{{address.contactPhone}}
+						<a href='' ng-click="deleteAddr($index)">删除</a></td>
+                </tr>
+            </table>
 
             <div class="row">
                 <div class="col-lg-6">
@@ -87,9 +86,9 @@
                         <tr>
                             <div class="form-group">
                                 <label for="name">国家</label>
-                                <input type="text" class="form-control" id="name" ng-model="address.country" disabled>
+                                <input type="text" class="form-control" id="name" ng-model="newAddress.country" disabled>
                                 <label for="name">城市</label>
-                                <input type="text" class="form-control" id="name" ng-model="address.city" disabled>
+                                <input type="text" class="form-control" id="name" ng-model="newAddress.city" disabled>
                             </div>
                         </tr>
                         <tr>
@@ -97,14 +96,14 @@
                                 <label for="name">区县</label>
                                 <div class="dropdown">
                                     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                                        {{address.district}}<span class="caret"></span>
+                                        {{newAddress.district}}<span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                                        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="setDistrict('黄浦')">黄浦</a>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="newAddress.district = '黄浦区'">黄浦区</a>
                                         </li>
-                                        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="setDistrict('徐汇')">徐汇</a>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="newAddress.district = '徐汇区'">徐汇区</a>
                                         </li>
-                                        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="setDistrict('闵行')">闵行</a>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="newAddress.district = '闵行区'">闵行区</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -113,13 +112,19 @@
                         <tr>
                             <div class="form-group">
                                 <label for="name">地址</label>
-                                <input type="text" class="form-control" id="name" ng-model="address.line1">
+                                <input type="text" class="form-control" id="name" ng-model="newAddress.line1">
                             </div>
                         </tr>
-                        <tr>
+						<tr>
                             <div class="form-group">
-                                <label for="name">邮编</label>
-                                <input type="text" class="form-control" id="name" ng-model="address.postal">
+                                <label for="name">联系人姓名</label>
+                                <input type="text" class="form-control" id="name" ng-model="newAddress.contact">
+                            </div>
+                        </tr>
+						<tr>
+                            <div class="form-group">
+                                <label for="name">联系人电话</label>
+                                <input type="text" class="form-control" id="name" ng-model="newAddress.contactPhone">
                             </div>
                         </tr>
                         <tr>
@@ -137,7 +142,7 @@
                 <div class="col-sm-6">
                     <div class="btn-toolbar">
                         <div class="btn-group">
-                            <button type="submit" class="btn btn-success " ng-click="update()">保存</button>
+                            <button type="submit" class="btn btn-success " ng-disabled="form.$invalid" ng-click="update()">保存</button>
                             <button type="button" class="btn btn-default" ng-click="back()">返回</button>
                         </div>
                     </div>

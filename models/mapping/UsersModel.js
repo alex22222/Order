@@ -8,10 +8,7 @@ var schema = new Schema({
     sex: Number,
     email: String,
     phone: String,
-    addresses: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Address'
-    }],
+    addresses: [address],
     isAdmin: {
         type: Boolean,
         default: false
@@ -34,7 +31,9 @@ var address = new Schema({
     line1: String,
     line2: String,
     postal: String,
-    active: Boolean
+    active: Boolean,
+	contact: String,
+	contactPhone: String
 });
 
 schema.virtual("password").set(function(password) {

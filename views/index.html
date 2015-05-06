@@ -44,6 +44,9 @@
     <script src="bower_components/angular-file-upload/angular-file-upload.js"></script>
     <script src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
     <script src="bower_components/ng-sortable/dist/ng-sortable.min.js"></script>
+    <script src="bower_components/angular-validation-ghiscoding/dist/angular-validation.min.js"></script>
+    <script src="bower_components/angular-translate/angular-translate.min.js"></script>
+    <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers.js"></script>
     <script src="scripts/controllers/componentControllers.js"></script>
@@ -62,17 +65,18 @@
     <script type="text/javascript" src="scripts/services/BoardManipulator.js"></script>
     <script type="text/javascript" src="scripts/services/BoardDataFactory.js"></script>
     <script type="text/javascript" src="scripts/services/BoardService.js"></script>
-	<script type="text/javascript" src="scripts/services/pictureUpload.js"></script>
+    <script type="text/javascript" src="scripts/services/pictureUpload.js"></script>
     <script type="text/javascript" src="scripts/controllers/KanbanController.js"></script>
     <script type="text/javascript" src="scripts/controllers/NewCardController.js"></script>
     <script type="text/javascript" src="scripts/controllers/authController.js"></script>
     <script type="text/javascript" src="scripts/controllers/publicErrorControllers.js"></script>
     <script type="text/javascript" src="scripts/controllers/mainController.js"></script>
-	<script type="text/javascript" src="scripts/controllers/backStageControllers.js"></script>
+    <script type="text/javascript" src="scripts/controllers/backStageControllers.js"></script>
+    <script type="text/javascript" src="scripts/clock.js"></script>
 </head>
 
 <body ng-controller="mainController">
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" >
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="colla0 pse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -81,13 +85,15 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">养车DIY </a>
+                <a class="navbar-brand" href="#/vehicle">养车DIY </a>
+                <div class="navbar-brand"><span id="clock"></span>
+                </div>
             </div>
 
             <div id="navbar" class="navbar-collapse collapse" ng-controller="signupController">
                 <form class="navbar-form navbar-right" role="form" name="loginForm">
-					<a href="#/vehicle">首页</a>
-                    <a href="" data-toggle="modal" data-target="#loginModal" ng-show="!user.isIn">请登入</a>
+                    <a href="#/vehicle">{{'LANDING_PAGE' | translate}}</a>
+                    <a href="" data-toggle="modal" data-target="#loginModal" ng-show="!user.isIn">{{'LOGON' | translate}}</a>
                     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -95,13 +101,13 @@
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                         &times;
                                     </button>
-                                    <h4 class="modal-title" id="myModalLabel">用户登入</h4>
+                                    <h4 class="modal-title" id="myModalLabel">{{'LOGON_PAGE_TITLE' | translate}}</h4>
                                 </div>
                                 <div class="modal-body">
                                     <table>
                                         <tr>
                                             <div class="form-group">
-                                                <label for="name">用户名&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                <label for="name">{{'LOGON_USERNAME' | translate}}&nbsp;&nbsp;&nbsp;&nbsp;</label>
                                                 <input type="text" class="form-control" id="name" ng-model="user.username" required autofocus="autofocus">
                                             </div>
                                         </tr>
@@ -109,21 +115,21 @@
                                         <br>
                                         <tr>
                                             <div class="form-group">
-                                                <label for="name">密码&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                                                <input type="password" class="form-control" id="name" ng-model="user.password" required ng-keyup="enter($event)" >
+                                                <label for="name">{{'LOGON_PASSWORD' | translate}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                <input type="password" class="form-control" id="name" ng-model="user.password" required ng-keyup="enter($event)">
                                             </div>
                                         </tr>
                                     </table>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="logon()">登入</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">{{'COMMON_CLOSE' | translate}}</button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="logon()">{{'LOGON_SUBMIT' | translate}}</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <a href="" data-toggle="modal" data-target="#signupModal" ng-show="!user.isIn">
-   还没有注册？ 
+  {{'LOGON_SIGNUP' | translate}}
 </a>
                     <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -132,13 +138,13 @@
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                         &times;
                                     </button>
-                                    <h4 class="modal-title" id="myModalLabel">用户注册</h4>
+                                    <h4 class="modal-title" id="myModalLabel">{{'LOGON_SIGNUP_TITLE' | translate}}</h4>
                                 </div>
                                 <div class="modal-body">
                                     <table>
                                         <tr>
                                             <div class="form-group">
-                                                <label for="name">用户名&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                <label for="name">{{'LOGON_USERNAME' | translate}}&nbsp;&nbsp;&nbsp;&nbsp;</label>
                                                 <input type="text" class="form-control" id="name" ng-model="user.username" required autofocus="autofocus">
                                             </div>
                                         </tr>
@@ -146,7 +152,7 @@
                                         <br>
                                         <tr>
                                             <div class="form-group">
-                                                <label for="name">密码&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                                <label for="name">{{'LOGON_PASSWORD' | translate}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                                                 <input type="password" class="form-control" id="name" ng-model="user.password" required autofocus="autofocus">
                                             </div>
                                         </tr>
@@ -154,40 +160,39 @@
                                         <br>
                                         <tr>
                                             <div class="form-group">
-                                                <label for="name">确认密码</label>
+                                                <label for="name">{{'LOGON_PASSWORD_CONFIRM' | translate}}</label>
                                                 <input type="password" class="form-control" id="name" ng-model="user.password_confirm" required autofocus="autofocus">
                                             </div>
                                         </tr>
                                     </table>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="signup()">注册</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">{{'COMMON_CLOSE' | translate}}</button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="signup()">{{'LOGON_SIGNUP_BUTTON' | translate}}</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <a href="#/user/detail" ng-show="user.isIn">欢迎您：{{username}}</a>
-                    <a href="#/user/cart" ng-show="user.isIn">我的购物车</a>
-                    <button type="button" class="btn btn-success" ng-click="logout()">注销</button>
+                    <a href="#/user/detail" ng-show="user.isIn">{{'LOGON_WELCOME' | translate}}{{username}}</a>
+                    <a href="#/user/cart" ng-show="user.isIn">{{'LOGON_CART' | translate}}</a>
+					<a href="#/user/cart" ng-show="user.isIn">{{'LOGON_ORDER' | translate}}</a>
+                    <button type="button" class="btn btn-success" ng-click="logout()">{{'LOGON_LOGOUT' | translate}}</button>
                 </form>
             </div>
     </nav>
     <div class="container">
         <hr>
         <hr>
-
-        <div ng-view>
-
-
-        </div>
-
+        <div ng-view></div>
         <hr>
-
         <footer>
-            <p>&copy; NullSoft Company 2014</p>
+            <p>&copy;{{'APP_VERSION' | translate}}</p>
         </footer>
     </div>
 </body>
+<script type="text/javascript">
+    var clock = new Clock();
+    clock.display(document.getElementById("clock"));
+</script>
 
 </html>

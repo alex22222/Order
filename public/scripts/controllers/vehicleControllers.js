@@ -152,7 +152,7 @@ vehicleControllers.controller('vehicleAddController', ['$scope', '$location', 'A
         $scope.querySub = function() {
             $scope.kanbanBoard.columns[0].cards = {};
             AdminVehicle.queryVehicles($scope.search, function(result) {
-                angular.forEach(result.vehicleList, function(vehicle) {
+                angular.forEach(result.objectList, function(vehicle) {
                     $scope.kanbanBoard.columns[0].cards.push(vehicle);
                 });
             });
@@ -250,7 +250,7 @@ vehicleControllers.controller('vehicleEditController', ['$scope', '$location', '
             BoardService.removeCard($scope.kanbanBoard, column, card);
         }
         var uploader = $scope.uploader = new FileUploader({
-            url: 'admin/vehicleEntity/add'
+            url: 'admin/vehicleEntity/addPicture'
         });
 
         $scope.removePicture = function() {

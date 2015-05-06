@@ -2,6 +2,7 @@
 
 /* App Module */
 var ycdiyStoreApp = angular.module('ycdiyStoreApp', ['ngRoute', 'ui.bootstrap', 'ui.sortable', 'angularFileUpload',
+    'ghiscoding.validation', 'pascalprecht.translate',
     'shoppingControllers', 'componentControllers', 'vehicleControllers', 'NewCardControllers', 'authControllers',
     'publicErrorControllers', 'mainControllerControllers', 'backStageControllers',
     'vehicleServices', 'componentServices', 'orderServices', 'userServices', 'adminVehicleServices',
@@ -68,4 +69,13 @@ ycdiyStoreApp.config(['$routeProvider',
             redirectTo: '/public/error'
         });
     }
-]);
+])
+    .config(['$translateProvider',
+        function($translateProvider) {
+            $translateProvider.useStaticFilesLoader({
+                prefix: 'locales/validation/',
+                suffix: '.json'
+            });
+            $translateProvider.preferredLanguage('cn');
+        }
+    ]);

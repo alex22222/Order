@@ -14,6 +14,14 @@ function requiredAuthentication(req, res, next) {
     }
 }
 
+function requiredLogon(req, res, next) {
+    if (req.session.user) {
+        next();
+    } else {
+        var err = {};
+        res.json(helper.wrapAuth('访问过期，请再次登入！'));
+    }
+}
 
 module.exports = function(app) {
     app.get('/', index.index);
@@ -24,6 +32,8 @@ module.exports = function(app) {
     app.get('/user/logout', user.logout);
     app.get('/user/edit', user.queryUser);
 	app.get('/user/suspend', user.suspendUser);
+	app.post('/user/update', user.updateUser);
+	app.post('/user/resetPass', user.resetPass);
 //
 //    app.post('/admin/vehicle/update', vehicle.updateVehicle);
 //    app.get('/admin/vehicle/structure', vehicle.queryVehicle);
@@ -38,6 +48,7 @@ module.exports = function(app) {
     app.post('/admin/vehicleEntity/update', requiredAuthentication, vehicleEntity.updateVehicle);
     app.get('/admin/vehicleEntity/edit', requiredAuthentication, vehicleEntity.queryVehicle);
     app.get('/admin/vehicleEntity/delete', requiredAuthentication, vehicleEntity.deleteVehicle);
+	app.post('/admin/vehicleEntity/addPicture', requiredAuthentication, vehicleEntity.addPicture);
     app.get('/admin/vehicleEntity/deletePicture', requiredAuthentication, vehicleEntity.deletePicture);
 
     app.post('/admin/component/add', requiredAuthentication, component.addComponent);

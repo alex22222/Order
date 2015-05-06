@@ -90,7 +90,18 @@ userServices.factory('UserService', ['$resource', '$location',
                 });
             },
             update: function(user, callback) {
-                var res = $resource('/admin/user/update', {}, {
+                var res = $resource('/user/update', {}, {
+                    save: {
+                        method: 'POST',
+                        params: {}
+                    }
+                });
+                return res.save(user, function(response) {
+                    callback(response);
+                });
+            },
+            resetPass: function(user, callback) {
+                var res = $resource('/user/resetPass', {}, {
                     save: {
                         method: 'POST',
                         params: {}
