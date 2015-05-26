@@ -1,4 +1,5 @@
 var VehicleEntityModel = require("./../models").VehicleEntity;
+var ComponentModel = require("./../models").Component;
 var helper = require('./helper');
 var fs = require('fs');
 
@@ -27,7 +28,7 @@ exports.listVehicle = function(req, res) {
 
     query.exec(function(error, results) {
         if (error) {
-           helper.wrapUpdate(err);
+            helper.wrapUpdate(err);
         } else {
             VehicleEntityModel.count(where, function(error, count) {
                 if (error) {
@@ -45,7 +46,7 @@ exports.listVehicle = function(req, res) {
                     var resultSet = {
                         objectList: results,
                         page: page,
-						success: true
+                        success: true
                     };
                     return res.json(resultSet);
                 }
@@ -133,7 +134,7 @@ exports.queryVehicle = function(req, res) {
     var condition = {
         _id: id
     };
-    VehicleEntityModel.find(condition).populate('children').exec(function(err, vehicle) {
+    VehicleEntityModel.find(condition).populate('children').populate('components').exec(function(err, vehicle) {
         if (err) {
             res.json(helper.wrapQuery(err));
         } else {
@@ -155,6 +156,16 @@ exports.updateVehicle = function(req, res) {
         vehicle.description = v.description;
         vehicle.children = v.children;
         vehicle.level = v.level;
+		vehicle.components = [];
+        if (v.components) {
+            for (var i = 0; i < v.components.length; i++) {
+                var vid = v.components[i]._id;
+                var ve = new ComponentModel({
+                    _id: vid
+                });
+                vehicle.components.push(ve);
+            }
+        }
         vehicle.save(function(err, vehicle) {
             if (err) {
                 res.json(helper.wrapUpdate(err));

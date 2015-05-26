@@ -5,7 +5,7 @@
     </div>
     <div class="jumbotron">
         <message />
-        <tabs />
+        <componenttabs />
         <form name="form" novalidate ng-submit="create()">
             <div class="row" ng-show="showDetail">
                 <div class="col-lg-6">
@@ -19,7 +19,25 @@
                         <tr>
                             <div class="form-group">
                                 <label for="name">描述</label>
-                                <input type="text" class="form-control" id="name" placeholder="请输入描述" ng-model="component.comDescription">
+                                <input type="text" class="form-control" id="comDescription" placeholder="请输入描述" ng-model="component.comDescription">
+                            </div>
+                        </tr>
+						<tr>
+                            <div class="form-group">
+                                <label for="name">类型</label>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                                        {{component.comType}}<span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="component.comType='空气滤清'">空气滤清</a>
+                                        </li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="component.comType='机油滤清'">机油滤清</a>
+                                        </li>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="component.comType='空调滤清'">空调滤清</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </tr>
                     </table>
@@ -36,43 +54,6 @@
             </div>
 
 
-            <div class="row" ng-show="showSubVec">
-                <table class="table">
-                    <tr>
-                        <div class="form-group">
-                            <div class="dropdown">
-                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuSearch" data-toggle="dropdown" aria-expanded="true">
-                                    {{search.level}}<span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" ng-model="search">
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="setSearch('二级')">二级</a>
-                                    </li>
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="setSearch('三级')">三级</a>
-                                    </li>
-                                </ul>
-                                <button class="btn btn-info" type="button" ng-click="querySub()">查询</button>
-                            </div>
-
-                    </tr>
-                    <tr>
-                        <div ng-model="kanbanBoard" id="board">
-                            <div id="columns" class="row">
-                                <div class="col-sm-{{12/kanbanBoard.numberOfColumns}} col-xs-{{12/kanbanBoard.numberOfColumns}}" ng-repeat="column in kanbanBoard.columns" data-columnindex="{{$index}}" id="column{{$index}}">
-                                    <div class="column">
-                                        <div class="columnHeader">
-                                            <span>{{column.name}}</span>
-                                        </div>
-                                        <ul class="cards card-list" as-sortable="kanbanSortOptions" ng-model="column.cards">
-                                            <li class="card" ng-repeat="card in column.cards" as-sortable-item ng-include="'views/admin/card.html'">
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </tr>
-                </table>
-                </div>
 
                 <div class="row" ng-show="showPic">
                     <div class="col-md-3">

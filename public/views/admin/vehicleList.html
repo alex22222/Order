@@ -42,6 +42,7 @@
                     <td class="tdLeft">
                         <div class="btn-group" role="group" aria-label="...">
                             <button type="button" class="btn btn-warning" ng-click="open('/admin/vehicleEntity/edit/' +vehicle._id)">修改</button>
+							<button type="button" class="btn btn-warning" ng-click="open('/admin/vehicleEntity/bindComponent/' +vehicle._id)">零件</button>
                             <button type="button" class="btn btn-danger" ng-click="delete(vehicle._id)">删除</button>
                         </div>
                     </td>
@@ -49,7 +50,6 @@
             </table>
         </div>
         <pagination total-items="totalItems" ng-model="currentPage" items-per-page="itemsPerPage" ng-change="pageChanged()" previous-text="前一页" next-text="后一页"></pagination>
-        <!--pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" ng-change="pageChanged()" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination-->
     </div>
 
 </div>

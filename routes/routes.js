@@ -59,4 +59,5 @@ module.exports = function(app) {
     app.post('/admin/component/update', requiredAuthentication, component.updateComponent);
     app.post('/admin/component/addPicture', requiredAuthentication, component.addPicture);
     app.get('/admin/component/deletePicture', requiredAuthentication, component.deletePicture);
+	app.get('/admin/component/queryByType', requiredAuthentication, component.queryComponentsByType);
 };

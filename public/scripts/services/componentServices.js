@@ -28,6 +28,14 @@ componentServices.factory('Component', ['$resource',
             callback(response);
           });
        },
+       findByType: function(comType, callback) {
+          var res = $resource('/admin/component/queryByType?comType=:comType', {}, {
+              query: {method:'GET', params:comType}
+          });
+          return res.query(function(response) {
+            callback(response);
+          });
+       },
        update: function(component, callback) {
           var res = $resource('/admin/component/update', {}, {
               save: {method:'POST', params:{}}

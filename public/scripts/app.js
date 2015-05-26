@@ -62,6 +62,9 @@ ycdiyStoreApp.config(['$routeProvider',
         }).when('/admin/vehicleEntity/edit/:id', {
             templateUrl: 'views/admin/vehicleForm.html',
             controller: 'vehicleEditController'
+        }).when('/admin/vehicleEntity/bindComponent/:id', {
+            templateUrl: 'views/admin/vehicleBindForm.html',
+            controller: 'vehicleBindController'
         }).when('/public/error', {
             templateUrl: 'views/error.html',
             controller: 'errorController'

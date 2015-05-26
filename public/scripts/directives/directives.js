@@ -61,6 +61,35 @@ ycdiyDirectives.directive('tabs', function() {
     };
 });
 
+ycdiyDirectives.directive('componenttabs', function() {
+    return {
+        restrict: 'E',
+        template: '<ul class="nav nav-tabs"><li role="presentation" class="{{activetab1}}"><a ng-click="showSection(\'detail\')">基本信息</a></li><li role="presentation" class="{{activetab3}}"><a ng-click="showSection(\'pic\')">上传图片</a></li></ul>',
+        link: function($scope, element, attrs) {
+            $scope.showSection = function(obj) {
+                if ("detail" == obj) {
+                    $scope.showDetail = true;
+                    $scope.showPic = false;
+                    $scope.activetab1 = 'active';
+                    $scope.activetab2 = '';
+                    $scope.activetab3 = '';
+                } else if ("pic" == obj) {
+                    $scope.showDetail = false;
+                    $scope.showPic = true;
+                    $scope.activetab1 = '';
+                    $scope.activetab2 = '';
+                    $scope.activetab3 = 'active';
+                }
+            }
+            $scope.showDetail = true;
+            $scope.showPic = false;
+            $scope.activetab1 = 'active';
+            $scope.activetab2 = '';
+            $scope.activetab3 = '';
+        }
+    };
+});
+
 ycdiyDirectives.directive('navigation', function() {
     return {
         restrict: 'E',

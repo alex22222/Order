@@ -52,6 +52,7 @@ var componentSchema = new Schema({
     extension: String,
     comName: String,
     comDescription: String,
+	comType: String,
     vehicles: [{
         type: Schema.Types.ObjectId,
         ref: 'VehicleEntity'

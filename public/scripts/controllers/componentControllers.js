@@ -69,18 +69,7 @@ componentControllers.controller('componentEditController', ['$scope', 'Component
         $scope.setSearch = function(obj) {
             $scope.search.level = obj;
         };
-        $scope.querySub = function() {
-            $scope.kanbanBoard.columns[0].cards = {};
-            AdminVehicle.queryVehicles($scope.search, function(result) {
-                angular.forEach(result.objectList, function(vehicle) {
-                    $scope.kanbanBoard.columns[0].cards.push(vehicle);
-                });
-            });
-        };
-        $scope.kanbanSortOptions = BoardService.initOptions($scope.component, $scope.kanbanBoard);
-        $scope.removeCard = function(column, card) {
-            BoardService.removeCard($scope.kanbanBoard, column, card);
-        }
+
         $scope.removePicture = function() {
             var comId = {
                 comId: $scope.component._id
@@ -128,12 +117,7 @@ componentControllers.controller('componentAddController', ['$scope', 'Component'
             comDescription: '',
             vehicles: []
         };
-        var kanban = BoardService.initBoard();
-        $scope.kanbanBoard = BoardService.kanbanBoard(kanban);
-        $scope.kanbanSortOptions = BoardService.initOptions($scope.component, $scope.kanbanBoard);
-        $scope.removeCard = function(column, card) {
-            BoardService.removeCard($scope.kanbanBoard, column, card);
-        }
+
         $scope.update = function() {
             Component.create($scope.component, function(message) {
                 $scope.displayMessage(message, '/admin/component/list');
