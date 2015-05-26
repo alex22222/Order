@@ -31,7 +31,7 @@ exports.listComponent = function(req, res) {
     var itemsPerPage = req.query['itemsPerPage'];
 
     var skipFrom = (pageNumber * itemsPerPage) - itemsPerPage;
-    var query = ComponentModel.find(where).populate('vehicles').skip(skipFrom).sort({
+    var query = ComponentModel.find(where).skip(skipFrom).sort({
         '_id': -1
     }).limit(itemsPerPage);
 
@@ -64,6 +64,33 @@ exports.listComponent = function(req, res) {
     });
 };
 
+exports.queryComponentsByType = function(req, res) {
+
+    var where = {};
+    var search = req.query['comType'];
+    if (req.query['comType']) {
+        where = {
+            comType: search
+        };
+    }
+
+    var query = ComponentModel.find(where).sort({
+        '_id': -1
+    });
+
+    query.exec(function(error, results) {
+        if (error) {
+            helper.wrapQuery(error);
+        } else {
+            var resultSet = {
+                objectList: results,
+                success: true
+            };
+            return res.json(resultSet);
+        }
+    });
+};
+
 exports.queryComponent = function(req, res) {
     var id = req.query['comId'];
     var condition = {
@@ -90,6 +117,7 @@ exports.updateComponent = function(req, res) {
         if (err) return res.json(helper.wrapUpdate(err));
         component.comName = v.comName;
         component.comDescription = v.comDescription;
+        component.comType = v.comType;
         component.vehicles = [];
         for (var i = 0; i < v.vehicles.length; i++) {
             var ve = new VehicleModel({
@@ -138,6 +166,7 @@ exports.addComponent = function(req, res) {
     var component = new ComponentModel();
     component.comName = req.body.comName;
     component.comDescription = req.body.comDescription;
+    component.comType = req.body.comType;
     component.name = file.name;
     component.size = file.size;
     component.type = file.type;
@@ -182,6 +211,7 @@ exports.createComponent = function(req, res) {
     var component = new ComponentModel();
     component.comName = req.body.comName;
     component.comDescription = req.body.comDescription;
+    component.comType = req.body.comType;
     component.vehicles = [];
     for (var i = 0; i < req.body.vehicles.length; i++) {
         var ve = new VehicleModel({
