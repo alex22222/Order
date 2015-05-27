@@ -9,15 +9,41 @@
                     <tr>
                         <td class="tdLeft">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="名称..." ng-model="searchObj.search_name" ng-keyup="enter($event)">
-                                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" ng-click="clear(searchObj)" >清空</button>
-                    <button class="btn btn-info" type="button" ng-click="query()" >查询</button>
-                  </span>
+                                <input type="text" class="form-control" placeholder="名称..." ng-model="search.search_name" ng-keyup="enter($event)">
+                            </div>
+                        </td>
+                        <td>一级:
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuSearch" data-toggle="dropdown" aria-expanded="true" ng-click="queryLevel1()">
+                                    {{search.level1}}<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                    <li role="presentation" ng-repeat="vehicle_l1 in items_l1">
+                                        <a role="menuitem" tabindex="-1" ng-click="setLevel1(vehicle_l1)">{{vehicle_l1.title}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuSearch" data-toggle="dropdown" aria-expanded="true" ng-click="queryLevel1()">
+                                    {{search.level2}}<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                    <li role="presentation" ng-repeat="vehicle_l2 in items_l2">
+                                        <a role="menuitem" tabindex="-1" ng-click="setLevel2(vehicle_l2)">{{vehicle_l2.title}}</a>
+                                    </li>
+                                </ul>
                             </div>
                         </td>
                         <td class="tdRight">
-                            <button type="button" class="btn btn-success" ng-click="open('/admin/vehicleEntity/add')">新增</button>
+                            <span class="input-group-btn">
+									<button class="btn btn-default" type="button" ng-click="clear()" >清空</button>
+									<button class="btn btn-info" type="button" ng-click="query()" >查询</button>
+									<button type="button" class="btn btn-success" ng-click="open('/admin/vehicleEntity/add')">新增</button>
+							</span>
                         </td>
                     </tr>
                 </table>
@@ -42,7 +68,7 @@
                     <td class="tdLeft">
                         <div class="btn-group" role="group" aria-label="...">
                             <button type="button" class="btn btn-warning" ng-click="open('/admin/vehicleEntity/edit/' +vehicle._id)">修改</button>
-							<button type="button" class="btn btn-warning" ng-click="open('/admin/vehicleEntity/bindComponent/' +vehicle._id)">零件</button>
+                            <button type="button" class="btn btn-warning" ng-click="open('/admin/vehicleEntity/bindComponent/' +vehicle._id)">零件</button>
                             <button type="button" class="btn btn-danger" ng-click="delete(vehicle._id)">删除</button>
                         </div>
                     </td>

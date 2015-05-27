@@ -4,6 +4,7 @@ var vehicleControllers = angular.module('vehicleControllers', ['angularFileUploa
 var defaultItemsPerPage = 5;
 vehicleControllers.controller('vehicleListController', ['$scope', 'AdminVehicle',
     function($scope, AdminVehicle) {
+        $scope.search = {};
         AdminVehicle.findAll($scope.currentPagination($scope.currentPage), function(result) {
             if (!result.success) {
                 $scope.renderError(result.message);
@@ -22,11 +23,29 @@ vehicleControllers.controller('vehicleListController', ['$scope', 'AdminVehicle'
         };
 
         $scope.query = function() {
-            AdminVehicle.findAll($scope.currentPagination($scope.currentPage, $scope.searchObj.search_name), function(result) {
-                $scope.loadListPage(result);
-            });
+            if ($scope.search.level1 && $scope.search.level2) {
+                var parent = {
+                    parent: $scope.search.level2_id
+                };
+                AdminVehicle.findByParent(parent, function(result) {
+                    if (!result.success) {
+                        $scope.renderError(result.message);
+                    } else {
+                        $scope.items = result.objectList;
+                        $scope.totalItems = 1;
+                        $scope.currentPage = 1;
+                        $scope.itemsPerPage = 100;
+                    }
+                });
+            } else {
+                AdminVehicle.findAll($scope.currentPagination($scope.currentPage, $scope.search.search_name), function(result) {
+                    $scope.items = result.objectList;
+                    $scope.totalItems = result.page.size;
+                    $scope.currentPage = result.page.currentPage;
+                    $scope.itemsPerPage = result.page.itemsPerPage;
+                });
+            }
         };
-
         $scope.enter = function(ev) {
             if (ev.keyCode == 13) {
                 $scope.query();
@@ -41,6 +60,39 @@ vehicleControllers.controller('vehicleListController', ['$scope', 'AdminVehicle'
                     $scope.displayMessage(message);
                 });
             }
+        };
+        $scope.queryLevel1 = function() {
+            var level = {
+                level: '一级'
+            };
+            AdminVehicle.findByLevel(level, function(result) {
+                if (!result.success) {
+                    $scope.renderError(result.message);
+                } else {
+                    $scope.items_l1 = result.objectList;
+                }
+            });
+        };
+        $scope.setLevel1 = function(obj) {
+            $scope.search.level1 = obj.title;
+            $scope.search.level1_id = obj._id;
+            var parent = {
+                parent: obj._id
+            };
+            AdminVehicle.findByParent(parent, function(result) {
+                if (!result.success) {
+                    $scope.renderError(result.message);
+                } else {
+                    $scope.items_l2 = result.objectList;
+                }
+            });
+        };
+        $scope.setLevel2 = function(obj) {
+            $scope.search.level2 = obj.title;
+            $scope.search.level2_id = obj._id;
+        };
+        $scope.clear = function() {
+            $scope.search = {};
         };
     }
 ]);

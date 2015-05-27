@@ -156,7 +156,7 @@ exports.updateVehicle = function(req, res) {
         vehicle.description = v.description;
         vehicle.children = v.children;
         vehicle.level = v.level;
-		vehicle.components = [];
+        vehicle.components = [];
         if (v.components) {
             for (var i = 0; i < v.components.length; i++) {
                 var vid = v.components[i]._id;
@@ -239,5 +239,54 @@ exports.addPicture = function(req, res) {
                 });
             }
         });
+    });
+};
+
+exports.queryByLevel = function(req, res) {
+    var where = {};
+    var level = req.query['level'];
+    if (req.query['level']) {
+        where = {
+            level: level
+        };
+    }
+
+    var query = VehicleEntityModel.find(where).sort({
+        '_id': -1
+    });
+
+    query.exec(function(error, results) {
+        if (error) {
+            helper.wrapUpdate(error);
+        } else {
+            var resultSet = {
+                objectList: results,
+                success: true
+            };
+            return res.json(resultSet);
+        }
+    });
+};
+
+exports.queryByParent = function(req, res) {
+    var where = {};
+    var parent = req.query['parent'];
+    if (req.query['parent']) {
+        where = {
+            _id: parent
+        };
+    }
+    var query = VehicleEntityModel.findById(parent).populate('children');
+
+    query.exec(function(error, results) {
+        if (error) {
+            helper.wrapUpdate(error);
+        } else {
+            var resultSet = {
+                objectList: results.children,
+                success: true
+            };
+            return res.json(resultSet);
+        }
     });
 };

@@ -100,6 +100,28 @@ adminVehicleServices.factory('AdminVehicle', ['$resource',
                 return res.query(function(response) {
                     callback(response);
                 });
+            },
+            findByLevel: function(level, callback) {
+                var res = $resource('/admin/vehicleEntity/queryByLevel?level=:level', {}, {
+                    query: {
+                        method: 'GET',
+                        params: level
+                    }
+                });
+                return res.query(function(response) {
+                    callback(response);
+                });
+            },
+            findByParent: function(parent, callback) {
+                var res = $resource('/admin/vehicleEntity/queryByParent?parent=:parent', {}, {
+                    query: {
+                        method: 'GET',
+                        params: parent
+                    }
+                });
+                return res.query(function(response) {
+                    callback(response);
+                });
             }
         }
     }

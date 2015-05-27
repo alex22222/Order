@@ -50,6 +50,8 @@ module.exports = function(app) {
     app.get('/admin/vehicleEntity/delete', requiredAuthentication, vehicleEntity.deleteVehicle);
 	app.post('/admin/vehicleEntity/addPicture', requiredAuthentication, vehicleEntity.addPicture);
     app.get('/admin/vehicleEntity/deletePicture', requiredAuthentication, vehicleEntity.deletePicture);
+	app.get('/admin/vehicleEntity/queryByLevel', requiredAuthentication, vehicleEntity.queryByLevel);
+	app.get('/admin/vehicleEntity/queryByParent', requiredAuthentication, vehicleEntity.queryByParent);
 
     app.post('/admin/component/add', requiredAuthentication, component.addComponent);
     app.post('/admin/component/create', requiredAuthentication, component.createComponent);
