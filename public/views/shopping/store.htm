@@ -14,7 +14,7 @@
         <td class="tdRight">
             <a href="#/cart" title="购物车结算" ng-disabled="cart.getTotalCount() < 1">
                 <i class="icon-shopping-cart" />
-                <b>{{cart.getTotalCount()}}</b> 项, <b>{{cart.getTotalPrice() | currency}}</b>
+                <b>{{cart.getTotalCount()}}</b> 项, <b>{{cart.getTotalPrice() | currency:"￥"}}</b>
             </a>
         </td>
 		<input type="hidden" value="{{vehicleId}}"/>
@@ -28,7 +28,7 @@
             {{product.description}}
         </td>
         <td class="tdRight">
-            {{product.price | currency}}
+            {{product.price | currency:"￥"}}
         </td>
         <td class="tdCenter">
             <a href="" ng-click="cart.addItem(product._id, product._id, product.comName, product.price, 1)">
@@ -41,7 +41,7 @@
         <td class="tdRight" colspan="4">
             <a href="#/cart" title="购物车结算" ng-disabled="cart.getTotalCount() < 1">
                 <i class="icon-shopping-cart" />
-                <b>{{cart.getTotalCount()}}</b> 项, <b>{{cart.getTotalPrice() | currency}}</b>
+                <b>{{cart.getTotalCount()}}</b> 项, <b>{{cart.getTotalPrice() | currency:"￥"}}</b>
             </a>
         </td>
     </tr>
