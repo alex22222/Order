@@ -1,12 +1,19 @@
 <p class="text-info">
-  <marquee> 欢迎来到养车DIY网站！尽情期待新功能的出现！</marquee> <br />
+    <marquee>欢迎来到养车DIY网站！尽情期待新功能的出现！</marquee>
+    <br />
 </p>
 <div class="row">
-        <div class="col-md-4">
-          <h2>上海大众</h2>
-          <p><a href="#"><img ng-src="images/dsauto.jpg" width="210"  height="210"/></a></p>
-          <p><a class="btn btn-default" href="#" role="button">进入 &raquo;</a></p>
-        </div>
+    <div class="col-md-4" ng-repeat="vehicle in items">
+        <h2>{{vehicle.title}}</h2>
+        <p>
+            <a href="#" class="thumbnail">
+                <img ng-src="images/vehicle/{{vehicle.name}}" width="210" height="210" />
+            </a>
+        </p>
+        <p><a class="btn btn-default" href="#" role="button">进入 &raquo;</a>
+        </p>
+    </div>
+    <!--
         <div class="col-md-4">
           <h2>上海通用</h2>
           <p><a href="#"><img ng-src="images/bieke.jpg" width="210"  height="210"/></a></p>
@@ -32,4 +39,5 @@
           <p><a href="#"><img ng-src="images/honda.jpg" width="210"  height="210"/></a></p>
           <p><a class="btn btn-default" href="#" role="button">进入 &raquo;</a></p>
         </div>
+-->
 </div>

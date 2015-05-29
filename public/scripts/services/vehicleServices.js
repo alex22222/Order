@@ -122,6 +122,17 @@ adminVehicleServices.factory('AdminVehicle', ['$resource',
                 return res.query(function(response) {
                     callback(response);
                 });
+            },
+            findComponents: function(id, callback) {
+                var res = $resource('/admin/vehicleEntity/queryComponents?vid=:id', {}, {
+                    query: {
+                        method: 'GET',
+                        params: id
+                    }
+                });
+                return res.query(function(response) {
+                    callback(response);
+                });
             }
         }
     }

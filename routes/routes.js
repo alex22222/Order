@@ -34,9 +34,7 @@ module.exports = function(app) {
 	app.get('/user/suspend', user.suspendUser);
 	app.post('/user/update', user.updateUser);
 	app.post('/user/resetPass', user.resetPass);
-//
-//    app.post('/admin/vehicle/update', vehicle.updateVehicle);
-//    app.get('/admin/vehicle/structure', vehicle.queryVehicle);
+
 
 	app.get('/admin/user/list', requiredAuthentication, user.list);
 	app.get('/admin/user/delete', requiredAuthentication, user.deleteUser);
@@ -52,6 +50,7 @@ module.exports = function(app) {
     app.get('/admin/vehicleEntity/deletePicture', requiredAuthentication, vehicleEntity.deletePicture);
 	app.get('/admin/vehicleEntity/queryByLevel', requiredAuthentication, vehicleEntity.queryByLevel);
 	app.get('/admin/vehicleEntity/queryByParent', requiredAuthentication, vehicleEntity.queryByParent);
+	app.get('/admin/vehicleEntity/queryComponents', requiredAuthentication, vehicleEntity.queryComponents);
 
     app.post('/admin/component/add', requiredAuthentication, component.addComponent);
     app.post('/admin/component/create', requiredAuthentication, component.createComponent);

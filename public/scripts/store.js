@@ -17,7 +17,7 @@ function store() {
 }
 store.prototype.getProduct = function (code) {
     for (var i = 0; i < this.products.length; i++) {
-        if (this.products[i].code == code)
+        if (this.products[i]._id == code)
             return this.products[i];
     }
     return null;

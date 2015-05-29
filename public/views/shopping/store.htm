@@ -1,4 +1,4 @@
-﻿<p class="text-info">
+<p class="text-info">
     点击<a href="#/vehicle"><b>这里</b></a>选择新车型。<br />
 </p>
 
@@ -12,25 +12,26 @@
              <b>选择商品</b>
         </td>
         <td class="tdRight">
-            <a href="index.html#/cart" title="购物车结算" ng-disabled="cart.getTotalCount() < 1">
+            <a href="#/cart" title="购物车结算" ng-disabled="cart.getTotalCount() < 1">
                 <i class="icon-shopping-cart" />
                 <b>{{cart.getTotalCount()}}</b> 项, <b>{{cart.getTotalPrice() | currency}}</b>
             </a>
         </td>
+		<input type="hidden" value="{{vehicleId}}"/>
     </tr>
     <tr ng-repeat="product in store.products | orderBy:'name' | filter:search" >
 
-        <td>{{product.code}}<input type="hidden" value="{{product.id}}"/></td>
-        <td class="tdCenter"><img ng-src="img/products/{{product.code}}.jpg" alt="{{product.name}}" /></td>
+        <td>{{product._id}}<input type="hidden" value="{{product._id}}"/></td>
+        <td class="tdCenter"><img ng-src="images/{{product.name}}" width="210" height="210" /></td>
         <td>
-            <a href="#/products/{{product.code}}"><b>{{product.name}}</b></a><br />
+            <a href="#/products/{{vehicleId}}/{{product._id}}"><b>{{product.comName}}</b></a><br />
             {{product.description}}
         </td>
         <td class="tdRight">
             {{product.price | currency}}
         </td>
         <td class="tdCenter">
-            <a href="" ng-click="cart.addItem(product.id, product.code, product.name, product.price, 1)">
+            <a href="" ng-click="cart.addItem(product._id, product._id, product.comName, product.price, 1)">
                 添加到购物车
             </a>
         </td>
@@ -38,7 +39,7 @@
     <tr class="well">
         <td></td>
         <td class="tdRight" colspan="4">
-            <a href="index.html#/cart" title="购物车结算" ng-disabled="cart.getTotalCount() < 1">
+            <a href="#/cart" title="购物车结算" ng-disabled="cart.getTotalCount() < 1">
                 <i class="icon-shopping-cart" />
                 <b>{{cart.getTotalCount()}}</b> 项, <b>{{cart.getTotalPrice() | currency}}</b>
             </a>

@@ -5,19 +5,19 @@ var ycdiyStoreApp = angular.module('ycdiyStoreApp', ['ngRoute', 'ui.bootstrap', 
     'ghiscoding.validation', 'pascalprecht.translate',
     'shoppingControllers', 'componentControllers', 'vehicleControllers', 'NewCardControllers', 'authControllers',
     'publicErrorControllers', 'mainControllerControllers', 'backStageControllers',
-    'vehicleServices', 'componentServices', 'orderServices', 'userServices', 'adminVehicleServices',
+    'componentServices', 'userServices', 'adminVehicleServices', 'shoppingServices',
     'ycdiyDirectives', 'BoardDataFactories', 'BoardManipulators', 'BoardServices', 'PictureUploadServices'
 ]);
 
 ycdiyStoreApp.config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.when('/vehicle', {
-            templateUrl: 'views/shopping/vehicle.html',
-            controller: 'vehicleController'
-        }).when('/store', {
+            templateUrl: 'views/shopping/landing.html',
+            controller: 'landingController'
+        }).when('/store/:vid', {
             templateUrl: 'views/shopping/store.htm',
             controller: 'storeController'
-        }).when('/products/:productCode', {
+        }).when('/products/:vid/:productCode', {
             templateUrl: 'views/shopping/product.htm',
             controller: 'storeController'
         }).when('/cart', {

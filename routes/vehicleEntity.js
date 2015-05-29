@@ -290,3 +290,21 @@ exports.queryByParent = function(req, res) {
         }
     });
 };
+
+exports.queryComponents = function(req, res) {
+    var id = req.query['vid'];
+    var condition = {
+        _id: id
+    };
+    VehicleEntityModel.findById(id).populate('components').exec(function(err, vehicle) {
+        if (err) {
+            res.json(helper.wrapQuery(err));
+        } else {
+			var resultSet = {
+                objectList: vehicle.components,
+                success: true
+            };
+                res.json(resultSet);
+        }
+    });
+};

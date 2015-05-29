@@ -27,12 +27,14 @@
                     <th>名称</th>
                     <th>描述</th>
 					<th>类型</th>
+					<th>价格</th>
                     <th>操作</th>
                 </tr>
                 <tr ng-repeat="component in items">
                     <td class="tdLeft">{{component.comName}}</td>
                     <td class="tdLeft">{{component.comDescription}}</td>
 					<td class="tdLeft">{{component.comType}}</td>
+					<td class="tdLeft">{{component.price}}</td>
                     <td class="tdLeft">
                         <div class="btn-group" role="group" aria-label="...">
                             <button type="button" class="btn btn-warning" ng-click="open('/admin/component/edit/' + component._id)">修改</button>
