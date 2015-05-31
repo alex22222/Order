@@ -7,7 +7,7 @@
 
                 <tr class="well">
                     <td class="tdRight" colspan="3">
-                        <a href="index.html#/cart" title="go to shopping cart" ng-disabled="cart.getTotalCount() < 1">
+                        <a href="#/cart" title="go to shopping cart" ng-disabled="cart.getTotalCount() < 1">
                             <i class="icon-shopping-cart" />
                             <b>{{cart.getTotalCount()}}</b> 项, <b>{{cart.getTotalPrice() | currency}}</b>
                             <span ng-show="cart.getTotalCount(product._id) > 0"><br />这项商品已经在购物车中</span>
@@ -50,7 +50,7 @@
                 </tr>
                 <tr class="well">
                     <td class="tdRight" colspan="3">
-                        <a href="index.html#/cart" title="go to shopping cart" ng-disabled="cart.getTotalCount() < 1">
+                        <a href="#/cart" title="go to shopping cart" ng-disabled="cart.getTotalCount() < 1">
                             <i class="icon-shopping-cart" />
                             <b>{{cart.getTotalCount()}}</b> 项, <b>{{cart.getTotalPrice() | currency}}</b>
                             <span ng-show="cart.getTotalCount(product._id) > 0"><br />这项商品已经在购物车中</span>

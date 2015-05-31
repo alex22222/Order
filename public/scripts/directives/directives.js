@@ -93,7 +93,7 @@ ycdiyDirectives.directive('componenttabs', function() {
 ycdiyDirectives.directive('navigation', function() {
     return {
         restrict: 'E',
-        template: '<div id="navbar" class="navbar-collapse collapse"><ul class="nav navbar-nav"><li class="{{activena1}}"><a href="#/admin/component/list"  ng-click="activeTab(\'tab1\')">零件管理</a></li><li  class="{{activena2}}"><a href="#/admin/vehicleEntity/list"  ng-click="activeTab(\'tab2\')">车型管理</a></li><li  class="{{activena3}}"><a href="#/admin/vehicleEntity/list"  ng-click="activeTab(\'tab3\')">订单管理</a></li><li  class="{{activena4}}"><a href="#/admin/user/list"  ng-click="activeTab(\'tab4\')">系统管理</a></li></ul><ul class="nav navbar-nav navbar-right"><li><a href="#/admin/task">分店管理</a></li><li><a href="../navbar-fixed-top/">站内通信</a></li></ul></div>',
+        template: '<div id="navbar" class="navbar-collapse collapse"><ul class="nav navbar-nav"><li class="{{activena1}}"><a href="#/admin/component/list"  ng-click="activeTab(\'tab1\')">零件管理</a></li><li  class="{{activena2}}"><a href="#/admin/vehicleEntity/list"  ng-click="activeTab(\'tab2\')">车型管理</a></li><li  class="{{activena3}}"><a href="#/admin/order/list"  ng-click="activeTab(\'tab3\')">订单管理</a></li><li  class="{{activena4}}"><a href="#/admin/user/list"  ng-click="activeTab(\'tab4\')">系统管理</a></li></ul><ul class="nav navbar-nav navbar-right"><li><a href="#/admin/task">分店管理</a></li><li><a href="../navbar-fixed-top/">站内通信</a></li></ul></div>',
         link: function($scope, element, attrs) {
             $scope.activeTab = function(obj) {
                 if ("tab1" == obj) {

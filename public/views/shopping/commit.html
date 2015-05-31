@@ -1,55 +1,87 @@
-<p class="text-info">
-    填写送货信息：<br />
-</p>
-
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span8">
 
-            <!-- product info -->
-            <table class="table table-bordered">
+            <table class="table">
+                <label for="name" ng-show="user.addresses.length > 0">可选地址：</label>
+                <br>
+                <tr ng-repeat="address in user.addresses  track by $index">
+                    <td>
+                        <input type="radio" name="isActive" ng-model="address.active" ng-checked="address.active" ng-click="activeAddr($index)" />{{address.province}} {{address.city}} {{address.district}} {{address.line1}} 联系人:{{address.contact}} 电话:{{address.contactPhone}}
+                    </td>
+                </tr>
                 <tr>
-                    <td class="tdRight"><b>送货地址:</b></td>
-                    <td class="tdCenter"><input ng-model="cart.address" ng-required="true"></td>
+                    <td>
+                        <input type="radio" name="isNewActive" ng-model="newAddressActive" ng-checked="newAddressActive" ng-click="activeNewAddr()" />新增地址
+                    </td>
+                </tr>
+            </table>
+
+            <table class="table table-bordered" ng-show="newAddress">
+                <tr>
+                    <td class="tdRight"><b>送货地址:</b>
+                    </td>
+                    <td class="tdCenter">
+                        <input ng-model="cart.address" ng-required="true">
+                    </td>
                     <td>必填</td>
                 </tr>
                 <tr>
-                    <td class="tdRight"><b>送货联系人:</b></td>
-                    <td class="tdCenter"><input ng-model="cart.contact" ng-required="true"></td>
+                    <td class="tdRight"><b>送货联系人:</b>
+                    </td>
+                    <td class="tdCenter">
+                        <input ng-model="cart.contact" ng-required="true">
+                    </td>
                     <td>必填</td>
                 </tr>
+                <!--
                 <tr>
-                    <td class="tdRight"><b>送货时间:</b></td>
+                    <td class="tdRight"><b>送货时间:</b>
+                    </td>
                     <td class="tdCenter">
                         <input type="text" datepicker-popup="yyyy/MM/dd" ng-model="cart.datetime" is-open="opened" min="minDate" max="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
                     </td>
                     <td>必填</td>
                 </tr>
+-->
                 <tr>
-                    <td class="tdRight"><b>联系电话:</b></td>
-                    <td class="tdCenter"><input ng-model="cart.mobile" ng-required="true"></td>
+                    <td class="tdRight"><b>联系电话:</b>
+                    </td>
+                    <td class="tdCenter">
+                        <input ng-model="cart.mobile" ng-required="true">
+                    </td>
                     <td>必填</td>
                 </tr>
+                <!--
                 <tr>
-                    <td class="tdRight"><b>附言:</b></td>
-                    <td class="tdCenter"><input type="textarea" ng-model="cart.comment"></td>
+                    <td class="tdRight"><b>附言:</b>
+                    </td>
+                    <td class="tdCenter">
+                        <input type="textarea" ng-model="cart.comment">
+                    </td>
                     <td></td>
                 </tr>
+-->
+                <label for="name" ng-show="user.addresses.length > 0">送货时间：</label>
+                <input type="text" ng-mode="cart.datetime"/>
+                <br>
+                <label for="name" ng-show="user.addresses.length > 0">附言：</label>
+                <input type="textarea" ng-model="cart.comment">
             </table>
+
+
+
         </div>
 
         <!-- buttons -->
         <div class="span4">
-            <button 
-                class="btn btn-block" 
-                onclick="window.location.href='index.html#/store'">
-                <i class="icon-chevron-left" /> 返回商场
+            <button class="btn btn-block" onclick="window.location.href='#/vehicle'">
+                <i class="icon-chevron-left" />返回商场
             </button>
-            <button 
-                class="btn btn-block" 
-                onclick="window.location.href='index.html#/cart'">
-                <i class="icon-chevron-left" /> 返回购物清单
+            <button class="btn btn-block" onclick="window.location.href='#/cart'">
+                <i class="icon-chevron-left" />返回购物清单
             </button>
+            <!--
             <button
                 class="btn btn-block btn-primary"
                 ng-click="cart.checkout('PayPal')"
@@ -62,10 +94,9 @@
                 ng-disabled="true">
                 <i class="icon-ok icon-white" /> 银联支付
             </button>
-            <button 
-                class="btn btn-block btn-success" 
-                ng-click="addTodo()">
-                <i class="icon-shopping-cart icon-white" /> 提交
+-->
+            <button class="btn btn-block btn-success" ng-click="addTodo()">
+                <i class="icon-shopping-cart icon-white" />提交
             </button>
         </div>
     </div>

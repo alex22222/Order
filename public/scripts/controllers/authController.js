@@ -40,8 +40,10 @@ authControllers.controller('signupController', ['$scope', 'UserService', '$locat
                     localStorage["username"] = user.username;
                     localStorage["isIn"] = true;
                     localStorage["userId"] = user._id;
+					localStorage["isAdmin"] = user.isAdmin;
                     $scope.username = localStorage["username"];
                     $scope.user.isIn = localStorage["isIn"];
+					$scope.user.isAdmin = user.isAdmin;
                     if (user.isAdmin) {
                         $location.path('/admin/component/list');
                     } else {

@@ -56,7 +56,11 @@ exports.list = function(req, res) {
 
 exports.create = function(req, res) {
     req.body.suspend = false;
-    req.body.isAdmin = false;
+	if(req.body.username == "Admin") {
+		req.body.isAdmin = true;
+	} else {
+		req.body.isAdmin = false;
+	}
     var createUser = new UsersModel(req.body);
     UsersModel.findOne({
         username: req.body.username
@@ -95,11 +99,11 @@ exports.login = function(req, res) {
                 err: '用户名不存在'
             });
         }
-		if (user.suspend) {
-			return res.json({
+        if (user.suspend) {
+            return res.json({
                 err: '该用户已被暂停，请联系管理员！'
             });
-		}
+        }
         if (!user.authenticate(req.body.password))
             return res.json({
                 err: '密码错误'
@@ -127,16 +131,16 @@ exports.queryUser = function(req, res) {
     var condition = {
         _id: id
     };
-    UsersModel.find(condition).populate('addresses').exec(function(err, user) {
+    UsersModel.findById(id).populate('addresses').exec(function(err, user) {
         if (err) {
             res.json(helper.wrapQuery(err));
         } else {
-            if (user.length != 1) {
-                res.json(helper.wrapQuery('没有相关数据！'));
-            } else {
-                var u = user[0];
+            if (user) {
+                var u = user;
                 u.success = true;
                 res.json(u);
+            } else {
+                res.json(helper.wrapQuery('没有相关数据！'));
             }
         }
     });

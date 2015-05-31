@@ -6,8 +6,12 @@ mainControllerControllers.controller('mainController', ['$scope', '$location', '
     function($scope, $location, $q, $route, $timeout) {
         $scope.$on('$routeChangeStart', function(scope, next, current) {
             if (!localStorage["username"]) {
-                sessionStorage["message"] = '没有权限访问！请先登入！';
-                $location.path('/public/error');
+                if ($location.url() == "/vehicle") {
+                    $location.path('/vehicle');
+                } else {
+                    sessionStorage["message"] = '没有权限访问！请先登入！';
+                    $location.path('/public/error');
+                }
             }
         });
 
@@ -28,7 +32,7 @@ mainControllerControllers.controller('mainController', ['$scope', '$location', '
                 } else {
                     $route.reload();
                 }
-				$scope.message = '';
+                $scope.message = '';
             });
             deferred.resolve();
         };
@@ -39,9 +43,12 @@ mainControllerControllers.controller('mainController', ['$scope', '$location', '
         };
 
         $scope.cleanUserData = function(user) {
-            user.isIn = false;
-            user.username = '';
-            user.password = '';
+            if (user) {
+                user.isIn = false;
+				user.isAdmin = false;
+                user.username = '';
+                user.password = '';
+            }
             localStorage.clear();
         };
 
@@ -56,7 +63,8 @@ mainControllerControllers.controller('mainController', ['$scope', '$location', '
             return {
                 pageNumber: currentPage,
                 itemsPerPage: defaultItemsPerPage,
-                search: searchValue
+                search: searchValue,
+				user: localStorage["userId"]
             };
         };
 

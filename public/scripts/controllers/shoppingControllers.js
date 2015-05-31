@@ -21,13 +21,6 @@ shoppingControllers.controller('landingController', ['$scope', 'AdminVehicle',
                         $scope.itemsPerPage = 100;
                     }
                 });
-            } else {
-                AdminVehicle.findAll($scope.currentPagination($scope.currentPage, $scope.search.search_name), function(result) {
-                    $scope.items = result.objectList;
-                    $scope.totalItems = result.page.size;
-                    $scope.currentPage = result.page.currentPage;
-                    $scope.itemsPerPage = result.page.itemsPerPage;
-                });
             }
         };
         $scope.queryLevel1 = function() {
@@ -69,10 +62,10 @@ shoppingControllers.controller('landingController', ['$scope', 'AdminVehicle',
 shoppingControllers.controller('storeController', ['$scope', '$routeParams', 'DataService', 'AdminVehicle', '$location',
     function($scope, $routeParams, DataService, AdminVehicle, $location) {
         $scope.vehicleId = $routeParams.vid;
-		var store = {
+        var store = {
 
-		};
-		store.products = [];
+        };
+        store.products = [];
         $scope.store = store;
         $scope.cart = DataService.cart;
 
@@ -106,36 +99,92 @@ function getProduct(code, products) {
     return null;
 }
 
-shoppingControllers.controller('commitController', ['$scope', '$routeParams', 'DataService', 'Order', '$resource', '$location', '$rootScope',
-    function($scope, $routeParams, DataService, Order, $resource, $location, $rootScope) {
+shoppingControllers.controller('commitController', ['$scope', '$routeParams', 'DataService', '$resource', '$location', 'UserService', 'Order',
+    function($scope, $routeParams, DataService, $resource, $location, UserService, Order) {
+        $scope.cart = {};
+        var id = localStorage["userId"];
+        var userId = {
+            userId: id
+        };
+        UserService.findById(userId, function(user) {
+            $scope.user = user;
+        });
+        $scope.newAddress = false;
+        $scope.activeAddr = function(index) {
+            angular.forEach($scope.user.addresses, function(address) {
+                address.active = false;
+            });
+            $scope.user.addresses[index].active = true;
+            $scope.newAddressActive = false;
+            $scope.newAddress = false;
+        };
+        $scope.activeNewAddr = function(index) {
+            $scope.newAddress = true;
+            angular.forEach($scope.user.addresses, function(address) {
+                address.active = false;
+            });
+            $scope.newAddressActive = true;
+        };
         $scope.addTodo = function() {
-            var data = {};
-            data["totalPrice"] = DataService.cart.getTotalPrice();
-            data["deliveryAddress"] = $scope.cart.address;
-            data["deliveryContact"] = $scope.cart.contact;
-            data["deliveryDatetime"] = $scope.cart.datetime;
-            data["deliveryMobile"] = $scope.cart.mobile;
-            data["deliveryComment"] = $scope.cart.comment;
+            var order = {};
+            order["totalPrice"] = DataService.cart.getTotalPrice();
+            order["deliveryDate"] = $scope.cart.datetime;
+            order["comments"] = $scope.cart.comment;
+            order["user"] = localStorage["userId"];
             for (var i = 0; i < DataService.cart.items.length; i++) {
                 var item = DataService.cart.items[i];
                 var ctr = i + 1;
-                data["item_id_" + ctr] = item.id;
-                data["item_price_" + ctr] = item.price.toFixed(2);
-                data["item_quantity_" + ctr] = item.quantity;
-                data["count"] = ctr;
+                order["item_id_" + ctr] = item.id;
+                order["item_price_" + ctr] = item.price.toFixed(2);
+                order["item_quantity_" + ctr] = item.quantity;
+                order["count"] = ctr;
             }
-            var res = $resource('http://localhost:8080/ycdiy/rest/orders/create', {}, {
-                save: {
-                    method: 'POST',
-                    params: {}
-                }
-            });
-            res.save($.parseJSON(JSON.stringify(data)), function(response) {
-                $rootScope.orderCode = response.orderCode;
+            Order.create($.parseJSON(JSON.stringify(order)), function(result) {
                 DataService.cart.clearItems();
-                $location.path('/feedback');
+                $location.path('/confirm/' + result.code);
             });
         };
 
+    }
+]);
+
+shoppingControllers.controller('orderController', ['$scope', '$routeParams', 'DataService', '$resource', '$location', 'UserService', 'Order',
+    function($scope, $routeParams, DataService, $resource, $location, UserService, Order) {
+        Order.findMyOrder($scope.currentPagination($scope.currentPage), function(result) {
+            if (!result.success) {
+                $scope.renderError(result.message);
+            } else {
+                $scope.loadListPage(result);
+            }
+        });
+        $scope.pageChanged = function() {
+            Order.findMyOrder($scope.currentPagination($scope.currentPage), function(result) {
+                if (!result.success) {
+                    $scope.renderError(result.message);
+                } else {
+                    $scope.loadListPage(result);
+                }
+            });
+        };
+
+        $scope.delete = function(id) {
+            if (confirm('确认删除?')) {
+//                Order.deleteById({
+//                    orderId: id
+//                }, function(message) {
+//                    $scope.displayMessage(message);
+//                });
+            }
+        };
+
+        $scope.searchObj = {
+            searchName: ''
+        };
+    }
+]);
+
+shoppingControllers.controller('feedbackController', ['$scope', '$routeParams',
+    function($scope, $routeParams) {
+		$scope.orderCode = $routeParams["orderCode"];
     }
 ]);

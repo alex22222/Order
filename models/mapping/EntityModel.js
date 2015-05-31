@@ -1,45 +1,45 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
-
-var child = new Schema({
-    title: String,
-    path: String,
-    size: Number,
-    uploaddate: String,
-    description: String
-});
-var vehicle1 = new Schema({
-    title: String,
-    path: String,
-    size: Number,
-    uploaddate: String,
-    description: String,
-    nodes: [child]
-});
-var vehicle2 = new Schema({
-    title: String,
-    path: String,
-    size: Number,
-    uploaddate: String,
-    description: String,
-    nodes: [vehicle1]
-});
-var vehicle3 = new Schema({
-    title: String,
-    path: String,
-    size: Number,
-    uploaddate: String,
-    description: String,
-    nodes: [vehicle2]
-});
-var vehicleSchema = new Schema({
-    title: String,
-    path: String,
-    size: Number,
-    uploaddate: String,
-    description: String,
-    nodes: [vehicle3]
-});
+//
+//var child = new Schema({
+//    title: String,
+//    path: String,
+//    size: Number,
+//    uploaddate: String,
+//    description: String
+//});
+//var vehicle1 = new Schema({
+//    title: String,
+//    path: String,
+//    size: Number,
+//    uploaddate: String,
+//    description: String,
+//    nodes: [child]
+//});
+//var vehicle2 = new Schema({
+//    title: String,
+//    path: String,
+//    size: Number,
+//    uploaddate: String,
+//    description: String,
+//    nodes: [vehicle1]
+//});
+//var vehicle3 = new Schema({
+//    title: String,
+//    path: String,
+//    size: Number,
+//    uploaddate: String,
+//    description: String,
+//    nodes: [vehicle2]
+//});
+//var vehicleSchema = new Schema({
+//    title: String,
+//    path: String,
+//    size: Number,
+//    uploaddate: String,
+//    description: String,
+//    nodes: [vehicle3]
+//});
 
 var componentSchema = new Schema({
     name: String,
@@ -52,8 +52,8 @@ var componentSchema = new Schema({
     extension: String,
     comName: String,
     comDescription: String,
-	comType: String,
-	price: Number,
+    comType: String,
+    price: Number,
     vehicles: [{
         type: Schema.Types.ObjectId,
         ref: 'VehicleEntity'
@@ -89,6 +89,39 @@ var vehicleSchema = new Schema({
     }
 });
 
+var orderSchema = new Schema({
+	code: String,
+    status: String,
+	totalPrice: Number,
+	comments: String,
+	deliveryDate: String,
+    user: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Users'
+    }],
+	address: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Address'
+    }],
+    components: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Component'
+    }],
+    created: {
+        type: Date,
+        default: Date.now
+    },
+    updated: {
+        type: Date,
+        default: Date.now
+    },
+	updatedBy: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Users'
+    }]
+});
+
 mongoose.model('Component', componentSchema);
-mongoose.model('Vehicle', vehicleSchema);
+//mongoose.model('Vehicle', vehicleSchema);
 mongoose.model('VehicleEntity', vehicleSchema);
+mongoose.model('Order', orderSchema);

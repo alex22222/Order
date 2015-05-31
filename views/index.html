@@ -55,9 +55,8 @@
     <script src="scripts/services/vehicleServices.js"></script>
     <script src="scripts/services/userServices.js"></script>
     <script src="scripts/directives/directives.js"></script>
-    <script src="scripts/animations.js"></script>
     <script src="scripts/product.js" type="text/javascript"></script>
-    <script src="scripts/store.js" type="text/javascript"></script>
+<!--    <script src="scripts/store.js" type="text/javascript"></script>-->
     <script src="scripts/shoppingCart.js" type="text/javascript"></script>
     <script type="text/javascript" src="scripts/model.js"></script>
     <script type="text/javascript" src="scripts/services/BoardManipulator.js"></script>
@@ -65,6 +64,7 @@
     <script type="text/javascript" src="scripts/services/BoardService.js"></script>
     <script type="text/javascript" src="scripts/services/pictureUpload.js"></script>
 	<script type="text/javascript" src="scripts/services/shoppingServices.js"></script>
+	<script type="text/javascript" src="scripts/services/orderServices.js"></script>
     <script type="text/javascript" src="scripts/controllers/KanbanController.js"></script>
     <script type="text/javascript" src="scripts/controllers/NewCardController.js"></script>
     <script type="text/javascript" src="scripts/controllers/authController.js"></script>
@@ -72,6 +72,7 @@
     <script type="text/javascript" src="scripts/controllers/mainController.js"></script>
     <script type="text/javascript" src="scripts/controllers/backStageControllers.js"></script>
 	<script type="text/javascript" src="scripts/controllers/shoppingControllers.js"></script>
+	<script type="text/javascript" src="scripts/controllers/orderControllers.js"></script>
     <script type="text/javascript" src="scripts/clock.js"></script>
 </head>
 
@@ -174,8 +175,9 @@
                         </div>
                     </div>
                     <a href="#/user/detail" ng-show="user.isIn">{{'LOGON_WELCOME' | translate}}{{username}}</a>
-                    <a href="#/user/cart" ng-show="user.isIn">{{'LOGON_CART' | translate}}</a>
-					<a href="#/user/cart" ng-show="user.isIn">{{'LOGON_ORDER' | translate}}</a>
+                    <a href="#/cart" ng-show="user.isIn">{{'LOGON_CART' | translate}}</a>
+					<a href="#/order" ng-show="user.isIn">{{'LOGON_ORDER' | translate}}</a>
+					<a href="#/admin/component/list" ng-show="user.isAdmin">管理员</a>
                     <button type="button" class="btn btn-success" ng-click="logout()">{{'LOGON_LOGOUT' | translate}}</button>
                 </form>
             </div>

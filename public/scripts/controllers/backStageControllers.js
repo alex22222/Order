@@ -54,12 +54,12 @@ backStageControllers.controller('userListController', ['$scope', 'UserService', 
     }
 ]);
 
-backStageControllers.controller('userEditController', ['$scope', 'UserService', '$location', '$route',
-    function($scope, UserService, $location, $route) {
+backStageControllers.controller('userEditController', ['$scope', 'UserService', '$location', '$route', '$routeParams',
+    function($scope, UserService, $location, $route, $routeParams) {
         $scope.pageTitle = '用户信息';
         $scope.showPass = false;
         $scope.showAddr = false;
-        var id = localStorage["userId"];
+        var id = $routeParams.id;
         var userId = {
             userId: id
         };
@@ -104,7 +104,7 @@ backStageControllers.controller('userEditController', ['$scope', 'UserService', 
         $scope.update = function() {
             UserService.update($scope.user, function(message) {
                 $scope.displayMessage(message);
-                $location.reload();
+//                $location.reload();
             });
         };
         $scope.activeAddr = function(index) {

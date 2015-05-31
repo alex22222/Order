@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="jumbotron">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <table>
+                    <tr>
+                        <td class="tdLeft">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="编码..." ng-model="searchObj.search_name" ng-keyup="enter($event)">
+                                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="clear(searchObj)" >清空</button>
+                    <button class="btn btn-info" type="button" ng-click="query()" >查询</button>
+                  </span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <table class="table">
+                <tr>
+                    <th>编码</th>
+					<th>物品</th>
+					<th>购买金额</th>
+                    <th>购买时间</th>
+                    <th>状态</th>
+					<th>操作</th>
+                </tr>
+                <tr ng-repeat="order in items">
+                    <td class="tdLeft">{{order.code}}</td>
+					<td class="tdLeft"><a href="#">详细清单</a></td>
+					<td class="tdLeft">{{order.totalPrice}}</td>
+                    <td class="tdLeft">{{order.created | date : 'yyyy-MM-dd hh:mm:ss'}}</td>
+                    <td class="tdLeft">{{order.status}}</td>
+					<td class="tdLeft">
+                        <div class="btn-group" role="group" aria-label="...">
+                            <button type="button" class="btn btn-danger" ng-click="delete(order._id)">删除</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <pagination total-items="totalItems" ng-model="currentPage" items-per-page="itemsPerPage" ng-change="pageChanged()" previous-text="前一页" next-text="后一页"></pagination>
+    </div>
+
+</div>

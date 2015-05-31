@@ -4,8 +4,8 @@
 var ycdiyStoreApp = angular.module('ycdiyStoreApp', ['ngRoute', 'ui.bootstrap', 'ui.sortable', 'angularFileUpload',
     'ghiscoding.validation', 'pascalprecht.translate',
     'shoppingControllers', 'componentControllers', 'vehicleControllers', 'NewCardControllers', 'authControllers',
-    'publicErrorControllers', 'mainControllerControllers', 'backStageControllers',
-    'componentServices', 'userServices', 'adminVehicleServices', 'shoppingServices',
+    'publicErrorControllers', 'mainControllerControllers', 'backStageControllers', 'orderControllers',
+    'componentServices', 'userServices', 'adminVehicleServices', 'shoppingServices', 'orderServices',
     'ycdiyDirectives', 'BoardDataFactories', 'BoardManipulators', 'BoardServices', 'PictureUploadServices'
 ]);
 
@@ -26,9 +26,12 @@ ycdiyStoreApp.config(['$routeProvider',
         }).when('/commit', {
             templateUrl: 'views/shopping/commit.html',
             controller: 'commitController'
-        }).when('/feedback', {
+        }).when('/confirm/:orderCode', {
             templateUrl: 'views/shopping/feedback.html',
-            controller: 'commitController'
+            controller: 'feedbackController'
+        }).when('/order', {
+            templateUrl: 'views/shopping/orderList.html',
+            controller: 'orderController'
         }).when('/user/detail', {
             templateUrl: 'views/user/detail.html',
             controller: 'userDetailController'
@@ -65,6 +68,9 @@ ycdiyStoreApp.config(['$routeProvider',
         }).when('/admin/vehicleEntity/bindComponent/:id', {
             templateUrl: 'views/admin/vehicleBindForm.html',
             controller: 'vehicleBindController'
+        }).when('/admin/order/list', {
+            templateUrl: 'views/admin/orderList.html',
+            controller: 'orderListController'
         }).when('/public/error', {
             templateUrl: 'views/error.html',
             controller: 'errorController'

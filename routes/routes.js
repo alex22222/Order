@@ -3,6 +3,7 @@ var user = require('./user');
 var component = require('./component');
 var vehicle = require('./vehicle');
 var vehicleEntity = require('./vehicleEntity');
+var order = require('./order');
 var helper = require('./helper');
 
 function requiredAuthentication(req, res, next) {
@@ -19,7 +20,7 @@ function requiredLogon(req, res, next) {
         next();
     } else {
         var err = {};
-        res.json(helper.wrapAuth('访问过期，请再次登入！'));
+        res.json(helper.wrapAuth('请先登入！'));
     }
 }
 
@@ -35,6 +36,11 @@ module.exports = function(app) {
 	app.post('/user/update', user.updateUser);
 	app.post('/user/resetPass', user.resetPass);
 
+	app.post('/order/create', requiredLogon, order.create);
+	app.get('/order/list', requiredLogon, order.list);
+	app.get('/order/myList', requiredLogon, order.queryByUser);
+	app.get('/order/delete', requiredLogon, order.delete);
+	app.get('/admin/order/updateStatus', requiredAuthentication, order.updateStatus);
 
 	app.get('/admin/user/list', requiredAuthentication, user.list);
 	app.get('/admin/user/delete', requiredAuthentication, user.deleteUser);
@@ -48,9 +54,9 @@ module.exports = function(app) {
     app.get('/admin/vehicleEntity/delete', requiredAuthentication, vehicleEntity.deleteVehicle);
 	app.post('/admin/vehicleEntity/addPicture', requiredAuthentication, vehicleEntity.addPicture);
     app.get('/admin/vehicleEntity/deletePicture', requiredAuthentication, vehicleEntity.deletePicture);
-	app.get('/admin/vehicleEntity/queryByLevel', requiredAuthentication, vehicleEntity.queryByLevel);
-	app.get('/admin/vehicleEntity/queryByParent', requiredAuthentication, vehicleEntity.queryByParent);
-	app.get('/admin/vehicleEntity/queryComponents', requiredAuthentication, vehicleEntity.queryComponents);
+	app.get('/admin/vehicleEntity/queryByLevel', vehicleEntity.queryByLevel);
+	app.get('/admin/vehicleEntity/queryByParent', vehicleEntity.queryByParent);
+	app.get('/admin/vehicleEntity/queryComponents', vehicleEntity.queryComponents);
 
     app.post('/admin/component/add', requiredAuthentication, component.addComponent);
     app.post('/admin/component/create', requiredAuthentication, component.createComponent);

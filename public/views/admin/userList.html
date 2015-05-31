@@ -20,12 +20,14 @@
             </div>
             <table class="table">
                 <tr>
+					<th>Id</th>
                     <th>用户名</th>
                     <th>创建时间</th>
 					<th>电话</th>
                     <th>操作</th>
                 </tr>
                 <tr ng-repeat="user in items">
+					<td class="tdLeft">{{user._id}}</td>
                     <td class="tdLeft">{{user.username}}</td>
                     <td class="tdLeft">{{user.created | date : 'yyyy-MM-dd hh:mm:ss'}}</td>
 					<td class="tdLeft">{{user.phone}}</td>
@@ -34,7 +36,7 @@
                             <button type="button" class="btn btn-warning" ng-click="open('/admin/user/edit/' + user._id)">修改</button>
                             <button type="button" class="btn btn-warning" ng-click="suspend(user._id)" ng-show="user.suspend" ng-disabled="user.isAdmin">激活</button>
                             <button type="button" class="btn btn-warning" ng-click="suspend(user._id)" ng-show="!user.suspend" ng-disabled="user.isAdmin">暂停</button>
-                            <button type="button" class="btn btn-danger" ng-click="delete(user._id)" ng-disabled="user.username == 'admin'">删除</button>
+                            <button type="button" class="btn btn-danger" ng-click="delete(user._id)" ng-disabled="user.isAdmin">删除</button>
                         </div>
                     </td>
                 </tr>
