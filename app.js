@@ -10,6 +10,7 @@ var express = require('express'),
     fs = require('fs'),
     colors = require('colors'),
     session = require('express-session'),
+	config = require('./config'),
     MongoStore = require('connect-mongo')(session);
 
 var app = express();
@@ -28,7 +29,7 @@ app.configure(function() {
     app.use(express.static(path.join(__dirname, 'public')));
     app.use(session({
         store: new MongoStore({
-            url: 'mongodb://localhost/test',
+            url: config.connectionstring,
             ttl: 20 * 60 * 1000
         }),
         secret: 'keyboard cat',

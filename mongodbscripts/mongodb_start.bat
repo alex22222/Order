@@ -1,0 +1,1 @@
+call C:\D\software\mongodb-win32-x86_64-2008plus-2.4.9\bin\mongod.exe -f C:\D\software\mongodb-win32-x86_64-2008plus-2.4.9\bin\mongodb.conf

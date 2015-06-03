@@ -1,0 +1,7 @@
+use admin
+db.addUser({user:"super",pwd:"super"});
+db.system.users.find();
+db.system.users.remove({user:"ycdiy"});
+
+use ycdiy
+db.addUser({user:"ycdiy",pwd:"ycdiy",roles:["readWrite","dbAdmin","userAdmin"]});
