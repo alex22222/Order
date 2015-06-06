@@ -8,7 +8,12 @@ mainControllerControllers.controller('mainController', ['$scope', '$location', '
             if (!localStorage["username"]) {
                 if ($location.url() == "/vehicle") {
                     $location.path('/vehicle');
-                } else {
+                } else if ($location.url() == "/logon") {
+					$location.path('/logon');
+                } else if ($location.url() == "/recoverPass") {
+					$location.path('/recoverPass');
+				}
+				else {
                     sessionStorage["message"] = '没有权限访问！请先登入！';
                     $location.path('/public/error');
                 }
@@ -45,7 +50,7 @@ mainControllerControllers.controller('mainController', ['$scope', '$location', '
         $scope.cleanUserData = function(user) {
             if (user) {
                 user.isIn = false;
-				user.isAdmin = false;
+                user.isAdmin = false;
                 user.username = '';
                 user.password = '';
             }
@@ -64,7 +69,7 @@ mainControllerControllers.controller('mainController', ['$scope', '$location', '
                 pageNumber: currentPage,
                 itemsPerPage: defaultItemsPerPage,
                 search: searchValue,
-				user: localStorage["userId"]
+                user: localStorage["userId"]
             };
         };
 

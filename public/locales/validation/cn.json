@@ -21,6 +21,7 @@
 
 	"LANDING_PAGE": "首页",
 	"LOGON": "请登入",
+	"LOGON_SUBMIT": "登入",
 	"LOGON_PAGE_TITLE": "用户登入",
 	"LOGON_USERNAME":"用户名",
 	"LOGON_PASSWORD":"密码",
@@ -31,10 +32,12 @@
 	"LOGON_SIGNUP_BUTTON":"注册",
 	"LOGON_WELCOME":"欢迎您：",
 	"LOGON_CART":"我的购物车",
-	"LOGON_LOGOUT":"注销",
+	"LOGON_LOGOUT":"退出",
 	"LOGON_ORDER":"我的订单",
 	"LOGON_ADMIN":"管理员界面",
-
+	"LOGON_REMEMBER_ME":"记住我",
+	"LOGON_PASSWORD_FORGET":"忘记密码?",
+	"LOGON_REGISTRY":"注册",
 
 	"COMPONENT_CLEAR":"清空",
 	"COMPONENT_QUERY":"查询",

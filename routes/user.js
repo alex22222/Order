@@ -56,11 +56,11 @@ exports.list = function(req, res) {
 
 exports.create = function(req, res) {
     req.body.suspend = false;
-	if(req.body.username == "Admin") {
-		req.body.isAdmin = true;
-	} else {
-		req.body.isAdmin = false;
-	}
+    if (req.body.username == "Admin") {
+        req.body.isAdmin = true;
+    } else {
+        req.body.isAdmin = false;
+    }
     var createUser = new UsersModel(req.body);
     UsersModel.findOne({
         username: req.body.username
@@ -108,11 +108,6 @@ exports.login = function(req, res) {
             return res.json({
                 err: '密码错误'
             });
-        if (user.username == 'admin') {
-            user.isAdmin = true;
-        } else {
-            user.isAdmin = false;
-        }
         req.session["user"] = user;
         res.json(user);
     });

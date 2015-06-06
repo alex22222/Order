@@ -71,11 +71,15 @@ ycdiyStoreApp.config(['$routeProvider',
         }).when('/admin/order/list', {
             templateUrl: 'views/admin/orderList.html',
             controller: 'orderListController'
-        }).when('/chat', {
-            templateUrl: 'chatting.html'
         }).when('/public/error', {
             templateUrl: 'views/error.html',
             controller: 'errorController'
+        }).when('/logon', {
+            templateUrl: 'views/logon.html',
+            controller: 'signupController'
+        }).when('/recoverPass', {
+            templateUrl: 'views/user/retrivePass.html',
+            controller: 'signupController'
         }).otherwise({
             redirectTo: '/public/error'
         });

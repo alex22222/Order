@@ -2,9 +2,9 @@
 
 var authControllers = angular.module('authControllers', []);
 
-authControllers.controller('signupController', ['$scope', 'UserService', '$location',
-    function($scope, UserService, $location) {
-        $scope.user = {
+authControllers.controller('signupController', ['$scope', 'UserService', '$location', '$rootScope',
+    function($scope, UserService, $location, $rootScope) {
+        $rootScope.user = {
             isIn: false,
             username: ''
         };
@@ -20,8 +20,8 @@ authControllers.controller('signupController', ['$scope', 'UserService', '$locat
                     localStorage["username"] = user.username;
                     localStorage["isIn"] = true;
                     localStorage["userId"] = user._id;
-                    $scope.username = localStorage["username"];
-                    $scope.user.isIn = localStorage["isIn"];
+                    $rootScope.username = localStorage["username"];
+                    $rootScope.user.isIn = localStorage["isIn"];
                     $location.path('/vehicle');
                     alert("注册成功");
                 });
@@ -36,14 +36,14 @@ authControllers.controller('signupController', ['$scope', 'UserService', '$locat
                     $scope.cleanUserData();
                 }
                 if (user) {
-                    $scope.user.isIn = true;
+                    $rootScope.user.isIn = true;
                     localStorage["username"] = user.username;
                     localStorage["isIn"] = true;
                     localStorage["userId"] = user._id;
 					localStorage["isAdmin"] = user.isAdmin;
-                    $scope.username = localStorage["username"];
-                    $scope.user.isIn = localStorage["isIn"];
-					$scope.user.isAdmin = user.isAdmin;
+                    $rootScope.username = localStorage["username"];
+                    $rootScope.user.isIn = localStorage["isIn"];
+					$rootScope.user.isAdmin = user.isAdmin;
                     if (user.isAdmin) {
                         $location.path('/admin/component/list');
                     } else {
@@ -66,8 +66,8 @@ authControllers.controller('signupController', ['$scope', 'UserService', '$locat
                 $scope.logon();
             }
         }
-        $scope.username = localStorage["username"];
-        $scope.user.isIn = localStorage["isIn"];
+        $rootScope.username = localStorage["username"];
+        $rootScope.user.isIn = localStorage["isIn"];
     }
 ]);
 
