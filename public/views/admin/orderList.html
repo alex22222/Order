@@ -2,7 +2,6 @@
     <div ng-include="'views/admin/navigation.html'"></div>
     <div class="jumbotron">
         <message />
-        <h4>订单列表</h4>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <table>
@@ -11,27 +10,27 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="编码..." ng-model="searchObj.search_name" ng-keyup="enter($event)">
                                 <span class="input-group-btn">
-									<button class="btn btn-default" type="button" ng-click="clear(searchObj)" >清空</button>
-									<button class="btn btn-info" type="button" ng-click="query()" >查询</button>
+									<button class="btn btn-default" type="button" ng-click="clear(searchObj)" >{{'ORDER_CLEAR' | translate}}</button>
+									<button class="btn btn-info" type="button" ng-click="query()" >{{'ORDER_QUERY' | translate}}</button>
 								  </span>
                             </div>
                         </td>
 						<td class="tdRight">
-							<button class="btn" type="button" ng-click="refresh()" >刷新</button>
+							<button class="btn" type="button" ng-click="refresh()" >{{'ORDER_REFRESH' | translate}}</button>
 						</td>
                     </tr>
                 </table>
             </div>
             <table class="table">
                 <tr>
-                    <th>编码</th>
-                    <th>物品</th>
-                    <th>应收金额</th>
-                    <th>购买时间</th>
-                    <th>最近修改时间</th>
-                    <th>最近修改人</th>
-                    <th>状态</th>
-                    <th>操作</th>
+                    <th>{{'ORDER_CODE' | translate}}</th>
+                    <th>{{'ORDER_BOC' | translate}}</th>
+                    <th>{{'ORDER_PRICE_GET' | translate}}</th>
+                    <th>{{'ORDER_COMMIT_TIME' | translate}}</th>
+                    <th>{{'ORDER_UPDATE_TIME' | translate}}</th>
+                    <th>{{'ORDER_UPDATEDBY' | translate}}</th>
+                    <th>{{'ORDER_STATUS' | translate}}</th>
+                    <th>{{'ORDER_ACTION' | translate}}</th>
                 </tr>
                 <tr ng-repeat="order in items">
                     <td class="tdLeft">{{order.code}}</td>
@@ -44,16 +43,16 @@
                     <td class="tdLeft">{{order.status}}</td>
                     <td class="tdLeft">
                         <div class="btn-group" role="group" aria-label="...">
-                            <button type="button" class="btn btn-warning" ng-click="open('/admin/user/edit/' + user._id)">修改</button>
-                            <button type="button" class="btn btn-info" ng-click="updateStatus(order._id,'已发货')">已发货</button>
-                            <button type="button" class="btn btn-success" ng-click="updateStatus(order._id,'已签收')">已签收</button>
-                            <button type="button" class="btn btn-danger" ng-click="abort(order._id, '作废')">作废</button>
+                            <button type="button" class="btn btn-warning" ng-click="open('/admin/user/edit/' + user._id)">{{'ORDER_MODIFY' | translate}}</button>
+                            <button type="button" class="btn btn-info" ng-click="updateStatus(order._id,'已发货')">{{'ORDER_SENT' | translate}}</button>
+                            <button type="button" class="btn btn-success" ng-click="updateStatus(order._id,'已签收')">{{'ORDER_RECIEVE' | translate}}</button>
+                            <button type="button" class="btn btn-danger" ng-click="abort(order._id, '作废')">{{'ORDER_ABORT' | translate}}</button>
                         </div>
                     </td>
                 </tr>
             </table>
         </div>
-        <pagination total-items="totalItems" ng-model="currentPage" items-per-page="itemsPerPage" ng-change="pageChanged()" previous-text="前一页" next-text="后一页"></pagination>
+        <pagination total-items="totalItems" ng-model="currentPage" items-per-page="itemsPerPage" ng-change="pageChanged()" previous-text="{{'COMMON_PAGEINATION_PRE' | translate}}" next-text="{{'COMMON_PAGEINATION_NEXT' | translate}}"></pagination>
     </div>
 
 </div>

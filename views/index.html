@@ -86,7 +86,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#/vehicle">养车DIY </a>
+                <a class="navbar-brand" href="#/vehicle">{{'APP_NAME' | translate}} </a>
                 <div class="navbar-brand"><span id="clock"></span>
                 </div>
             </div>
@@ -177,7 +177,7 @@
                     <a href="#/user/detail" ng-show="user.isIn">{{'LOGON_WELCOME' | translate}}{{username}}</a>
                     <a href="#/cart" ng-show="user.isIn">{{'LOGON_CART' | translate}}</a>
 					<a href="#/order" ng-show="user.isIn">{{'LOGON_ORDER' | translate}}</a>
-					<a href="#/admin/component/list" ng-show="user.isAdmin">管理员</a>
+					<a href="#/admin/component/list" ng-show="user.isAdmin">{{'LOGON_ADMIN' | translate}}</a>
                     <button type="button" class="btn btn-success" ng-click="logout()">{{'LOGON_LOGOUT' | translate}}</button>
                 </form>
             </div>

@@ -208,7 +208,7 @@ exports.deletePicture = function(req, res) {
 
 exports.addPicture = function(req, res) {
 
-    VehicleEntityModel.findById(req.body.comId, function(err, vehicle) {
+    VehicleEntityModel.findById(req.body.vehicleId, function(err, vehicle) {
         if (err) return res.json(helper.wrapUpdate(err));
         if (req.files) {
             vehicle.path = './public/images/vehicle/' + req.files.file.name;

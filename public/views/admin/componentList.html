@@ -1,22 +1,22 @@
 <div class="container">
     <div ng-include="'views/admin/navigation.html'"></div>
     <div class="jumbotron">
-        <message /><h4>零件列表</h4>
+        <message />
         <div class="panel panel-default">
             <div class="panel-heading">
                 <table>
                     <tr>
                         <td class="tdLeft">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="名称..." ng-model="searchObj.search_name" ng-keyup="enter($event)">
+                                <input type="text" class="form-control" placeholder="{{'COMPONENT_NAME' | translate}}..." ng-model="searchObj.search_name" ng-keyup="enter($event)">
                                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" ng-click="clear(searchObj)" >清空</button>
-                    <button class="btn btn-info" type="button" ng-click="query()" >查询</button>
+                    <button class="btn btn-default" type="button" ng-click="clear(searchObj)" >{{'COMPONENT_CLEAR' | translate}}</button>
+                    <button class="btn btn-info" type="button" ng-click="query()" >{{'COMPONENT_QUERY' | translate}}</button>
                   </span>
                             </div>
                         </td>
                         <td class="tdRight">
-                            <button type="button" class="btn btn-success" ng-click="open('/admin/component/add')">新增</button>
+                            <button type="button" class="btn btn-success" ng-click="open('/admin/component/add')">{{'COMPONENT_ADD' | translate}}</button>
                         </td>
                     </tr>
                 </table>
@@ -24,28 +24,27 @@
             <table class="table">
                 <tr>
                     <!--th>图片</th-->
-                    <th>名称</th>
-                    <th>描述</th>
-					<th>类型</th>
-					<th>价格</th>
-                    <th>操作</th>
+                    <th>{{'COMPONENT_NAME' | translate}}</th>
+                    <th>{{'COMPONENT_DISCRIPTION' | translate}}</th>
+					<th>{{'COMPONENT_TYPE' | translate}}</th>
+					<th>{{'COMPONENT_PRICE' | translate}}</th>
+                    <th>{{'COMPONENT_ACTION' | translate}}</th>
                 </tr>
                 <tr ng-repeat="component in items">
                     <td class="tdLeft">{{component.comName}}</td>
                     <td class="tdLeft">{{component.comDescription}}</td>
 					<td class="tdLeft">{{component.comType}}</td>
-					<td class="tdLeft">{{component.price}}</td>
+					<td class="tdLeft">{{component.price  | currency:"￥"}}</td>
                     <td class="tdLeft">
                         <div class="btn-group" role="group" aria-label="...">
-                            <button type="button" class="btn btn-warning" ng-click="open('/admin/component/edit/' + component._id)">修改</button>
-                            <button type="button" class="btn btn-danger" ng-click="delete(component._id)">删除</button>
+                            <button type="button" class="btn btn-warning" ng-click="open('/admin/component/edit/' + component._id)">{{'COMPONENT_MODIFY' | translate}}</button>
+                            <button type="button" class="btn btn-danger" ng-click="delete(component._id)">{{'COMPONENT_DELETE' | translate}}</button>
                         </div>
                     </td>
                 </tr>
             </table>
         </div>
-        <pagination total-items="totalItems" ng-model="currentPage" items-per-page="itemsPerPage" ng-change="pageChanged()" previous-text="前一页" next-text="后一页"></pagination>
-        <!--pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" ng-change="pageChanged()" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination-->
+        <pagination total-items="totalItems" ng-model="currentPage" items-per-page="itemsPerPage" ng-change="pageChanged()" previous-text="{{'COMMON_PAGEINATION_PRE' | translate}}" next-text="{{'COMMON_PAGEINATION_NEXT' | translate}}"></pagination>
     </div>
 
 </div>

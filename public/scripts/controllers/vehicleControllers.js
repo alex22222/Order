@@ -125,15 +125,9 @@ vehicleControllers.controller('vehicleAddController', ['$scope', '$location', 'A
         kanban.columns = kanbanCols;
         $scope.kanbanBoard = BoardService.kanbanBoard(kanban);
         $scope.create = function() {
-            if (!$scope.form.$valid) {
-                $scope.message = '名称必填' + '__' + new Date().getTime();
-                $scope.success = false;
-                return;
-            }
             if ($scope.uploader.queue.length > 0) {
                 $scope.uploader.uploadAll();
             } else {
-
                 AdminVehicle.create($scope.vehicle, function(message) {
                     var deferred = $q.defer();
                     var promise = deferred.promise;
@@ -224,8 +218,8 @@ vehicleControllers.controller('vehicleAddController', ['$scope', '$location', 'A
     }
 ]);
 
-vehicleControllers.controller('vehicleEditController', ['$scope', '$location', '$route', 'AdminVehicle', '$q', 'BoardService', 'BoardDataFactory', '$timeout', 'FileUploader',
-    function($scope, $location, $route, AdminVehicle, $q, BoardService, BoardDataFactory, $timeout, FileUploader) {
+vehicleControllers.controller('vehicleEditController', ['$scope', '$location', '$route', 'AdminVehicle', '$q', 'BoardService', 'BoardDataFactory', '$timeout', 'FileUploader', 'DataService',
+    function($scope, $location, $route, AdminVehicle, $q, BoardService, BoardDataFactory, $timeout, FileUploader, DataService) {
         $scope.pageTitle = '修改车型';
         $scope.search = {};
         $scope.search.level = '二级';
@@ -252,6 +246,14 @@ vehicleControllers.controller('vehicleEditController', ['$scope', '$location', '
             kanbanCols.push(column2);
             kanban.columns = kanbanCols;
             $scope.kanbanBoard = BoardService.kanbanBoard(kanban);
+
+            $scope.myInterval = 5000;
+            var slides = $scope.slides = [];
+            slides.push({
+                image: 'images/vehicle/' + result.name
+            });
+
+
         });
         $scope.back = function() {
             $location.path('/admin/vehicleEntity/list');
@@ -302,7 +304,7 @@ vehicleControllers.controller('vehicleEditController', ['$scope', '$location', '
             BoardService.removeCard($scope.kanbanBoard, column, card);
         }
         var uploader = $scope.uploader = new FileUploader({
-            url: 'admin/vehicleEntity/addPicture'
+            url: 'admin/vehicleEntity/addPicture?vehicleId=' + id
         });
 
         $scope.removePicture = function() {
@@ -343,7 +345,8 @@ vehicleControllers.controller('vehicleEditController', ['$scope', '$location', '
                 title: $scope.vehicle.title,
                 description: $scope.vehicle.description,
                 level: $scope.vehicle.level,
-                children: subVehicleIds
+                children: subVehicleIds,
+                vehicleId: id
             });
         };
         uploader.onCompleteAll = function() {
@@ -362,6 +365,9 @@ vehicleControllers.controller('vehicleEditController', ['$scope', '$location', '
             });
             deferred.resolve();
         };
+
+
+
     }
 ]);
 

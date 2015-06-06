@@ -10,21 +10,21 @@
                     <table class="table">
                         <tr>
                             <div class="form-group">
-                                <label for="name">用户名</label>
+                                <label for="name">{{'USER_USERNAME' | translate}}</label>
                                 <input type="text" class="form-control" id="name" ng-model="user.username" disabled>
-                                <label for="name"><a href="" ng-click="changePass()">修改密码？</a>
+                                <label for="name"><a href="" ng-click="changePass()">{{'USER_CHANGE_PASSWORD' | translate}}</a>
                                 </label>
                             </div>
                         </tr>
                         <tr>
                             <div class="form-group">
-                                <label for="name">联系电话</label>
+                                <label for="name">{{'USER_TELEPHONE' | translate}}</label>
                                 <input type="text" class="form-control" name="phone" ng-model="user.phone" validation="integer">
                             </div>
                         </tr>
                         <tr>
                             <div class="form-group">
-                                <label for="name">电子邮箱</label>
+                                <label for="name">{{'USER_EMAIL' | translate}}</label>
                                 <input type="text" class="form-control" name="email" ng-model="user.email" validation="email">
                             </div>
                         </tr>
@@ -34,19 +34,19 @@
                     <table class="table">
                         <tr>
                             <div class="form-group">
-                                <label for="name">旧密码</label>
+                                <label for="name">{{'USER_PASSWORD_OLD' | translate}}</label>
                                 <input type="password" class="form-control" id="name" ng-model="user.password_old">
                             </div>
                         </tr>
                         <tr>
                             <div class="form-group">
-                                <label for="name">新密码</label>
+                                <label for="name">{{'USER_PASSWORD_NEW' | translate}}</label>
                                 <input type="password" class="form-control" id="name" ng-model="user.password_new">
                             </div>
                         </tr>
                         <tr>
                             <div class="form-group">
-                                <label for="name">确认密码</label>
+                                <label for="name">{{'USER_PASSWORD_CONFIRM' | translate}}</label>
                                 <input type="password" class="form-control" name="password_confirm" ng-model="user.password_confirm" >
                             </div>
                         </tr>
@@ -54,12 +54,12 @@
                 </div>
             </div>
 
-            <label for="name">可选地址列表</label>
+            <label for="name">{{'USER_ADDRESS_LIST' | translate}}</label>
             <table class="table">
                 <tr ng-repeat="address in user.addresses  track by $index">
                     <td><input type="radio" name="isActive" ng-model="address.active" ng-checked="address.active" ng-click="activeAddr($index)"/>
-						{{address.province}} {{address.city}} {{address.district}} {{address.line1}} 联系人:{{address.contact}} 电话:{{address.contactPhone}}
-						<a href='' ng-click="deleteAddr($index)">删除</a></td>
+						{{address.province}} {{address.city}} {{address.district}} {{address.line1}} {{'COMMON_CONTACTOR_NAME' | translate}}:{{address.contact}} {{'COMMON_CONTACTOR_PHONE' | translate}}:{{address.contactPhone}}
+						<a href='' ng-click="deleteAddr($index)">{{'USER_DELETE' | translate}}</a></td>
                 </tr>
             </table>
 
@@ -68,7 +68,7 @@
                     <table class="table">
                         <tr>
                             <div class="form-group">
-                                <label for="name"><a href="" ng-click="showAddrForm()">增加地址</a>
+                                <label for="name"><a href="" ng-click="showAddrForm()">{{'USER_ADDRESS_ADD' | translate}}</a>
                                 </label>
                             </div>
                         </tr>
@@ -78,25 +78,25 @@
                     <table class="table">
                         <tr>
                             <div class="form-group">
-                                <label for="name">国家</label>
+                                <label for="name">{{'COMMON_COUNTRY' | translate}}</label>
                                 <input type="text" class="form-control" id="name" ng-model="newAddress.country" disabled>
-                                <label for="name">城市</label>
+                                <label for="name">{{'COMMON_CITY' | translate}}</label>
                                 <input type="text" class="form-control" id="name" ng-model="newAddress.city" disabled>
                             </div>
                         </tr>
                         <tr>
                             <div class="form-group">
-                                <label for="name">区县</label>
+                                <label for="name">{{'COMMON_DISTRICT' | translate}}</label>
                                 <div class="dropdown">
                                     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
                                         {{newAddress.district}}<span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                                        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="newAddress.district = '黄浦区'">黄浦区</a>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="newAddress.district = '黄浦区'">{{'COMMON_DISTRICT_HP' | translate}}</a>
                                         </li>
-                                        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="newAddress.district = '徐汇区'">徐汇区</a>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="newAddress.district = '徐汇区'">{{'COMMON_DISTRICT_XH' | translate}}</a>
                                         </li>
-                                        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="newAddress.district = '闵行区'">闵行区</a>
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="newAddress.district = '闵行区'">{{'COMMON_DISTRICT_MH' | translate}}</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -104,26 +104,26 @@
                         </tr>
                         <tr>
                             <div class="form-group">
-                                <label for="name">地址</label>
+                                <label for="name">{{'COMMON_ADDRESS' | translate}}</label>
                                 <input type="text" class="form-control" id="name" ng-model="newAddress.line1">
                             </div>
                         </tr>
 						<tr>
                             <div class="form-group">
-                                <label for="name">联系人姓名</label>
+                                <label for="name">{{'COMMON_CONTACTOR_NAME' | translate}}</label>
                                 <input type="text" class="form-control" id="name" ng-model="newAddress.contact">
                             </div>
                         </tr>
 						<tr>
                             <div class="form-group">
-                                <label for="name">联系人电话</label>
+                                <label for="name">{{'COMMON_CONTACTOR_PHONE' | translate}}</label>
                                 <input type="text" class="form-control" id="name" ng-model="newAddress.contactPhone">
                             </div>
                         </tr>
                         <tr>
                             <div class="btn-toolbar">
                                 <div class="btn-group">
-                                    <button type="submit" class="btn btn-success " ng-click="addAddr()">新增</button>
+                                    <button type="submit" class="btn btn-success " ng-click="addAddr()">{{'COMMON_ADD' | translate}}</button>
                                 </div>
                             </div>
                         </tr>
@@ -135,8 +135,8 @@
                 <div class="col-sm-6">
                     <div class="btn-toolbar">
                         <div class="btn-group">
-                            <button type="submit" class="btn btn-success " ng-disabled="form.$invalid" ng-click="update()">保存</button>
-                            <button type="button" class="btn btn-default" ng-click="back()">返回</button>
+                            <button type="submit" class="btn btn-success " ng-disabled="form.$invalid" ng-click="update()">{{'COMMON_SAVE' | translate}}</button>
+                            <button type="button" class="btn btn-default" ng-click="back()">{{'COMMON_BACK' | translate}}</button>
                         </div>
                     </div>
                 </div>

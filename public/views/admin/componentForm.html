@@ -12,19 +12,19 @@
                     <table class="table">
                         <tr>
                             <div class="form-group">
-                                <label for="name">名称</label>
+                                <label for="name">{{'COMPONENT_NAME' | translate}}</label>
                                 <input type="text" name="name" class="form-control" id="name" placeholder="请输入名称" ng-model="component.comName" validation="required">
                             </div>
                         </tr>
                         <tr>
                             <div class="form-group">
-                                <label for="name">描述</label>
-                                <input type="text" class="form-control" id="comDescription" placeholder="请输入描述" ng-model="component.comDescription">
+                                <label for="name">{{'COMPONENT_DISCRIPTION' | translate}}</label>
+								<textarea type="text" class="form-control" name="comDescription" placeholder="请输入描述" ng-model="component.comDescription" validation="max_len:200" rows="3"> </textarea>
                             </div>
                         </tr>
 						<tr>
                             <div class="form-group">
-                                <label for="name">类型</label>
+                                <label for="name">{{'COMPONENT_TYPE' | translate}}</label>
                                 <div class="dropdown">
                                     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
                                         {{component.comType}}<span class="caret"></span>
@@ -42,7 +42,7 @@
                         </tr>
 						<tr>
                             <div class="form-group">
-                                <label for="name">价格</label>
+                                <label for="name">{{'COMPONENT_PRICE' | translate}}</label>
                                 <input type="text" class="form-control" id="price" placeholder="请输入价格" ng-model="component.price">
                             </div>
                         </tr>
@@ -54,7 +54,7 @@
                         <img ng-src="images/{{component.name}}" />
                     </a>
                     <button type="button" class="btn btn-danger btn-xs" ng-click="removePicture()">
-                        <span class="glyphicon glyphicon-trash"></span> 删除
+                        <span class="glyphicon glyphicon-trash"></span> {{'COMPONENT_DELETE' | translate}}
                     </button>
                 </div>
             </div>
