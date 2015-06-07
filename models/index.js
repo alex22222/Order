@@ -23,6 +23,7 @@ exports['Order'] = mongoose.model('Order');
 exports['VehicleEntity'] = mongoose.model('VehicleEntity');
 exports['Users'] = mongoose.model('Users');
 exports['Address'] = mongoose.model('Address');
+exports['Picture'] = mongoose.model('Picture');
 // fs.readdirSync(models_path).forEach(function (file) {
 //     require(models_path + '/' + file);
 //     var modelName = file.replace('Model.js', '');

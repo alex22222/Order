@@ -20,15 +20,10 @@ PictureUploadServices.service('PictureUpload', ['FileUploader', '$location',
                     }
                 });
                 instance.onBeforeUploadItem = function(item) {
-                    var v_string = '';
-                    for (var i = 0; i < component.vehicles.length; i++) {
-                        v_string = v_string + component.vehicles[i]._id + '|' + component.vehicles[i].title + ',';
-                    }
                     item.formData.push({
 						comId: component._id,
                         comName: component.comName,
-                        comDescription: component.comDescription,
-                        vehicles: v_string
+                        comDescription: component.comDescription
                     });
                 };
                 instance.onCompleteAll = function() {

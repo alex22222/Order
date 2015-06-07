@@ -1,5 +1,5 @@
 var ComponentModel = require("./../models").Component;
-var VehicleModel = require("./../models").Vehicle;
+var PictureModel = require("./../models").Picture;
 var fs = require('fs');
 var helper = require('./helper');
 
@@ -18,7 +18,6 @@ exports.deleteComponent = function(req, res) {
 };
 
 exports.listComponent = function(req, res) {
-
     var where = {};
     var search = req.query['search'];
     if (req.query['search']) {
@@ -65,7 +64,6 @@ exports.listComponent = function(req, res) {
 };
 
 exports.queryComponentsByType = function(req, res) {
-
     var where = {};
     var search = req.query['comType'];
     if (req.query['comType']) {
@@ -73,11 +71,9 @@ exports.queryComponentsByType = function(req, res) {
             comType: search
         };
     }
-
-    var query = ComponentModel.find(where).sort({
+    var query = ComponentModel.find(where).populate('pictures').sort({
         '_id': -1
     });
-
     query.exec(function(error, results) {
         if (error) {
             helper.wrapQuery(error);
@@ -96,7 +92,7 @@ exports.queryComponent = function(req, res) {
     var condition = {
         _id: id
     };
-    ComponentModel.find(condition).populate('vehicles').exec(function(err, component) {
+    ComponentModel.find(condition).populate('pictures').exec(function(err, component) {
         if (err) {
             res.json(helper.wrapQuery(err));
         } else {
@@ -110,39 +106,51 @@ exports.queryComponent = function(req, res) {
 };
 
 exports.updateComponent = function(req, res) {
-
     var v = req.body;
     var component = new ComponentModel(v);
-    ComponentModel.findById(req.body._id).populate('vehicles').exec(function(err, component) {
+    ComponentModel.findById(req.body._id).populate('picture').exec(function(err, component) {
         if (err) return res.json(helper.wrapUpdate(err));
         component.comName = v.comName;
         component.comDescription = v.comDescription;
         component.comType = v.comType;
-		component.price = v.price;
-        component.vehicles = [];
-        for (var i = 0; i < v.vehicles.length; i++) {
-            var ve = new VehicleModel({
-                _id: v.vehicles[i]._id,
-                title: v.vehicles[i].title
-            });
-            component.vehicles.push(ve);
-        }
+        component.price = v.price;
 
-        // component.vehicles.push(ve);
-        if (req.files) {
-            component.path = './public/images/' + req.files.file.name;
-            component.name = req.files.file.name;
-        }
         component.save(function(err, component) {
             if (err) {
                 res.json(helper.wrapUpdate(err));
             } else {
                 res.json(helper.wrapUpdate());
             }
+        });
+    });
+};
 
-            if (req.files) {
-                var file = req.files.file;
-                var target_path = './public/images/' + req.files.file.name;
+exports.addComponent = function(req, res) {
+    var file = req.files.file;
+    var target_path = './public/images/component/' + req.files.file.name;
+    var component = new ComponentModel();
+    component.comName = req.body.comName;
+    component.comDescription = req.body.comDescription;
+    component.comType = req.body.comType;
+    component.price = req.body.price;
+    component.path = target_path;
+    component.pictures = [];
+    var pic = new PictureModel({
+        path: target_path,
+        name: file.name,
+        size: file.size,
+        type: file.type
+    });
+
+    pic.save(function(err, picture) {
+        component.pictures.push(picture);
+        component.save(function(err, component) {
+            if (err) {
+                res.json(helper.wrapUpdate(err));
+            } else {
+                res.json(helper.wrapUpdate());
+            }
+            if (file) {
                 var tmp_path = req.files.file.path;
                 fs.rename(tmp_path, target_path, function(err) {
                     if (err) {
@@ -158,55 +166,7 @@ exports.updateComponent = function(req, res) {
                 });
             }
         });
-    });
-};
-
-exports.addComponent = function(req, res) {
-    var file = req.files.file;
-    var target_path = './public/images/' + req.files.file.name;
-    var component = new ComponentModel();
-    component.comName = req.body.comName;
-    component.comDescription = req.body.comDescription;
-    component.comType = req.body.comType;
-    component.name = file.name;
-    component.size = file.size;
-    component.type = file.type;
-	component.price = req.body.price;
-    component.path = target_path;
-    component.vehicles = [];
-    var vv = new String(req.body.vehicles);
-    var _v = vv.split(',');
-    for (var i = 0; i < _v.length - 1; i++) {
-        var id_title_str = new String(_v[i]);
-        var id_title_arr = id_title_str.split('|');
-        var ve = new VehicleModel({
-            _id: id_title_arr[0],
-            title: id_title_arr[1]
-        });
-        component.vehicles.push(ve);
-    }
-    component.save(function(err, component) {
-        if (err) {
-            res.json(helper.wrapUpdate(err));
-        } else {
-            res.json(helper.wrapUpdate());
-        }
-        if (file) {
-            var tmp_path = req.files.file.path;
-            fs.rename(tmp_path, target_path, function(err) {
-                if (err) {
-                    return res.json({
-                        err: err
-                    });
-                }
-                // delete tmp folder
-                fs.unlink(tmp_path, function() {
-                    if (err) res.json(helper.wrapUpdate(err));
-                    res.send('File uploaded to: ' + target_path + ' - ' + component.size + ' bytes');
-                });
-            });
-        }
-    });
+    })
 };
 
 exports.createComponent = function(req, res) {
@@ -214,15 +174,7 @@ exports.createComponent = function(req, res) {
     component.comName = req.body.comName;
     component.comDescription = req.body.comDescription;
     component.comType = req.body.comType;
-	component.price = req.body.price;
-    component.vehicles = [];
-    for (var i = 0; i < req.body.vehicles.length; i++) {
-        var ve = new VehicleModel({
-            _id: req.body.vehicles[i]._id,
-            title: req.body.vehicles[i].title
-        });
-        component.vehicles.push(ve);
-    }
+    component.price = req.body.price;
     component.save(function(err, component) {
         if (err) {
             res.json(helper.wrapAdd(err));
@@ -233,47 +185,60 @@ exports.createComponent = function(req, res) {
 };
 
 exports.addPicture = function(req, res) {
-
     ComponentModel.findById(req.body.comId, function(err, component) {
         if (err) return res.json(helper.wrapUpdate(err));
-        if (req.files) {
-            component.path = './public/images/' + req.files.file.name;
-            component.name = req.files.file.name;
-        }
-        component.save(function(err, component) {
-            if (err) {
-                res.json(helper.wrapUpdate(err));
-            } else {
-                res.json(helper.wrapUpdate());
-            }
+        var pic = new PictureModel({
+            path: './public/images/component/' + req.files.file.name,
+            name: req.files.file.name,
+            size: req.files.file.size,
+            type: req.files.file.type
+        });
 
-            if (req.files) {
-                var file = req.files.file;
-                var target_path = './public/images/' + req.files.file.name;
-                var tmp_path = req.files.file.path;
-                fs.rename(tmp_path, target_path, function(err) {
-                    if (err) {
-                        return res.json({
-                            err: err
+        pic.save(function(err, picture) {
+            component.pictures.push(picture);
+            component.save(function(err, component) {
+                if (err) {
+                    res.json(helper.wrapUpdate(err));
+                } else {
+                    res.json(helper.wrapUpdate());
+                }
+
+                if (req.files) {
+                    var file = req.files.file;
+                    var target_path = './public/images/component/' + req.files.file.name;
+                    var tmp_path = req.files.file.path;
+                    fs.rename(tmp_path, target_path, function(err) {
+                        if (err) {
+                            return res.json({
+                                err: err
+                            });
+                        }
+                        // delete tmp folder
+                        fs.unlink(tmp_path, function() {
+                            if (err) res.json(helper.wrapUpdate(err));
+                            res.send('File uploaded to: ' + target_path + ' - ' + component.size + ' bytes');
                         });
-                    }
-                    // delete tmp folder
-                    fs.unlink(tmp_path, function() {
-                        if (err) res.json(helper.wrapUpdate(err));
-                        res.send('File uploaded to: ' + target_path + ' - ' + component.size + ' bytes');
                     });
-                });
-            }
+                }
+            });
+
         });
     });
 };
 
 exports.deletePicture = function(req, res) {
     var id = req.query['comId'];
-    ComponentModel.findById(id, function(err, component) {
+	var pictureId = req.query['pictureId'];
+    ComponentModel.findById(id).populate('pictures').exec( function(err, component) {
         if (err) return res.json(helper.wrapUpdate(err));
-        component.path = '';
-        component.name = '';
+
+		var pics = component.pictures;
+		for(var i =0; i< pics.length; i++) {
+			if(pics[i]._id == pictureId) {
+				pics.splice(i,1);
+			}
+		}
+
         component.save(function(err, component) {
             if (err) {
                 res.json(helper.wrapUpdate(err));

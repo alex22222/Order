@@ -1,13 +1,12 @@
 <div class="container" ng-controller="errorController">
-    <h1>发生错误 <span>:(</span></h1>
-    <p>原因:</p>
+    <h1>{{'ERROR_MESSAGE' | translate}} <span>:(</span></h1>
+    <p>{{'ERROR_CAUSE' | translate}}</p>
     <ul>
         <li>{{message}}</li>
     </ul>
-    <script>
-        var GOOG_FIXURL_LANG = (navigator.language || '').slice(0, 2),
-            GOOG_FIXURL_SITE = location.host;
-    </script>
+	<ul>
+		<a href="#/logon">{{'ERROR_LOGON_PAGE' | translate}}</a>
+    </ul>
 </div>
 
 

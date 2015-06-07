@@ -19,6 +19,10 @@
 	"COMMON_CONTACTOR_NAME":"联系人姓名",
 	"COMMON_CONTACTOR_PHONE":"联系人电话",
 
+	"ERROR_MESSAGE":"发生错误",
+	"ERROR_CAUSE":"原因:",
+	"ERROR_LOGON_PAGE":"登入页面",
+
 	"LANDING_PAGE": "首页",
 	"LOGON": "请登入",
 	"LOGON_SUBMIT": "登入",
@@ -145,7 +149,7 @@
     "INVALID_MAX_NUM":                  "Needs to be a numeric value, equal to, or lower than :param. ",
     "INVALID_MIN_CHAR":                 "Must be at least :param characters. ",
     "INVALID_MIN_NUM":                  "Needs to be a numeric value, equal to, or higher than :param. ",
-    "INVALID_NUMERIC":                  "Must be a positive number. ",
+    "INVALID_NUMERIC":                  "必须是数字",
     "INVALID_NUMERIC_SIGNED":           "Must be a positive or negative number. ",
     "INVALID_PATTERN":                  "Must be following this format: :param. ",
     "INVALID_REQUIRED":                 "字段必填",

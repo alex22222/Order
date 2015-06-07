@@ -50,18 +50,14 @@ componentControllers.controller('componentEditController', ['$scope', 'Component
     function($scope, Component, $route, AdminVehicle, FileUploader, $location, BoardService) {
         $scope.pageTitle = '修改零件';
         $scope.search = {};
-        $scope.search.level = '二级';
         var id = $route.current.params['id'];
         var comId = {
             comId: id
         };
         Component.findById(comId, function(result) {
             $scope.component = result;
-            var kanban = BoardService.initBoard(null, $scope.component.vehicles);
-            $scope.kanbanBoard = BoardService.kanbanBoard(kanban);
         });
         $scope.update = function() {
-            $scope.component.vehicles = $scope.kanbanBoard.columns[1].cards;
             Component.update($scope.component, function(message) {
                 $scope.displayMessage(message, '/admin/component/list');
             });
@@ -70,9 +66,10 @@ componentControllers.controller('componentEditController', ['$scope', 'Component
             $scope.search.level = obj;
         };
 
-        $scope.removePicture = function() {
+        $scope.removePicture = function(pictureId) {
             var comId = {
-                comId: $scope.component._id
+                comId: $scope.component._id,
+				pictureId: pictureId
             };
             Component.removePicture(comId, function(message) {
                 $scope.displayMessage(message);
@@ -90,15 +87,12 @@ componentControllers.controller('componentEditController', ['$scope', 'Component
             }
         });
         uploader.onBeforeUploadItem = function(item) {
-            var v_string = '';
-            for (var i = 0; i < $scope.component.vehicles.length; i++) {
-                v_string = v_string + $scope.component.vehicles[i]._id + '|' + $scope.component.vehicles[i].title + ',';
-            }
+
             item.formData.push({
                 comId: $scope.component._id,
                 comName: $scope.component.comName,
-                comDescription: $scope.component.comDescription,
-                vehicles: v_string
+                comDescription: $scope.component.comDescription
+
             });
         };
         uploader.onCompleteAll = function() {
@@ -111,11 +105,10 @@ componentControllers.controller('componentAddController', ['$scope', 'Component'
     function($scope, Component, AdminVehicle, PictureUpload, BoardService) {
         $scope.pageTitle = '新增零件';
         $scope.search = {};
-        $scope.search.level = '二级';
         $scope.component = {
             comName: '',
             comDescription: '',
-            vehicles: []
+            price: 0
         };
 
         $scope.update = function() {
@@ -125,19 +118,5 @@ componentControllers.controller('componentAddController', ['$scope', 'Component'
         };
 
         var uploader = $scope.uploader = PictureUpload.init($scope.component, 'admin/component/add');
-        $scope.setLevel = function(obj) {
-            $scope.vehicle.level = obj;
-        };
-        $scope.setSearch = function(obj) {
-            $scope.search.level = obj;
-        };
-        $scope.querySub = function() {
-            $scope.kanbanBoard.columns[0].cards = {};
-            AdminVehicle.queryVehicles($scope.search, function(result) {
-                angular.forEach(result.objectList, function(vehicle) {
-                    $scope.kanbanBoard.columns[0].cards.push(vehicle);
-                });
-            });
-        };
     }
 ]);
