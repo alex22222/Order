@@ -412,6 +412,14 @@ vehicleControllers.controller('vehicleBindController', ['$scope', '$location', '
                 angular.forEach(result.objectList, function(component) {
                     $scope.kanbanBoard.columns[0].cards.push(component);
                 });
+				var componentsBind = $scope.vehicle.components;
+				$scope.kanbanBoard.columns[1].cards = [];
+				angular.forEach(componentsBind, function(component) {
+                    if(component.comType == $scope.search.comType) {
+
+						$scope.kanbanBoard.columns[1].cards.push(component);
+					}
+                });
             });
         };
         $scope.removeCard = function(column, card) {

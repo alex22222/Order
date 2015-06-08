@@ -20,7 +20,7 @@
                             </div>
                         </tr>
                         <tr>
-                            <div class="form-group">
+                            <div class="form-group" ng-show="!editable">
                                 <labuel for="name">{{'COMPONENT_TYPE' | translate}}</label>
                                     <div class="dropdown">
                                         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
@@ -35,6 +35,11 @@
                                             </li>
                                         </ul>
                                     </div>
+                            </div>
+                        </tr>
+                        <tr>
+                            <div class="form-group" ng-show="editable">
+                                    {{component.comType}}
                             </div>
                         </tr>
                     </table>
@@ -68,7 +73,7 @@
                             <tr ng-repeat="picture in component.pictures">
                                 <td>
                                     <a href="#" class="thumbnail">
-                                        <img ng-src="images/component/{{picture.name}}"  width="210" height="150" />
+                                        <img ng-src="images/component/{{picture.name}}" width="210" height="150" />
                                     </a>
                                 </td>
                                 <td>{{picture.name}}</td>

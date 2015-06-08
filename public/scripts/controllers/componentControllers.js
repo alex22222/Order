@@ -50,6 +50,7 @@ componentControllers.controller('componentEditController', ['$scope', 'Component
     function($scope, Component, $route, AdminVehicle, FileUploader, $location, BoardService) {
         $scope.pageTitle = '修改零件';
         $scope.search = {};
+		$scope.editable = true;
         var id = $route.current.params['id'];
         var comId = {
             comId: id
@@ -103,6 +104,7 @@ componentControllers.controller('componentEditController', ['$scope', 'Component
 
 componentControllers.controller('componentAddController', ['$scope', 'Component', 'AdminVehicle', 'PictureUpload', 'BoardService',
     function($scope, Component, AdminVehicle, PictureUpload, BoardService) {
+		$scope.editable = false;
         $scope.pageTitle = '新增零件';
         $scope.search = {};
         $scope.component = {
