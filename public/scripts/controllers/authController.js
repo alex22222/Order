@@ -23,7 +23,7 @@ authControllers.controller('signupController', ['$scope', 'UserService', '$locat
                     $rootScope.username = localStorage["username"];
                     $rootScope.user.isIn = localStorage["isIn"];
                     $location.path('/vehicle');
-                    alert("注册成功");
+                    alert("注册成功!");
                 });
             }
         };
