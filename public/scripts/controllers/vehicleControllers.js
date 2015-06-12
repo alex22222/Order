@@ -374,31 +374,19 @@ vehicleControllers.controller('vehicleEditController', ['$scope', '$location', '
 vehicleControllers.controller('vehicleBindController', ['$scope', '$location', '$route', 'AdminVehicle', '$q', 'BoardService', 'BoardDataFactory', '$timeout', 'Component',
     function($scope, $location, $route, AdminVehicle, $q, BoardService, BoardDataFactory, $timeout, Component) {
         $scope.pageTitle = '绑定零件';
+        $scope.showAdd = false;
         $scope.search = {};
         $scope.search.comType = '';
+        $scope.componentToSelect = [];
         var id = $route.current.params['id'];
         var comId = {
             comId: id
         };
         AdminVehicle.findById(comId, function(result) {
             $scope.vehicle = result;
-            var kanban = {};
-            kanban.name = 'ComponentBoard';
-            kanban.numberOfColumns = 2;
-            var kanbanCols = new Array();
-            var column = {};
-            column.name = '可加零件';
-            column.cards = [];
-            kanbanCols.push(column);
-            var column2 = {};
-            column2.name = '已加零件';
-            column2.cards = [];
-            angular.forEach($scope.vehicle.components, function(components) {
-                column2.cards.push(components);
-            });
-            kanbanCols.push(column2);
-            kanban.columns = kanbanCols;
-            $scope.kanbanBoard = BoardService.kanbanBoard(kanban);
+            $scope.componentGrid1 = getComponentByType('空气滤清', result.components);
+            $scope.componentGrid2 = getComponentByType('机油滤清', result.components);
+            $scope.componentGrid3 = getComponentByType('空调滤清', result.components);
         });
         $scope.back = function() {
             $location.path('/admin/vehicleEntity/list');
@@ -407,24 +395,17 @@ vehicleControllers.controller('vehicleBindController', ['$scope', '$location', '
             var comType = {
                 comType: $scope.search.comType
             };
-            $scope.kanbanBoard.columns[0].cards = {};
             Component.findByType(comType, function(result) {
-                angular.forEach(result.objectList, function(component) {
-                    $scope.kanbanBoard.columns[0].cards.push(component);
-                });
-				var componentsBind = $scope.vehicle.components;
-				$scope.kanbanBoard.columns[1].cards = [];
-				angular.forEach(componentsBind, function(component) {
-                    if(component.comType == $scope.search.comType) {
-
-						$scope.kanbanBoard.columns[1].cards.push(component);
-					}
-                });
+                $scope.componentToSelect = result.objectList;
             });
         };
         $scope.removeCard = function(column, card) {
             BoardService.removeCard($scope.kanbanBoard, column, card);
-        }
+        };
+		$scope.addComponent = function(component) {
+
+
+		};
         $scope.update = function() {
             $scope.vehicle.components = $scope.kanbanBoard.columns[1].cards;
             AdminVehicle.update($scope.vehicle, function(message) {
@@ -446,3 +427,13 @@ vehicleControllers.controller('vehicleBindController', ['$scope', '$location', '
         };
     }
 ]);
+
+function getComponentByType(type, components) {
+    var coms = [];
+    angular.forEach(components, function(component) {
+        if (component.comType == type) {
+            coms.push(component);
+        }
+    });
+    return coms;
+}

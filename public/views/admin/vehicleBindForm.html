@@ -10,13 +10,14 @@
                         <tr>
                             <div class="form-group">
                                 <label for="name">{{vehicle.title}} / {{vehicle.description}} / {{vehicle.level}}</label>
+                                <a href="" ng-click="showAdd = !showAdd">{{'COMMON_ADD' | translate}}</a>
                             </div>
                         </tr>
                     </table>
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" ng-show="showAdd">
                 <table class="table">
                     <tr>
                         <div class="form-group">
@@ -29,13 +30,14 @@
                                     </li>
                                     <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="search.comType='机油滤清'">机油滤清</a>
                                     </li>
-									<li role="presentation"><a role="menuitem" tabindex="-1" ng-click="search.comType='空调滤清'">空调滤清</a>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="search.comType='空调滤清'">空调滤清</a>
                                     </li>
                                 </ul>
                                 <button class="btn btn-info" type="button" ng-click="queryComponent()">{{'COMPONENT_QUERY' | translate}}</button>
                             </div>
                     </tr>
                     <tr>
+                        <!--
                         <div ng-model="kanbanBoard" id="board">
                             <div id="columns" class="row">
                                 <div class="col-sm-{{12/kanbanBoard.numberOfColumns}} col-xs-{{12/kanbanBoard.numberOfColumns}}" ng-repeat="column in kanbanBoard.columns" data-columnindex="{{$index}}" id="column{{$index}}">
@@ -51,9 +53,105 @@
                                 </div>
                             </div>
                         </div>
+-->
+                        <table class="table">
+                            <tr>
+                                <!--th>图片</th-->
+                                <th>{{'COMPONENT_NAME' | translate}}</th>
+                                <th>{{'COMPONENT_DISCRIPTION' | translate}}</th>
+                                <th>{{'COMPONENT_PRICE' | translate}}</th>
+                                <th>{{'COMPONENT_ACTION' | translate}}</th>
+                            </tr>
+                            <tr ng-repeat="component in componentToSelect">
+                                <td class="tdLeft">{{component.comName}}</td>
+                                <td class="tdLeft">{{component.comDescription}}</td>
+                                <td class="tdLeft">{{component.price | currency:"￥"}}</td>
+                                <td class="tdLeft">
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <a href="" ng-click="addComponent(component)">{{'COMMON_ADD' | translate}}</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </tr>
                 </table>
                 </div>
+
+                <label for="name">空气滤清</label>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <table class="table">
+                            <tr>
+                                <!--th>图片</th-->
+                                <th>{{'COMPONENT_NAME' | translate}}</th>
+                                <th>{{'COMPONENT_DISCRIPTION' | translate}}</th>
+                                <th>{{'COMPONENT_PRICE' | translate}}</th>
+                                <th>{{'COMPONENT_ACTION' | translate}}</th>
+                            </tr>
+                            <tr ng-repeat="component in componentGrid1">
+                                <td class="tdLeft">{{component.comName}}</td>
+                                <td class="tdLeft">{{component.comDescription}}</td>
+                                <td class="tdLeft">{{component.price | currency:"￥"}}</td>
+                                <td class="tdLeft">
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <a href="" ng-click="delete(component._id)">{{'COMPONENT_DELETE' | translate}}</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <label for="name">机油滤清</label>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <table class="table">
+                            <tr>
+                                <!--th>图片</th-->
+                                <th>{{'COMPONENT_NAME' | translate}}</th>
+                                <th>{{'COMPONENT_DISCRIPTION' | translate}}</th>
+                                <th>{{'COMPONENT_PRICE' | translate}}</th>
+                                <th>{{'COMPONENT_ACTION' | translate}}</th>
+                            </tr>
+                            <tr ng-repeat="component in componentGrid2">
+                                <td class="tdLeft">{{component.comName}}</td>
+                                <td class="tdLeft">{{component.comDescription}}</td>
+                                <td class="tdLeft">{{component.price | currency:"￥"}}</td>
+                                <td class="tdLeft">
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <a href="" ng-click="delete(component._id)">{{'COMPONENT_DELETE' | translate}}</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <label for="name">空调滤清</label>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <table class="table">
+                            <tr>
+                                <!--th>图片</th-->
+                                <th>{{'COMPONENT_NAME' | translate}}</th>
+                                <th>{{'COMPONENT_DISCRIPTION' | translate}}</th>
+                                <th>{{'COMPONENT_PRICE' | translate}}</th>
+                                <th>{{'COMPONENT_ACTION' | translate}}</th>
+                            </tr>
+                            <tr ng-repeat="component in componentGrid3">
+                                <td class="tdLeft">{{component.comName}}</td>
+                                <td class="tdLeft">{{component.comDescription}}</td>
+                                <td class="tdLeft">{{component.price | currency:"￥"}}</td>
+                                <td class="tdLeft">
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <a href="" ng-click="delete(component._id)">{{'COMPONENT_DELETE' | translate}}</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
 
                 <div class="row">
                     <div class="col-sm-6">
