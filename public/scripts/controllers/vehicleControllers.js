@@ -402,12 +402,51 @@ vehicleControllers.controller('vehicleBindController', ['$scope', '$location', '
         $scope.removeCard = function(column, card) {
             BoardService.removeCard($scope.kanbanBoard, column, card);
         };
-		$scope.addComponent = function(component) {
+        $scope.addComponent = function(component) {
+            if (component.comType == '空气滤清') {
+                if (alreadyHave(component, $scope.componentGrid1)) {
+                    alert('已添加');
+                } else {
+                    $scope.componentGrid1.push(component);
+                }
 
-
-		};
+            } else if (component.comType == '机油滤清') {
+                if (alreadyHave(component, $scope.componentGrid2)) {
+                    alert('已添加');
+                } else {
+                    $scope.componentGrid2.push(component);
+                }
+            } else if (component.comType == '空调滤清') {
+                if (alreadyHave(component, $scope.componentGrid3)) {
+                    alert('已添加');
+                } else {
+                    $scope.componentGrid3.push(component);
+                }
+            }
+        };
+        $scope.deleteComponent = function(component) {
+            if (component.comType == '空气滤清') {
+                for (var i = 0; i < $scope.componentGrid1.length; i++) {
+                    if (component._id == $scope.componentGrid1[i]._id) {
+                        $scope.componentGrid1.splice(i, 1);
+                    }
+                }
+            } else if (component.comType == '机油滤清') {
+                for (var i = 0; i < $scope.componentGrid2.length; i++) {
+                    if (component._id == $scope.componentGrid2[i]._id) {
+                        $scope.componentGrid2.splice(i, 1);
+                    }
+                }
+            } else if (component.comType == '空调滤清') {
+                for (var i = 0; i < $scope.componentGrid3.length; i++) {
+                    if (component._id == $scope.componentGrid3[i]._id) {
+                        $scope.componentGrid3.splice(i, 1);
+                    }
+                }
+            }
+        }
         $scope.update = function() {
-            $scope.vehicle.components = $scope.kanbanBoard.columns[1].cards;
+            $scope.vehicle.components =  $scope.componentGrid1.concat( $scope.componentGrid2).concat( $scope.componentGrid3);
             AdminVehicle.update($scope.vehicle, function(message) {
                 var deferred = $q.defer();
                 var promise = deferred.promise;
@@ -427,6 +466,15 @@ vehicleControllers.controller('vehicleBindController', ['$scope', '$location', '
         };
     }
 ]);
+
+function alreadyHave(componentToAdd, components) {
+    for (var i = 0; i < components.length; i++) {
+        if (componentToAdd._id == components[i]._id) {
+            return true;
+        }
+    };
+    return false;
+}
 
 function getComponentByType(type, components) {
     var coms = [];
